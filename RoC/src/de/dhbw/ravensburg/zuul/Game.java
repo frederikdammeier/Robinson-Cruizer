@@ -1,4 +1,7 @@
 package de.dhbw.ravensburg.zuul;
+
+import de.dhbw.ravensburg.zuul.room.EmptyRoom;
+
 /**
  *  This class is the main class of the "World of Zuul" application. 
  *  "World of Zuul" is a very simple, text based adventure game.  Users 
@@ -19,7 +22,7 @@ package de.dhbw.ravensburg.zuul;
 public class Game 
 {
     private Parser parser;
-    private Room currentRoom;
+    private EmptyRoom currentRoom;
         
     /**
      * Create the game and initialise its internal map.
@@ -35,15 +38,15 @@ public class Game
      */
     private void createRooms()
     {
-		Room outside, theater, pub, lab, office, basement;
+		EmptyRoom outside, theater, pub, lab, office, basement;
 
 		// create the rooms
-		outside = new Room("outside the main entrance of the university");
-		theater = new Room("in a lecture theater");
-		pub = new Room("in the campus pub");
-		lab = new Room("in a computing lab");
-		office = new Room("in the computing admin office");
-		basement = new Room("down in the spooky basement");
+		outside = new EmptyRoom("outside the main entrance of the university");
+		theater = new EmptyRoom("in a lecture theater");
+		pub = new EmptyRoom("in the campus pub");
+		lab = new EmptyRoom("in a computing lab");
+		office = new EmptyRoom("in the computing admin office");
+		basement = new EmptyRoom("down in the spooky basement");
 
 		// initialise room exits
 		outside.setExit("east", theater);
@@ -155,7 +158,7 @@ public class Game
         String direction = command.getSecondWord();
 
         // Try to leave current room.
-        Room nextRoom = currentRoom.getExit(direction);
+        EmptyRoom nextRoom = currentRoom.getExit(direction);
 
         if (nextRoom == null) {
             System.out.println("There is no door!");
