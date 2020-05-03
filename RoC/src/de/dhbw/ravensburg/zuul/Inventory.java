@@ -89,6 +89,12 @@ public class Inventory {
 		}
 	}
 	
+	/**
+	 * Adds multiple items to the inventory.
+	 * 
+	 * @param items The items that get added.
+	 * @return true if successful, false if the new items exceed the inventories capacity.
+	 */
 	public boolean addMultipleItems(Item...items) {
 		if(items.length > 0){
 			if(unlimited) {

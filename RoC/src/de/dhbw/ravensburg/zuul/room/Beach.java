@@ -13,20 +13,28 @@ import de.dhbw.ravensburg.zuul.Creature;
 public class Beach extends Room {
 
 	/**
+	 * Creates new room of type Beach. RoomType: BEACH.
 	 * 
-	 * @param description
+	 * @param description The rooms description.
 	 * @param creature Creature to spawn in this specific instance.
 	 * @param specialItems Items to spawn in this specific instance.
 	 */
 	public Beach(String description, Creature creature, Item... specialItems) {
-		super(description);
-		super.setCreature(creature);
+		super(description, creature, RoomType.BEACH, specialItems);
 		
-		if(specialItems.length > 0) {
-			for(Item i : specialItems) {
-				super.getInventory().addItem(i);
-			}
-		}
+		populateRoomInventory();
+	}
+	
+	/**
+	 * Creates new room of type Beach. RoomType: custom.
+	 * 
+	 * @param description The rooms description.
+	 * @param creature Creature to spawn in this specific instance.
+	 * @param type The rooms RoomType.
+	 * @param specialItems Items to spawn in this specific instance.
+	 */
+	public Beach(String description, Creature creature, RoomType type, Item... specialItems) {
+		super(description, creature, type, specialItems);
 		
 		populateRoomInventory();
 	}

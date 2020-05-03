@@ -32,54 +32,62 @@ public class Room
 	/**
      * Create a room described "description". Initially, it has
      * no exits. "description" is something like "a kitchen" or
-     * "an open court yard".
+     * "an open court yard". May add "Items" to the room.
+     * 
      * @param description The room's description.
+     * @param specialItems Items to add to the rooms inventory.
      */
     public Room(String description, Item... specialItems) 
     {
         this.description = description;
         exits = new HashMap<>();
-        inventory = null;
+        setInventory();
         creatureInRoom = null;
         type = RoomType.EMPTY_ROOM;
         
-        if(specialItems.length > 0) {
-			for(Item i : specialItems) {
-				inventory.addItem(i);
-			}
-		}
+        inventory.addMultipleItems(specialItems);
     }
     
+    /**
+     * Create a room described "description". Initially, it has
+     * no exits. "description" is something like "a kitchen" or
+     * "an open court yard". Adds a "Creature" to the room. 
+     * May add "Items" to the room.
+     * 
+     * @param description The room's description.
+     * @param creature Creature to add to the room.
+     * @param specialItems Items to add to the room.
+     */
     public Room(String description, Creature creature, Item... specialItems) {
-		Room(description);
-		super.setCreature(creature);
-		setType(RoomType.RUIN);
+    	this.description = description;
+        exits = new HashMap<>();
+        setInventory();
+        creatureInRoom = creature;
+        type = RoomType.EMPTY_ROOM;
 		
-		setInventory();
-		
-		if(specialItems.length > 0) {
-			for(Item i : specialItems) {
-				super.getInventory().addItem(i);
-			}
-		}
-		
-		populateRoomInventory();
+        inventory.addMultipleItems(specialItems);
 	}
 	
+    /**
+     * Create a room described "description". Initially, it has
+     * no exits. "description" is something like "a kitchen" or
+     * "an open court yard". Adds a "Creature" to the room. 
+     * Assigns the room a type to be recognized by the UI.
+     * May add "Items" to the room.
+     * 
+     * @param description The room's description.
+     * @param creature Creature to add to the room.
+     * @param type Type of the room.
+     * @param specialItems Items to add to the room.
+     */
 	public Room(String description, Creature creature, RoomType type, Item... specialItems) {
-		super(description);
-		super.setCreature(creature);
-		setType(type);
+		this.description = description;
+        exits = new HashMap<>();
+        setInventory();
+        creatureInRoom = creature;
+        this.type = type;
 		
-		setInventory();
-		
-		if(specialItems.length > 0) {
-			for(Item i : specialItems) {
-				super.getInventory().addItem(i);
-			}
-		}
-		
-		populateRoomInventory();
+        inventory.addMultipleItems(specialItems);
 	}
 
     /**
