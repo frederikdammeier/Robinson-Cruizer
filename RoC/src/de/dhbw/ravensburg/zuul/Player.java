@@ -1,7 +1,4 @@
 package de.dhbw.ravensburg.zuul;
-import java.util.ArrayList;
-import de.dhbw.ravensburg.zuul.item.Item;
-
 
 /**
  * This class is part of the World of Zuul Application.
