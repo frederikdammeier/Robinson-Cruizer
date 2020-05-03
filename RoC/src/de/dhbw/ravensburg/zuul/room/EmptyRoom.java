@@ -1,6 +1,10 @@
-package de.dhbw.ravensburg.zuul;
+package de.dhbw.ravensburg.zuul.room;
 import java.util.Set;
+import java.util.ArrayList;
 import java.util.HashMap;
+
+import de.dhbw.ravensburg.zuul.Creature;
+import de.dhbw.ravensburg.zuul.item.Item;
 
 /**
  * Class Room - a room in an adventure game.
@@ -12,14 +16,16 @@ import java.util.HashMap;
  * connected to other rooms via exits.  For each existing exit, the room 
  * stores a reference to the neighboring room.
  * 
- * @author  Michael Kölling and David J. Barnes
- * @version 2016.02.29
+ * @author  Michael Kölling, David J. Barnes and Frederik Dammeier
+ * @version 1.1
  */
 
-public class Room 
+public class EmptyRoom 
 {
-    private String description;
-    private HashMap<String, Room> exits;        // stores exits of this room.
+	private String description;
+    private HashMap<String, EmptyRoom> exits;        // stores exits of this room.
+    private Creature creatureInRoom;			
+    private ArrayList<Item> inventory;			//Stores the Items that are currently present in the room.
 
     /**
      * Create a room described "description". Initially, it has
@@ -27,10 +33,12 @@ public class Room
      * "an open court yard".
      * @param description The room's description.
      */
-    public Room(String description) 
+    public EmptyRoom(String description) 
     {
         this.description = description;
         exits = new HashMap<>();
+        inventory = null;
+        creatureInRoom = null;
     }
 
     /**
@@ -38,7 +46,7 @@ public class Room
      * @param direction The direction of the exit.
      * @param neighbor  The room to which the exit leads.
      */
-    public void setExit(String direction, Room neighbor) 
+    public void setExit(String direction, EmptyRoom neighbor) 
     {
         exits.put(direction, neighbor);
     }
@@ -84,9 +92,56 @@ public class Room
      * @param direction The exit's direction.
      * @return The room in the given direction.
      */
-    public Room getExit(String direction) 
+    public EmptyRoom getExit(String direction) 
     {
         return exits.get(direction);
+    }
+    
+    /**
+     * Getter for creature in the room.
+     * 
+     * @return
+     */
+    public Creature getCreature() {
+    	return creatureInRoom;
+    }
+    
+    /**
+     * Replaces creature in room with the given Creature. 
+     * 
+     * @param creature null to remove the rooms creature.
+     */
+    public void setCreature(Creature creature) {
+    	creatureInRoom = creature;
+    }
+    
+    /**
+     * Tries to remove given Item.
+     * 
+     * @param item
+     * @return true if successful; false if item didn't exist.
+     */
+    public boolean removeItemFromRoom(Item item) {
+    	return inventory.remove(item);
+    }
+    
+    /**
+     * Adds an item to the rooms Inventory.
+     * 
+     * @param item
+     */
+    public void addItemToRoom(Item item) {
+    	inventory.add(item);
+    }
+    
+    /**
+     * checks whether a given item is in the rooms inventory.
+     * 
+     * @param item
+     * @return
+     */
+    public boolean checkIfItemInRoom(Item item) {
+    	return inventory.contains(item); 
     }
 }
 
