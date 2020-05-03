@@ -1,6 +1,6 @@
 package de.dhbw.ravensburg.zuul.room;
 
-import de.dhbw.ravensburg.zuul.room.EmptyRoom;
+import de.dhbw.ravensburg.zuul.room.Room;
 import de.dhbw.ravensburg.zuul.item.*;
 import de.dhbw.ravensburg.zuul.Creature;
 
@@ -10,7 +10,7 @@ import de.dhbw.ravensburg.zuul.Creature;
  * @author Frederik Dammeier
  * @version 1.0
  */
-public class Forest extends EmptyRoom {
+public class Forest extends Room {
 
 	/**
 	 * 
@@ -22,9 +22,10 @@ public class Forest extends EmptyRoom {
 		super(description);
 		super.setCreature(creature);
 		
+		
 		if(specialItems.length > 0) {
 			for(Item i : specialItems) {
-				super.addItemToRoom(i);
+				super.getInventory().addItem(i);
 			}
 		}
 		

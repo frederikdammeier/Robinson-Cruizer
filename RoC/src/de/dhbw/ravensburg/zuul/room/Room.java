@@ -5,6 +5,7 @@ import java.util.HashMap;
 
 import de.dhbw.ravensburg.zuul.Creature;
 import de.dhbw.ravensburg.zuul.item.Item;
+import de.dhbw.ravensburg.zuul.Inventory;
 
 /**
  * Class Room - a room in an adventure game.
@@ -20,33 +21,73 @@ import de.dhbw.ravensburg.zuul.item.Item;
  * @version 1.1
  */
 
-public class EmptyRoom 
+public class Room 
 {
 	private String description;
-    private HashMap<String, EmptyRoom> exits;        // stores exits of this room.
+    private HashMap<String, Room> exits;        // stores exits of this room.
     private Creature creatureInRoom;			
-    private ArrayList<Item> inventory;			//Stores the Items that are currently present in the room.
+    private Inventory inventory;			//Stores the Items that are currently present in the room.
+    private RoomType type;					//To determine the graphical representation for the room.
 
-    /**
+	/**
      * Create a room described "description". Initially, it has
      * no exits. "description" is something like "a kitchen" or
      * "an open court yard".
      * @param description The room's description.
      */
-    public EmptyRoom(String description) 
+    public Room(String description, Item... specialItems) 
     {
         this.description = description;
         exits = new HashMap<>();
         inventory = null;
         creatureInRoom = null;
+        type = RoomType.EMPTY_ROOM;
+        
+        if(specialItems.length > 0) {
+			for(Item i : specialItems) {
+				inventory.addItem(i);
+			}
+		}
     }
+    
+    public Room(String description, Creature creature, Item... specialItems) {
+		Room(description);
+		super.setCreature(creature);
+		setType(RoomType.RUIN);
+		
+		setInventory();
+		
+		if(specialItems.length > 0) {
+			for(Item i : specialItems) {
+				super.getInventory().addItem(i);
+			}
+		}
+		
+		populateRoomInventory();
+	}
+	
+	public Room(String description, Creature creature, RoomType type, Item... specialItems) {
+		super(description);
+		super.setCreature(creature);
+		setType(type);
+		
+		setInventory();
+		
+		if(specialItems.length > 0) {
+			for(Item i : specialItems) {
+				super.getInventory().addItem(i);
+			}
+		}
+		
+		populateRoomInventory();
+	}
 
     /**
      * Define an exit from this room.
      * @param direction The direction of the exit.
      * @param neighbor  The room to which the exit leads.
      */
-    public void setExit(String direction, EmptyRoom neighbor) 
+    public void setExit(String direction, Room neighbor) 
     {
         exits.put(direction, neighbor);
     }
@@ -92,7 +133,7 @@ public class EmptyRoom
      * @param direction The exit's direction.
      * @return The room in the given direction.
      */
-    public EmptyRoom getExit(String direction) 
+    public Room getExit(String direction) 
     {
         return exits.get(direction);
     }
@@ -116,32 +157,42 @@ public class EmptyRoom
     }
     
     /**
-     * Tries to remove given Item.
+     * Initializes the rooms inventory variable. To be called by the inheriting classes.
      * 
-     * @param item
-     * @return true if successful; false if item didn't exist.
+     * @return false if already initialized.
      */
-    public boolean removeItemFromRoom(Item item) {
-    	return inventory.remove(item);
+    protected boolean setInventory() {
+    	if(inventory == null) {
+    		inventory = new Inventory();
+    		return true;
+    	} else {
+    		return false;
+    	}
     }
     
     /**
-     * Adds an item to the rooms Inventory.
+     * A reference to the rooms inventory instance.
      * 
-     * @param item
+     * @return The rooms inventory instance.
      */
-    public void addItemToRoom(Item item) {
-    	inventory.add(item);
+    public Inventory getInventory() {
+    	return inventory;
     }
     
     /**
-     * checks whether a given item is in the rooms inventory.
-     * 
-     * @param item
-     * @return
+     * Getter for type.
+     * @return RoomType.
      */
-    public boolean checkIfItemInRoom(Item item) {
-    	return inventory.contains(item); 
-    }
+    public RoomType getType() {
+		return type;
+	}
+    
+    /**
+     * To be used by the implementing classes.
+     * @param type
+     */
+	protected void setType(RoomType type) {
+		this.type = type;
+	}
 }
 
