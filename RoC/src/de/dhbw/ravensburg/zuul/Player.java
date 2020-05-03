@@ -18,8 +18,7 @@ public class Player {
 	private String name;
 	private int hunger;
 	private int health;
-	private ArrayList<Item> inventory;
-	private float inventorySize;
+	private Inventory inventory;
 	private int maxLife;
 	
 	/**
@@ -32,7 +31,7 @@ public class Player {
 		this.name = name;
 		hunger = 100;
 		health = this.maxLife = maxLife;
-		inventory = new ArrayList<>();
+		inventory = new Inventory(inventorySize);
 	}
 	
 	
@@ -68,46 +67,6 @@ public class Player {
 	}
 	
 	/**
-	 * Adds an item to the players inventory
-	 * 
-	 * @param item  The item that gets added.
-	 * @return true if successful, false if the player already carries too much.
-	 */
-	public boolean takeItem(Item item) {
-		if(getCurrentInventoryWeight() + item.getWeight() <= inventorySize) {
-			inventory.add(item);
-			return true;
-		} else {
-			return false;
-		}
-	}
-	
-	/**
-	 * Removes an item from the players inventory.
-	 * 
-	 * @param item The item to remove.
-	 * @return true if successful. false if the inventory didn't contain the item.
-	 */
-	public boolean dropItem(Item item) {
-		return inventory.remove(item);
-	}
-	
-	/**
-	 * Calculates the current weight of all items in the players inventory.
-	 * 
-	 * @return Weight in units.
-	 */
-	public float getCurrentInventoryWeight() {
-		float amount = 0.0f;
-		
-		for(int i = 0; i < inventory.size(); i++) {
-			amount = inventory.get(i).getWeight();
-		}
-		
-		return amount;
-	}
-	
-	/**
 	 * @return Name of the player.
 	 */
 	public String getName() {
@@ -129,16 +88,9 @@ public class Player {
 	}
 	
 	/**
-	 * @return The whole inventory as a ArrayList.
+	 * @return A reference to the players inventory.
 	 */
-	public ArrayList<Item> getInventory() {
+	public Inventory getInventory() {
 		return inventory;
-	}
-	
-	/**
-	 * @return The inventorys size (in units).
-	 */
-	public float getInventorySize() {
-		return inventorySize;
 	}
 }
