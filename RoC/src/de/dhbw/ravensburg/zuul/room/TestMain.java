@@ -11,7 +11,7 @@ public class TestMain {
 		
 		System.out.println("ein weiteres item hinzufügen");
 		
-		testRoom.getInventory().addItem(new Food("Fleisch", 0.5f));
+		testRoom.getInventory().addItem(new Food("Fleisch", 0.5f, 5));
 		
 		testRoom.getInventory().printContents();
 	}

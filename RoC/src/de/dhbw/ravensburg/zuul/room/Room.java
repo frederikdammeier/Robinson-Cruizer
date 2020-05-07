@@ -1,9 +1,10 @@
 package de.dhbw.ravensburg.zuul.room;
 import java.util.Set;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import de.dhbw.ravensburg.zuul.Creature;
+import de.dhbw.ravensburg.zuul.creature.*;
 import de.dhbw.ravensburg.zuul.item.Item;
 import de.dhbw.ravensburg.zuul.Inventory;
 
@@ -117,7 +118,7 @@ public class Room
      */
     public String getLongDescription()
     {
-        return "You are " + description + ".\n" + getExitString();
+        return "You are " + description + ".\n" + getExitsAsString();
     }
 
     /**
@@ -125,14 +126,18 @@ public class Room
      * "Exits: north west".
      * @return Details of the room's exits.
      */
-    private String getExitString()
+    private String getExitsAsString()
     {
-        String returnString = "Exits:";
+        StringBuilder sb = new StringBuilder("Exits:\n");
         Set<String> keys = exits.keySet();
         for(String exit : keys) {
-            returnString += " " + exit;
+            sb.append(" ");
+            sb.append(exit);
+            sb.append(": ");
+            sb.append(exits.get(exit).getShortDescription());
+            sb.append("\n");
         }
-        return returnString;
+        return sb.toString();
     }
 
     /**

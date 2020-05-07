@@ -1,5 +1,7 @@
 package de.dhbw.ravensburg.zuul.creature;
 
+
+import de.dhbw.ravensburg.zuul.item.Item;
 /**
  * Class Animal - an animal in an adventure game.
  *

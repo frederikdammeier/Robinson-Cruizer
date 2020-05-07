@@ -2,7 +2,7 @@ package de.dhbw.ravensburg.zuul.room;
 
 import de.dhbw.ravensburg.zuul.room.Room;
 import de.dhbw.ravensburg.zuul.item.*;
-import de.dhbw.ravensburg.zuul.Creature;
+import de.dhbw.ravensburg.zuul.creature.*;
 
 /**
  * Room inside the ruins of the islands.
