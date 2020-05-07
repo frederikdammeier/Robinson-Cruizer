@@ -90,6 +90,38 @@ public class Inventory {
 	}
 	
 	/**
+	 * Adds multiple items to the inventory.
+	 * 
+	 * @param items The items that get added.
+	 * @return true if successful, false if the new items exceed the inventories capacity.
+	 */
+	public boolean addMultipleItems(Item...items) {
+		if(items.length > 0){
+			if(unlimited) {
+				for(Item i : items) {
+					inventory.add(i);
+				}
+				return true;
+			} else {
+				float amount = 0.0f;
+				for(int i = 0; i < items.length; i++) {
+					amount = items[i].getWeight();
+				}
+				
+				if(getCurrentInventoryWeight() + amount <= size) {
+					for(Item i : items) {
+						inventory.add(i);
+					}
+					return true;
+				} else {
+					return false;
+				}
+			}
+		}
+		return true;	
+	}
+	
+	/**
 	 * Return the number of items in the inventory.
 	 * 
 	 * @return
@@ -99,13 +131,20 @@ public class Inventory {
 	}
 	
 	/**
+	 * Removes all items from the inventory.
+	 */
+	public void clearInventory() {
+		inventory.clear();
+	}
+	
+	/**
 	 * Prints the contents of the inventory to the console. To be changed for the GuI later.
 	 */
 	public void printContents() {
-		HashMap<Item, Integer> tmp = new HashMap<>(); //HashMap to map the number of a specific item in the inventory to the item
-		Item currentItem;
+		HashMap<String, Integer> tmp = new HashMap<>(); //HashMap to map the number of a specific item in the inventory to the item
+		String currentItem;
 		for(int i = 0; i < inventory.size(); i++) {
-			currentItem = inventory.get(i);
+			currentItem = inventory.get(i).getName();
 			if(tmp.containsKey(currentItem)) {
 				tmp.replace(currentItem, tmp.get(currentItem)+1);
 			} else {
@@ -113,9 +152,10 @@ public class Inventory {
 			}
 		}
 		if(tmp.size() > 0) {
-			for(Item i : tmp.keySet()) {
-				System.out.println(i.getName() + ": " + tmp.get(i) + "x");
+			for(String i : tmp.keySet()) {
+				System.out.println(i + ": " + tmp.get(i) + "x");
 			}
 		}	
 	}
-}
+} 
+
