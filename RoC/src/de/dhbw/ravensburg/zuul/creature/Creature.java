@@ -1,5 +1,8 @@
 package de.dhbw.ravensburg.zuul.creature;
 
+
+import de.dhbw.ravensburg.zuul.item.*;
+
 /**
  * Class Creature - a creature in an adventure game.
  *
@@ -11,73 +14,29 @@ package de.dhbw.ravensburg.zuul.creature;
  * "Creature" is the superclasse from "Animal" and "Human".
  * 
  * @author  Moritz Link
- * @version 2020.05.02
+ * @version 04.05.2020
  */
 public class Creature {
-	private String name;
+	
+
 	private boolean innocent;
 	private int damage;
 	private int livepoints;
-//	private String description;
-	
 	private Item drop;
+	private String name; 
+	
 	
 	/**
-     * Create a "Creature" with different values: name, innocent, damage, drop.
-     * This constructor is used for "Animals". 
-     * @param name The name of the creature.
-     * @param innocent If the creature is innocent. 
-     * @param damage how string the creature can damage the player.
-     * @param drop the Item the creature drops when it dies. 
+     * Create a "Creature" with the value livepoints.
+     * This constructor is used for "Human" and "Animal".   
+     * @param livepoints  The number of livepoints the Creature has.
      */
-	public Creature(String name, boolean innocent, int damage, Item drop) {
-		this.name = name;
-		this.innocent = innocent;
-		this.damage = damage;
-		drop = new Item();
+	public Creature(int livepoints) { // livepoints? 
+		
+		this.livepoints = livepoints;	
 	}
 	
-	
-	/**
-     * Create a "Creature" with different values: name, innocent,  drop.
-     * This constructor is used for "Human". 
-     * @param name The name of the creature.
-     * @param innocent If the creature is innocent. 
-     * @param drop the Item the creature drops when it dies. 
-     */	
-	public Creature(String name, boolean innocent, Item drop) {
-		this.name = name;
-		this.innocent = innocent;
-		drop = new Item();
-	}
-	
-	
-	/**
-     * Create a "Creature" with different values: name, innocent.
-     * This Constructor is used for "Human". 
-     * @param name The name of the creature.
-     * @param innocent If the Creature is innocent. 
-     */
-	public Creature(String name, boolean innocent) {
-		this.name = name;
-		this.innocent = innocent;
-	}
 
-	/** 
-	 * Return the name of the Creature.
-	 * @return name the name of the Creature.
-	 */
-	public String getName() {
-		return name;
-	}
-
-	/** 
-	 * Define the name of the Creature.
-	 * @param name The name of teh Creature.
-	 */
-	public void setName(String name) {
-		this.name = name;
-	}
 
 	/** 
 	 * Return if the Creature is innocent.
@@ -94,7 +53,27 @@ public class Creature {
 	public void setInnocent(boolean innocent) {
 		this.innocent = innocent;
 	}
+	
+	
+	/**
+	 * Defines which Item the Creature will drop when the Creature dies. 
+	 * @param drop  The Item the Creature drop when it dies.
+	 */
+	public void setDropItem(Item drop ) {
 
+//		drop = new Item("Test", 8); // Bei aufruf immer null
+		this.drop = drop;			// Bei Aufruf immer link
+	}
+	
+	/** 
+	 * Return the Item the Creature drops.
+	 * @return drop The Item the Creature can drop when it dies. 
+	 */
+	public Item getDropItem() {
+		return drop;
+		
+	}
+	
 	/** 
 	 * Return the damage the Creature can cause.
 	 * @return damage The damage the Creature can cause. 
@@ -116,8 +95,7 @@ public class Creature {
 	 * @param livepoints How much livepoints the Creature has.
 	 */
 	public void setLivepoints(int livepoints) {
-		this.livepoints = 20; 	// feste Zahl f�r die Lebenspunkte von Creaturen 
-							   // Anpassungen an Schwierigkeitsstufe oder Unterschied zwischen Tier und Mensch
+		this.livepoints = livepoints; 	
 	}
 	
 	/** 
@@ -130,53 +108,73 @@ public class Creature {
 
 	
 	/** 
+	 * Return the name of the Creature.
+	 * @return name the name of the Creature.
+	 */
+	public String getName() {
+		return name;
+	}
+
+
+	/** 
+	 * Define the name of the Creature.
+	 * @param name The name of the Creature.
+	 */
+	public void setName(String name) {
+		this.name = name;
+	}
+
+
+
+	/** 
 	 *Return if the Creature is alive or not. 
 	 *When their are no livepoints anymore. The Creature is dead.
 	 * @return alive Boolean if Creature is dead or not. 
  	 */
 	// Diese Methode soll �berpr�fen, ob die Creatur noch lebt und Anwort als Boolean zur�ckgeben
 	public boolean isDead() {
-		boolean alive = false;
+		boolean dead = false;
 		if(livepoints == 0) {
-			alive = true;
-			return alive;
+			dead = true;
+			return dead;
 		}
-		return alive;
+		return dead;
 	}
 	
 	/** 
 	 * Drop the Item when Creature is dead.
 	 * @return drop The Item the Creature drops when it dies. 
 	 */
-	// Diese Methode soll, wenn die Creatur nicht mehr lebt ein Item zur�ckgeben. 
+	// Platzhalter
 	public void dropItem() { 
-		drop = new Item();
+		
 		if(isDead() == true) {
-			// drop Item
+			 //Drop Item
+			System.out.println(drop.getName() +  " Hier müsste stehen welches Objekt ausgegeben wurde");
+		}
+		else {
+			System.out.println("nichts zum Ausgeben");
 		}
 	}
 	
 	
-//	public int attack() { // livepoints vom Spieler (int livepoints)
-//		
-//		if(getInnocent() == false) {
-//			livepoints = getLivepoints()- getDamage(); // livepoints vom Spieler 
-//			
-//			System.out.println(livepoints);
-//		}
-//		
-//		return livepoints;
-//	}
+	/**
+	 * The Creature can attack the player with this method and cause different amount of damage. 
+	 * @return livepoints  The number of livepoints the player has left after the attack. 
+	 */
+	public int attack() { 
+		
+		if(getInnocent() == false) {
+			System.out.println("Hier greifen die Creaturen an " + getName());
+			System.out.println(livepoints);
+		}
+		else{
+			System.out.println("Diese Creature kann nicht angreifen");
+		}
+		
+		return livepoints;
+	}
 	
 
-//
-//public String getDescription() {
-//	
-//
-//	return description;
-//}
-//
-//public void setDescription(String description) {
-//	this.description = description;
-//}
+
 }

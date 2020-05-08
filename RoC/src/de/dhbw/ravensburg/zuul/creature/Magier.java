@@ -1,5 +1,4 @@
 package de.dhbw.ravensburg.zuul.creature;
-
 /**
  * Class Magier - a magier in an adventure game.
  *
@@ -10,18 +9,20 @@ package de.dhbw.ravensburg.zuul.creature;
  * "Magier" is a subclass from "Human".
  * 
  * @author  Moritz Link
- * @version 2020.05.02
+ * @version 04.05.2020
  */
 public class Magier extends Human{
-
+	
 	
 	/**
-	 * Create a magier with values: name, innocent. It calls the constructor from the superclass "Human".
-	 * @param name The name of the magier
-	 * @param innocent If the magier is friendly or not
+	 * Create a magier the number of livepoints the magier has.
+	 * It calls the constructor from the superclass "Human".
+	 * @param livepoints  The number of livepoints the magier has. 
 	 */	
-	public Magier(String name, boolean innocent) {
-		super(name, innocent);
+	public Magier(int livepoints) {
+		super(livepoints);
+		setName("Gandalf der Graue"); 
+		setInnocent(true);
 		
 	}
 
@@ -30,6 +31,7 @@ public class Magier extends Human{
 	 */
 	// soll bei einem Aufruf den Spieler teleprotieren k�nnen
 	public void teleport() {
-		
+		System.out.println("Soll hier Spieler in anderen Raum bringen");
 	}
 }
+
