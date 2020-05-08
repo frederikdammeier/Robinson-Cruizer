@@ -118,7 +118,7 @@ public class Room
      */
     public String getLongDescription()
     {
-        return "You are " + description + ".\n" + getExitsAsString();
+        return "You are " + description + ".\n" + getExitsAsString(); 
     }
 
     /**

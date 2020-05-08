@@ -12,18 +12,38 @@ import de.dhbw.ravensburg.zuul.item.Item;
  * and can help or attack you. 
  * "Creature" is the superclasse from "Animal" and "Human".
  * 
- * @author  Moritz Link
- * @version 2020.05.02
+ * @author  Moritz Link - Philipp Schneider
+ * @version 08.05.2020
  */
 public class Creature {
 	private String name;
 	private boolean innocent;
 	private int damage;
 	private int livepoints;
+	private boolean isDead;
+	private boolean invincible;
 //	private String description;
 	
 	private Item drop;
 	
+	/**
+     * Create a "Creature" with different values: name, innocent, damage, drop.
+     * This constructor is used for "Animals". 
+     * @param name The name of the creature.
+     * @param innocent If the creature is innocent. 
+     * @param livepoints of the creature.
+     * @param damage how string the creature can damage the player.
+     * @param drop the Item the creature drops when it dies. 
+     */
+	public Creature(String name, boolean innocent, int damage, Item drop, int livepoints) {
+		this.name = name;
+		this.innocent = innocent;
+		this.damage = damage;
+		this.drop = drop;
+		this.livepoints = livepoints;
+		isDead = false;
+		invincible = false;
+	}
 	/**
      * Create a "Creature" with different values: name, innocent, damage, drop.
      * This constructor is used for "Animals". 
@@ -37,6 +57,8 @@ public class Creature {
 		this.innocent = innocent;
 		this.damage = damage;
 		this.drop = drop;
+		isDead = false;
+		invincible = false;
 	}
 	
 	
@@ -51,7 +73,8 @@ public class Creature {
 		this.name = name;
 		this.innocent = innocent;
 		this.drop = drop;
-		
+		isDead = false;
+		invincible = false;
 	}
 	
 	
@@ -64,6 +87,8 @@ public class Creature {
 	public Creature(String name, boolean innocent) {
 		this.name = name;
 		this.innocent = innocent;
+		isDead = false;
+		invincible = false;
 	}
 
 	/** 
@@ -114,6 +139,23 @@ public class Creature {
 		this.damage = damage;
 	}
 	
+	/**
+	 * Decreases the creatures livepoints by the amount of damage the player can transfer.
+	 * If the livescore is negativ, it's set to 0. A messeage is printed about the health status of the creature.
+	 * @param amount of damage that is transfered.
+	 */
+	public void takeDamage(int amount) {
+		livepoints = livepoints - amount;
+		if (livepoints<=0) {
+			livepoints = 0;
+			System.out.println(name + " has been defeated!");
+			isDead=true; 											//in this case the Creature is dead
+			return;		//leaving method to stop print a redundant message about the lifepoints.
+			}
+		System.out.println(name + " has " + livepoints + " livepoints left.");
+
+	}
+	
 	/** 
 	 * Define how much livepoints the Creature has.
 	 * @param livepoints How much livepoints the Creature has.
@@ -138,27 +180,31 @@ public class Creature {
 	 * @return alive Boolean if Creature is dead or not. 
  	 */
 	// Diese Methode soll �berpr�fen, ob die Creatur noch lebt und Anwort als Boolean zur�ckgeben
+//	public boolean isDead() {
+//		boolean alive = false;
+//		if (livepoints == 0) {
+//			alive = true;
+//			return alive;
+//		}
+//		return alive;
+//	}
+	
 	public boolean isDead() {
-		boolean alive = false;
-		if(livepoints == 0) {
-			alive = true;
-			return alive;
-		}
-		return alive;
+		return isDead;
 	}
 	
 	/** 
-	 * Drop the Item when Creature is dead.
-	 * @return drop The Item the Creature drops when it dies. 
+	 * @return drop Drop the Item that is stored in the creatures inventory.
 	 */
-	// Diese Methode soll, wenn die Creatur nicht mehr lebt ein Item zur�ckgeben. 
 	public Item dropItem() { 
-		if(isDead() == true) {
-			return drop;
-		}
-		return null;
+		System.out.println("The " + name + " dropped " + drop.getName());
+		return drop;
 	}
-	
+
+
+	public boolean isInvincible() {
+		return invincible;
+	}
 	
 //	public int attack() { // livepoints vom Spieler (int livepoints)
 //		

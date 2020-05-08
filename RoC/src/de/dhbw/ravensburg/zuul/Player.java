@@ -1,14 +1,10 @@
 package de.dhbw.ravensburg.zuul;
 
 /**
- * This class is part of the World of Zuul Application.
- * World of Zuul is a simple adventure game.
- * 
- * 
  * It holds variables and methods for the main protagonist of the game.
  * 
- * @author Frederik Dammeier
- * @version 1.0
+ * @author Frederik Dammeier - Philipp Schneider
+ * @version 08.05.2020
  *
  */
 public class Player {
@@ -17,6 +13,8 @@ public class Player {
 	private int health;
 	private Inventory inventory;
 	private int maxLife;
+	private int damage;
+	private long timeOfLastAttack;
 	
 	/**
 	 * Creates a new object of type Player
@@ -29,6 +27,7 @@ public class Player {
 		hunger = 100;
 		health = this.maxLife = maxLife;
 		inventory = new Inventory(inventorySize);
+		damage = 100;
 	}
 	
 	
@@ -44,13 +43,26 @@ public class Player {
 	}
 	
 	/**
+	 * 
+	 * @param amount that damage increases/decreases.
+	 */
+	public void setDamage(int amount) {
+		damage = damage + amount;
+	}
+	
+	/**
 	 * Gives damage to the player by decreasing his health count.
 	 * 
-	 * @param amount 
+	 * @param amount of damage that is transfered by a creature.
+	 * @return If the player has been killed by the damage.
 	 */
-	public void takeDamage(int amount) {
-		health -= amount;
-		if(health <= 0) health = 0; //in this case, the player is dead.
+	public boolean takeDamage(int amount) {
+		health = health - amount;
+		if(health <= 0) {
+			health = 0;
+			return true;              //in this case, the player is dead.
+		}
+		return false;
 	}
 	
 	/**
@@ -90,4 +102,26 @@ public class Player {
 	public Inventory getInventory() {
 		return inventory;
 	}
+
+	/**
+	 * @return Current damage that is transfered by the player.
+	 */
+	public int getDamage() {
+		return damage;
+	}
+
+	/**
+	 * @param timeOfAttack Last time at which the player started to attack.
+	 */
+	public void setTimeOfLastAttack(long timeOfAttack) {
+		timeOfLastAttack = timeOfAttack;
+	}
+	
+	/**
+	 * @return timeOfAttack Last time at which the player started to attack.
+	 */
+	public long getTimeOfLastAttack() {
+		return timeOfLastAttack;
+	}
+	
 }
