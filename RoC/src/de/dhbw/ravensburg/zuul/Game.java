@@ -23,15 +23,17 @@ import de.dhbw.ravensburg.zuul.creature.*;
 public class Game 
 {
     private Parser parser;
-    private Room currentRoom;
-        
+    private Room currentRoom; 
+    private Timer timer;
+    
     /**
      * Create the game and initialise its internal map.
      */
     public Game() 
     {
+    	timer = new Timer();
         createRooms();
-        parser = new Parser();
+        parser = new Parser(); 
     }
 
     /**
@@ -145,9 +147,13 @@ public class Game
      *  Main play routine.  Loops until end of play.
      */
     public void play() 
-    {            
+    {    
         printWelcome();
-
+        
+        //Add a new Timer to measure passed game Time.
+        Thread timeThread = new Thread(timer, "timer");
+        timeThread.start();
+        
         // Enter the main command loop.  Here we repeatedly read commands and
         // execute them until the game is over.
                 
@@ -155,8 +161,17 @@ public class Game
         while (! finished) {
             Command command = parser.getCommand();
             finished = processCommand(command);
+            printTimePassed();
         }
-        System.out.println("Thank you for playing.  Good bye.");
+        System.out.println("Thank you for playing.  Good bye!");
+        timer.stopTimer();
+    }
+    
+    /*
+     * Print the Seconds that have passed since starting the game to the console.
+     */
+    private void printTimePassed() {
+    	System.out.println(timer.getTimePassedSeconds() + " seconds have passed since starting the game.");
     }
 
     /**

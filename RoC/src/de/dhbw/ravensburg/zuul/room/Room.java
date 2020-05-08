@@ -128,14 +128,14 @@ public class Room
      */
     private String getExitsAsString()
     {
-        StringBuilder sb = new StringBuilder("Exits:\n");
+        StringBuilder sb = new StringBuilder("Exits:");
         Set<String> keys = exits.keySet();
         for(String exit : keys) {
+        	sb.append("\n");
             sb.append(" ");
             sb.append(exit);
             sb.append(": ");
             sb.append(exits.get(exit).getShortDescription());
-            sb.append("\n");
         }
         return sb.toString();
     }
