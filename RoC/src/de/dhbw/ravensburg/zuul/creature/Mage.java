@@ -12,7 +12,7 @@ package de.dhbw.ravensburg.zuul.creature;
  * @author  Moritz Link
  * @version 2020.05.02
  */
-public class Magier extends Human{
+public class Mage extends Human{
 
 	
 	/**
@@ -20,7 +20,7 @@ public class Magier extends Human{
 	 * @param name The name of the magier
 	 * @param innocent If the magier is friendly or not
 	 */	
-	public Magier(String name, boolean innocent) {
+	public Mage(String name, boolean innocent) {
 		super(name, innocent);
 		
 	}

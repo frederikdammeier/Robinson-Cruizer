@@ -1,5 +1,7 @@
 package de.dhbw.ravensburg.zuul.creature;
 
+import de.dhbw.ravensburg.zuul.item.*;
+
 public class Native extends Human{
 
 	/**
@@ -14,7 +16,7 @@ public class Native extends Human{
 	 * @author  Moritz Link
 	 * @version 2020.05.02
 	 */
-	private Item weapon; // muss den Schaden der Waffe wissen, um Schaden von Nativ festzulegen.
+	private Weapon weapon; // muss den Schaden der Waffe wissen, um Schaden von Nativ festzulegen.
 	
 	/**
 	 * Create a native with values: name, innocent, drop. It calls the constructor from the superclass "Human".

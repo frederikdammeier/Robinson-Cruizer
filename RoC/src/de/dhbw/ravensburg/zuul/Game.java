@@ -1,6 +1,7 @@
 package de.dhbw.ravensburg.zuul;
 
-import de.dhbw.ravensburg.zuul.room.Room;
+import de.dhbw.ravensburg.zuul.room.*;
+import de.dhbw.ravensburg.zuul.creature.*;
 
 /**
  *  This class is the main class of the "World of Zuul" application. 
@@ -22,15 +23,17 @@ import de.dhbw.ravensburg.zuul.room.Room;
 public class Game 
 {
     private Parser parser;
-    private Room currentRoom;
-        
+    private Room currentRoom; 
+    private Timer timer;
+    
     /**
      * Create the game and initialise its internal map.
      */
     public Game() 
     {
+    	timer = new Timer();
         createRooms();
-        parser = new Parser();
+        parser = new Parser(); 
     }
 
     /**
@@ -38,43 +41,119 @@ public class Game
      */
     private void createRooms()
     {
-		Room outside, theater, pub, lab, office, basement;
-
-		// create the rooms
-		outside = new Room("outside the main entrance of the university");
-		theater = new Room("in a lecture theater");
-		pub = new Room("in the campus pub");
-		lab = new Room("in a computing lab");
-		office = new Room("in the computing admin office");
-		basement = new Room("down in the spooky basement");
-
-		// initialise room exits
-		outside.setExit("east", theater);
-		outside.setExit("south", lab);
-		outside.setExit("west", pub);		
+		Room westBeach, eastBeach, northBeach, southBeach;
+		Room westForest, eastForest, northForest, southForest;
+		Room redWoodTree, deepForest;
+		Room ruinWestEntrance, ruinEastEntrance, ruinNorthEntrance, ruinSouthEntrance;
+		Room ruinStairCase0, ruinStairCase1;
+		Room ruinWatchTower, ruinLibrary, ruinPraying, ruinMage, ruinDungeon, ruinLaboratory;
 		
-		theater.setExit("west", outside);
+		Room finalRoom;
 		
-		pub.setExit("east", outside);
-		pub.setExit("down", basement);
+		//Initialize: Beaches
+		westBeach = new Beach("on the Beach", null, RoomType.BEACH_WEST);
+		eastBeach = new Beach("on the Beach", null, RoomType.BEACH_EAST);
+		northBeach = new Beach("on the Beach", null, RoomType.BEACH_NORTH);
+		southBeach = new Beach("on the Beach", null, RoomType.BEACH_SOUTH);
 		
-		lab.setExit("north",outside);
-		lab.setExit("east", office);
+		//Initialize: Forest
+		westForest = new Forest("in the Forest", null, RoomType.FOREST);
+		eastForest = new Forest("in the Forest", null, RoomType.FOREST);
+		northForest = new Forest("in the Forest", null, RoomType.FOREST);
+		southForest = new Forest("in the Forest", null, RoomType.FOREST);
 		
-		office.setExit("west", lab);
+		redWoodTree = new Forest("at the large tree", null, RoomType.REDWOOD);
+		deepForest = new Forest("in the dark forest", null, RoomType.DEEP_FOREST);
 		
-		basement.setExit("up", pub);
-
-		currentRoom = outside; // start game outside
+		//Initialize: Ruin
+		ruinWestEntrance = new Ruin("in the ruins: West Entrance", null);
+		ruinEastEntrance = new Ruin("in the ruins: East Entrance", null);
+		ruinNorthEntrance = new Ruin("in the ruins: North Entrance", null);
+		ruinSouthEntrance = new Ruin("in the ruins: South Entrance", null);
+		
+		ruinStairCase0 = new Ruin("in the ruins: Staircase", null);
+		ruinStairCase1 = new Ruin("in the ruins: Staircase", null);
+		
+		ruinWatchTower = new Ruin("on the top of the Watchtower", null, RoomType.RUIN_TOP);
+		ruinLibrary = new Ruin("in the ruins: Aincient Library", null);
+		ruinPraying = new Ruin("in the ruins: Holy Artefact", null);
+		ruinMage = new Ruin("in the ruins: Mage", new Mage("Gandalf der Graue", true));
+		ruinDungeon = new Ruin("in the ruins: Dungeon", null);
+		ruinLaboratory = new Ruin("in the ruins: Abandoned Laboratory", null);
+		
+		//Set connections: Axis West-East
+		westBeach.setExit("east", westForest);
+		westForest.setExit("west", westBeach);
+		westForest.setExit("east", ruinWestEntrance);
+		ruinWestEntrance.setExit("west", westForest);
+		ruinWestEntrance.setExit("east", ruinStairCase0);
+		ruinStairCase0.setExit("west", ruinWestEntrance);
+		ruinStairCase0.setExit("east",  ruinEastEntrance);
+		ruinEastEntrance.setExit("west",  ruinStairCase0);
+		ruinEastEntrance.setExit("east", eastForest);
+		eastForest.setExit("west", ruinEastEntrance);
+		eastForest.setExit("east", eastBeach);
+		eastBeach.setExit("west", eastForest);
+		
+		//Set connections: Axis North-South
+		northBeach.setExit("south", northForest);
+		northForest.setExit("north", northBeach);
+		northForest.setExit("south", ruinNorthEntrance);
+		ruinNorthEntrance.setExit("north", northForest);
+		ruinNorthEntrance.setExit("south", ruinStairCase0);
+		ruinStairCase0.setExit("north", ruinNorthEntrance);
+		ruinStairCase0.setExit("south",  ruinSouthEntrance);
+		ruinSouthEntrance.setExit("north",  ruinStairCase0);
+		ruinSouthEntrance.setExit("south", southForest);
+		southForest.setExit("north", ruinSouthEntrance);
+		southForest.setExit("south", southBeach);
+		southBeach.setExit("north", southForest);
+		
+		//Set connections Ruins level 0
+		ruinLibrary.setExit("south",  ruinWestEntrance);
+		ruinWestEntrance.setExit("north", ruinLibrary);
+		ruinLibrary.setExit("east",  ruinNorthEntrance);
+		ruinNorthEntrance.setExit("west",  ruinLibrary);
+		
+		ruinEastEntrance.setExit("down", ruinDungeon); //dungeon has currently no way to get out.
+		
+		ruinStairCase0.setExit("down", ruinLaboratory);
+		ruinStairCase0.setExit("up", ruinStairCase1);
+		
+		//Set connections Ruins level -1
+		ruinLaboratory.setExit("up",  ruinStairCase0);
+		
+		//Set connections Ruins level 1
+		ruinStairCase1.setExit("down", ruinStairCase0);
+		ruinStairCase1.setExit("up", ruinWatchTower);
+		ruinStairCase1.setExit("west", ruinMage);
+		ruinMage.setExit("east", ruinStairCase1);
+		ruinStairCase1.setExit("south", ruinPraying);
+		ruinPraying.setExit("north", ruinStairCase1);
+		
+		//Set connections Ruins level 2
+		ruinWatchTower.setExit("down",  ruinStairCase1);
+		
+		//Set connections Outside
+		northForest.setExit("east", redWoodTree);
+		redWoodTree.setExit("west", northForest);
+		northForest.setExit("west", deepForest);
+		deepForest.setExit("east", northForest);
+		
+		currentRoom = westBeach; // start game outside
     }
 
     /**
      *  Main play routine.  Loops until end of play.
      */
     public void play() 
-    {            
+    {    
         printWelcome();
-
+        
+        //Add a new Timer to measure passed game Time.
+        Thread timeThread = new Thread(timer, "timer");
+        timeThread.start();
+        
         // Enter the main command loop.  Here we repeatedly read commands and
         // execute them until the game is over.
                 
@@ -82,8 +161,17 @@ public class Game
         while (! finished) {
             Command command = parser.getCommand();
             finished = processCommand(command);
+            printTimePassed();
         }
-        System.out.println("Thank you for playing.  Good bye.");
+        System.out.println("Thank you for playing.  Good bye!");
+        timer.stopTimer();
+    }
+    
+    /*
+     * Print the Seconds that have passed since starting the game to the console.
+     */
+    private void printTimePassed() {
+    	System.out.println(timer.getTimePassedSeconds() + " seconds have passed since starting the game.");
     }
 
     /**
@@ -96,7 +184,7 @@ public class Game
         System.out.println("World of Zuul is a new, incredibly boring adventure game.");
         System.out.println("Type 'help' if you need help.");
         System.out.println();
-        System.out.println(currentRoom.getLongDescription());
+        lookAround();
     }
 
     /**
@@ -119,6 +207,9 @@ public class Game
         }
         else if (commandWord.equals("go")) {
             goRoom(command);
+        }
+        else if(commandWord.equals("look")) {
+        	lookAround();
         }
         else if (commandWord.equals("quit")) {
             wantToQuit = quit(command);
@@ -184,4 +275,11 @@ public class Game
             return true;  // signal that we want to quit
         }
     }
+    
+    /**
+     * Prints all available exits to the console.
+     */
+    private void lookAround() {
+		System.out.println(currentRoom.getLongDescription());
+	}
 }

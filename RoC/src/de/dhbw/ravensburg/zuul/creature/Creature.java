@@ -1,5 +1,7 @@
 package de.dhbw.ravensburg.zuul.creature;
 
+
+import de.dhbw.ravensburg.zuul.item.Item;
 /**
  * Class Creature - a creature in an adventure game.
  *
@@ -34,7 +36,7 @@ public class Creature {
 		this.name = name;
 		this.innocent = innocent;
 		this.damage = damage;
-		drop = new Item();
+		this.drop = drop;
 	}
 	
 	
@@ -48,7 +50,8 @@ public class Creature {
 	public Creature(String name, boolean innocent, Item drop) {
 		this.name = name;
 		this.innocent = innocent;
-		drop = new Item();
+		this.drop = drop;
+		
 	}
 	
 	
@@ -149,11 +152,11 @@ public class Creature {
 	 * @return drop The Item the Creature drops when it dies. 
 	 */
 	// Diese Methode soll, wenn die Creatur nicht mehr lebt ein Item zur�ckgeben. 
-	public void dropItem() { 
-		drop = new Item();
+	public Item dropItem() { 
 		if(isDead() == true) {
-			// drop Item
+			return drop;
 		}
+		return null;
 	}
 	
 	

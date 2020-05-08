@@ -1,8 +1,9 @@
 package de.dhbw.ravensburg.zuul.room;
 
 import de.dhbw.ravensburg.zuul.room.Room;
+
 import de.dhbw.ravensburg.zuul.item.*;
-import de.dhbw.ravensburg.zuul.Creature;
+import de.dhbw.ravensburg.zuul.creature.*;
 
 /**
  * Part of the beach of the island.
@@ -12,19 +13,6 @@ import de.dhbw.ravensburg.zuul.Creature;
  */
 public class Beach extends Room {
 
-	/**
-	 * Creates new room of type Beach. RoomType: BEACH.
-	 * 
-	 * @param description The rooms description.
-	 * @param creature Creature to spawn in this specific instance.
-	 * @param specialItems Items to spawn in this specific instance.
-	 */
-	public Beach(String description, Creature creature, Item... specialItems) {
-		super(description, creature, RoomType.BEACH, specialItems);
-		
-		populateRoomInventory();
-	}
-	
 	/**
 	 * Creates new room of type Beach. RoomType: custom.
 	 * 
