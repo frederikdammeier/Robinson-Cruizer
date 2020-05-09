@@ -32,5 +32,5 @@ public class Mage extends Human{
 	}
 }
 
-}
+
 

@@ -23,7 +23,7 @@ public class Animal extends Creature {
 	 */	
 	public Animal(int lifepoints) {
 		super(lifepoints);
-		setDropItem(new Food("Meat", 3));
+		setDropItem(new Meat());
 		
 	}
 	

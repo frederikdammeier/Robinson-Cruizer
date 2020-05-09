@@ -82,7 +82,7 @@ public class Game
 		ruinWatchTower = new Ruin("on the top of the Watchtower", null, RoomType.RUIN_TOP);
 		ruinLibrary = new Ruin("in the ruins: Aincient Library", null);
 		ruinPraying = new Ruin("in the ruins: Holy Artefact", null);
-		ruinMage = new Ruin("in the ruins: Mage", new Mage("Gandalf der Graue", true));
+		ruinMage = new Ruin("in the ruins: Mage", new Mage(60));
 		ruinDungeon = new Ruin("in the ruins: Dungeon", null);
 		ruinLaboratory = new Ruin("in the ruins: Abandoned Laboratory", null);
 		

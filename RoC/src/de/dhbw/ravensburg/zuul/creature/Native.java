@@ -27,7 +27,7 @@ public class Native extends Human{
 		super(lifepoints);
 		setPeaceful(false);
 		setDamage(30);
-		setDropItem(new Weapon("Sword", 30));
+		setDropItem(new Sword());
 		setName("Native");
 		
 	}

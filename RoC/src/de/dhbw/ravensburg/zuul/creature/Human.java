@@ -1,6 +1,6 @@
 package de.dhbw.ravensburg.zuul.creature;
 
-import de.dhbw.ravensburg.zuul.item.Item;
+
 /**
  * Class Human - an human in an adventure game.
  *

@@ -32,27 +32,6 @@ public class Creature {
 	private boolean invincible;
 	private boolean isDead;
 	
-	
-
-	
-	/**
-     * Create a "Creature" with different values: name, innocent, damage, drop.
-     * This constructor is used for "Animals". 
-     * @param name The name of the creature.
-     * @param innocent If the creature is innocent. 
-     * @param livepoints of the creature.
-     * @param damage how string the creature can damage the player.
-     * @param drop the Item the creature drops when it dies. 
-     */
-	public Creature(String name, boolean innocent, int damage, Item drop, int livepoints) {
-		this.name = name;
-		this.innocent = innocent;
-		this.damage = damage;
-		this.drop = drop;
-		this.livepoints = livepoints;
-		isDead = false;
-		invincible = false;
-	}
 
 
 	/**
@@ -74,14 +53,14 @@ public class Creature {
 	 * @param amount of damage that is transfered.
 	 */
 	public void takeDamage(int amount) {
-		livepoints = livepoints - amount;
-		if (livepoints<=0) {
-			livepoints = 0;
+		lifepoints = lifepoints - amount;
+		if (lifepoints<=0) {
+			lifepoints = 0;
 			System.out.println(name + " has been defeated!");
 			isDead=true; 											//in this case the Creature is dead
 			return;		//leaving method to stop print a redundant message about the lifepoints.
 			}
-		System.out.println(name + " has " + livepoints + " livepoints left.");
+		System.out.println(name + " has " + lifepoints + " livepoints left.");
 
 	}
 	
@@ -201,10 +180,10 @@ public class Creature {
 	 */
 
 	// Platzhalter
-	public void dropItem() { 
+	public Item dropItem() { 
 		System.out.println("The " + name + " dropped " + drop.getName());
 		return drop; 
-		}
+		
 	}
 	
 	/**
