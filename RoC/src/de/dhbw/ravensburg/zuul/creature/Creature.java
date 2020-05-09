@@ -19,21 +19,21 @@ import de.dhbw.ravensburg.zuul.item.*;
 public class Creature {
 	
 
-	private boolean innocent;
+	private boolean peaceful;
 	private int damage;
-	private int livepoints;
+	private int lifepoints;
 	private Item drop;
 	private String name; 
 	
 	
 	/**
-     * Create a "Creature" with the value livepoints.
+     * Create a "Creature" with the value lifepoints.
      * This constructor is used for "Human" and "Animal".   
-     * @param livepoints  The number of livepoints the Creature has.
+     * @param lifepoints  The number of lifepoints the Creature has.
      */
-	public Creature(int livepoints) { // livepoints? 
+	public Creature(int lifepoints) {  
 		
-		this.livepoints = livepoints;	
+		this.lifepoints = lifepoints;	
 	}
 	
 
@@ -42,16 +42,16 @@ public class Creature {
 	 * Return if the Creature is innocent.
 	 * @return innocent If the Creature is innocent.
 	 */
-	public boolean getInnocent() {
-		return innocent;
+	public boolean getPeaceful() {
+		return peaceful;
 	}
 
 	/** 
 	 * Define if the Creature is innocent
 	 * @param innocent If the Creature is innocent.
 	 */
-	public void setInnocent(boolean innocent) {
-		this.innocent = innocent;
+	public void setPeaceful(boolean peaceful) {
+		this.peaceful = peaceful;
 	}
 	
 	
@@ -91,19 +91,19 @@ public class Creature {
 	}
 	
 	/** 
-	 * Define how much livepoints the Creature has.
-	 * @param livepoints How much livepoints the Creature has.
+	 * Define how much lifepoints the Creature has.
+	 * @param lifepoints How much lifepoints the Creature has.
 	 */
-	public void setLivepoints(int livepoints) {
-		this.livepoints = livepoints; 	
+	public void setLifepoints(int lifepoints) {
+		this.lifepoints = lifepoints; 	
 	}
 	
 	/** 
-	 * Return the number of livepoints from the Creature.
-	 * @return livepoints the number of livepoints from the Creature.
+	 * Return the number of lifepoints from the Creature.
+	 * @return lifepoints the number of lifepoints from the Creature.
 	 */
-	public int getLivepoints() {
-	return livepoints;
+	public int getLifepoints() {
+	return lifepoints;
 	}
 
 	
@@ -128,13 +128,12 @@ public class Creature {
 
 	/** 
 	 *Return if the Creature is alive or not. 
-	 *When their are no livepoints anymore. The Creature is dead.
+	 *When their are no lifepoints anymore. The Creature is dead.
 	 * @return alive Boolean if Creature is dead or not. 
  	 */
-	// Diese Methode soll �berpr�fen, ob die Creatur noch lebt und Anwort als Boolean zur�ckgeben
 	public boolean isDead() {
 		boolean dead = false;
-		if(livepoints == 0) {
+		if(lifepoints == 0) {
 			dead = true;
 			return dead;
 		}
@@ -160,19 +159,19 @@ public class Creature {
 	
 	/**
 	 * The Creature can attack the player with this method and cause different amount of damage. 
-	 * @return livepoints  The number of livepoints the player has left after the attack. 
+	 * @return lifepoints  The number of lifepoints the player has left after the attack. 
 	 */
 	public int attack() { 
 		
-		if(getInnocent() == false) {
+		if(getPeaceful() == false) {
 			System.out.println("Hier greifen die Creaturen an " + getName());
-			System.out.println(livepoints);
+			System.out.println(lifepoints);
 		}
 		else{
 			System.out.println("Diese Creature kann nicht angreifen");
 		}
 		
-		return livepoints;
+		return lifepoints;
 	}
 	
 

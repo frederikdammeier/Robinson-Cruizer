@@ -6,10 +6,10 @@ package de.dhbw.ravensburg.zuul.creature;
  * This class is part of the "World of Zuul" application. 
  * "World of Zuul" is a very simple, text based adventure game.  
  *
- * A "Human" can be a Magier or an Native. They have different abilities
+ * A "Human" can be a mage or an native. They have different abilities
  * and can help or attack you. 
  * "Human" is a subclass from "Creature" and uses one constructor of "Creature". 
- * "Human" is the superclass from "Magier" and "Native".
+ * "Human" is the superclass from "Mage" and "Native".
  * 
  * @author  Moritz Link
  * @version 04.05.2020
@@ -18,13 +18,13 @@ public class Human extends Creature{
 	
 	
 	/**
-     * Create a human  with with number of livepoints. 
+     * Create a human  with with number of lifepoints. 
      * It calls the constructor from the superclass "Creature".
-     * This constructor is used for "Native" and "Magier". 
-     * @param livepoints  The number of livepoints the Human has. 
+     * This constructor is used for "Native" and "Mage". 
+     * @param lifepoints  The number of lifepoints the Human has. 
      */	
-	public Human(int livepoints) {
-		super( livepoints);	
+	public Human(int lifepoints) {
+		super( lifepoints);	
 		
 	}
 
@@ -34,11 +34,11 @@ public class Human extends Creature{
      * @return String which depends on the value of innocent. 
      */
 	public void talk() {
-		if(getInnocent() == true) {
+		if(getPeaceful() == true) {
 			System.out.println("Hello nice to meet you my friend. My name is " + getName());
 			System.out.println("I can help you if you want.");
 		}
-		else if(getInnocent() == false) {
+		else if(getPeaceful() == false) {
 			System.out.println(getName() + " I want to kill you." );
 		
 		}

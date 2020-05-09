@@ -16,12 +16,12 @@ import de.dhbw.ravensburg.zuul.item.*;
 public class Animal extends Creature {
 	
 	/**
-	 * Create an animal the number of livepoints the animal has.
+	 * Create an animal the number of lifepoints the animal has.
 	 * It calls the constructor from the superclass "Creature".
-	 * @param livepoints  The number of livepoints the animal has. 
+	 * @param lifepoints  The number of lifepoints the animal has. 
 	 */	
-	public Animal(int livepoints) {
-		super(livepoints);
+	public Animal(int lifepoints) {
+		super(lifepoints);
 		setDropItem(new Food("Meat", 3));
 		
 	}

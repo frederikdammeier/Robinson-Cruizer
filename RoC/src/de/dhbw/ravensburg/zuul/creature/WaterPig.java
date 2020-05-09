@@ -18,14 +18,14 @@ public class WaterPig extends Animal{
 
 	
 	/**
-	 * Create a water-pig the number of livepoints the water-pig has.
+	 * Create a water-pig the number of lifepoints the water-pig has.
 	 * It calls the constructor from the superclass "Animal".
-	 * @param livepoints  The number of livepoints the water-pig has. 
+	 * @param lifepoints  The number of lifepoints the water-pig has. 
 	 */
-	public WaterPig(int livepoints) {
-		super(livepoints);
+	public WaterPig(int lifepoints) {
+		super(lifepoints);
 		setName("Waterpig");
-		setInnocent(true);
+		setPeaceful(true);
 		setDamage(0);
 		
 		

@@ -1,33 +1,33 @@
 package de.dhbw.ravensburg.zuul.creature;
 /**
- * Class Magier - a magier in an adventure game.
+ * Class Mage - a mage in an adventure game.
  *
  * This class is part of the "World of Zuul" application. 
  * "World of Zuul" is a very simple, text based adventure game.  
  *
- * A magier is a human with the ability to teleport the player to a random room. 
- * "Magier" is a subclass from "Human".
+ * A mage is a human with the ability to teleport the player to a random room. 
+ * "Mage" is a subclass from "Human".
  * 
  * @author  Moritz Link
  * @version 04.05.2020
  */
-public class Magier extends Human{
+public class Mage extends Human{
 	
 	
 	/**
-	 * Create a magier the number of livepoints the magier has.
+	 * Create a mage the number of lifepoints the mage has.
 	 * It calls the constructor from the superclass "Human".
-	 * @param livepoints  The number of livepoints the magier has. 
+	 * @param lifepoints  The number of lifepoints the mage has. 
 	 */	
-	public Magier(int livepoints) {
-		super(livepoints);
+	public Mage(int lifepoints) {
+		super(lifepoints);
 		setName("Gandalf der Graue"); 
-		setInnocent(true);
+		setPeaceful(true);
 		
 	}
 
 	/**
-	 * Method should teleport the player to a random room when the player talks with the magier.
+	 * Method should teleport the player to a random room when the player talks with the mage.
 	 */
 	// soll bei einem Aufruf den Spieler teleprotieren k�nnen
 	public void teleport() {

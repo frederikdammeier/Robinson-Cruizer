@@ -18,14 +18,14 @@ public class Ape extends Animal {
 	
 	
 	/**
-	 * Create an ape the number of livepoints the ape has.
+	 * Create an ape the number of lifepoints the ape has.
 	 * It calls the constructor from the superclass "Animal".
-	 * @param livepoints  The number of livepoints the ape has. 
+	 * @param lifepoints  The number of lifepoints the ape has. 
 	 */	
-	public Ape(int livepoints) {
-		super(livepoints);
+	public Ape(int lifepoints) {
+		super(lifepoints);
 		setName("Ape");
-		setInnocent(false);
+		setPeaceful(false);
 		setDamage(10);
 		
 		

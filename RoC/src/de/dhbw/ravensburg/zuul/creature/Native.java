@@ -8,7 +8,7 @@ import de.dhbw.ravensburg.zuul.item.*;
  * This class is part of the "World of Zuul" application. 
  * "World of Zuul" is a very simple, text based adventure game.  
  *
- * A native  is a human with the ability to attack the player and reduce his livepoints. 
+ * A native  is a human with the ability to attack the player and reduce his lifepoints. 
  * "Native" is a subclass from "Human".
  * 
  * @author  Moritz Link
@@ -18,13 +18,13 @@ public class Native extends Human{
 
 	
 	/**
-	 * Create a native the number of livepoints the Native has.
+	 * Create a native the number of lifepoints the Native has.
 	 * It calls the constructor from the superclass "Human".
-	 * @param livepoints  The number of livepoints the Native has. 
+	 * @param lifepoints  The number of lifepoints the Native has. 
 	 */	
-	public Native(int livepoints) {
-		super(livepoints);
-		setInnocent(false);
+	public Native(int lifepoints) {
+		super(lifepoints);
+		setPeaceful(false);
 		setDamage(30);
 		setDropItem(new Weapon("Sword", 30));
 		setName("Native");
