@@ -1,0 +1,5 @@
+package de.dhbw.ravensburg.zuul.room;
+
+public enum RoomType {
+	EMPTY_ROOM, FOREST, DEEP_FOREST, RUIN, RUIN_TOP, RUIN_BASEMENT, BEACH_WEST, BEACH_EAST, BEACH_NORTH, BEACH_SOUTH, FINISH, REDWOOD;
+}

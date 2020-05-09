@@ -1,5 +1,6 @@
 package de.dhbw.ravensburg.zuul.creature;
 import de.dhbw.ravensburg.zuul.item.*;
+
 /**
  * Class Animal - an animal in an adventure game.
  *
@@ -27,13 +28,7 @@ public class Animal extends Creature {
 	}
 	
 	
-//	@Override
-//	public void setDropItem(Item drop) {
-//		String name = "Meat";
-//		float weight = 3;
-//		drop = new Food(name, weight);
-//	}
-	
+
 	
 	 
 }

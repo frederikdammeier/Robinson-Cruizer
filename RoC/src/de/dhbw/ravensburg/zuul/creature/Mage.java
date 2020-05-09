@@ -1,10 +1,7 @@
 package de.dhbw.ravensburg.zuul.creature;
+
 /**
  * Class Mage - a mage in an adventure game.
- *
- * This class is part of the "World of Zuul" application. 
- * "World of Zuul" is a very simple, text based adventure game.  
- *
  * A mage is a human with the ability to teleport the player to a random room. 
  * "Mage" is a subclass from "Human".
  * 
@@ -23,15 +20,17 @@ public class Mage extends Human{
 		super(lifepoints);
 		setName("Gandalf der Graue"); 
 		setPeaceful(true);
+
 		
 	}
 
 	/**
 	 * Method should teleport the player to a random room when the player talks with the mage.
 	 */
-	// soll bei einem Aufruf den Spieler teleprotieren k�nnen
 	public void teleport() {
 		System.out.println("Soll hier Spieler in anderen Raum bringen");
 	}
+}
+
 }
 

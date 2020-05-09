@@ -1,9 +1,11 @@
 package de.dhbw.ravensburg.zuul;
+
+import de.dhbw.ravensburg.zuul.room.*;
+import de.dhbw.ravensburg.zuul.creature.*;
+import de.dhbw.ravensburg.zuul.item.*;
+
 /**
- *  This class is the main class of the "World of Zuul" application. 
- *  "World of Zuul" is a very simple, text based adventure game.  Users 
- *  can walk around some scenery. That's all. It should really be extended 
- *  to make it more interesting!
+ *  This class is the main class of the "RobinsonCruizer" application. 
  * 
  *  To play this game, create an instance of this class and call the "play"
  *  method.
@@ -12,22 +14,30 @@ package de.dhbw.ravensburg.zuul;
  *  rooms, creates the parser and starts the game.  It also evaluates and
  *  executes the commands that the parser returns.
  * 
- * @author  Michael Kölling and David J. Barnes
- * @version 2016.02.29
+ * @author  Michael Kölling and David J. Barnes - 
+ * 			further developed by Frederick Dammeier - Philipp Schneider
+ * @version 08.05.2020
  */
 
 public class Game 
 {
     private Parser parser;
-    private Room currentRoom;
-        
-    /**
+    private Room currentRoom; 
+    private Timer timer;
+    private Player player;
+    private boolean finished;
+    
+    
+
+	/**
      * Create the game and initialise its internal map.
      */
     public Game() 
     {
+    	timer = new Timer();
         createRooms();
         parser = new Parser();
+        player = new Player("Players Name", 20f, 100); 
     }
 
     /**
@@ -35,52 +45,139 @@ public class Game
      */
     private void createRooms()
     {
-		Room outside, theater, pub, lab, office, basement;
-
-		// create the rooms
-		outside = new Room("outside the main entrance of the university");
-		theater = new Room("in a lecture theater");
-		pub = new Room("in the campus pub");
-		lab = new Room("in a computing lab");
-		office = new Room("in the computing admin office");
-		basement = new Room("down in the spooky basement");
-
-		// initialise room exits
-		outside.setExit("east", theater);
-		outside.setExit("south", lab);
-		outside.setExit("west", pub);		
+		Room westBeach, eastBeach, northBeach, southBeach;
+		Room westForest, eastForest, northForest, southForest;
+		Room redWoodTree, deepForest;
+		Room ruinWestEntrance, ruinEastEntrance, ruinNorthEntrance, ruinSouthEntrance;
+		Room ruinStairCase0, ruinStairCase1;
+		Room ruinWatchTower, ruinLibrary, ruinPraying, ruinMage, ruinDungeon, ruinLaboratory;
 		
-		theater.setExit("west", outside);
+		Room finalRoom;
 		
-		pub.setExit("east", outside);
-		pub.setExit("down", basement);
 		
-		lab.setExit("north",outside);
-		lab.setExit("east", office);
+		//Initialize: Beaches
+		westBeach = new Beach("on the Beach", new Creature("Pig", true, 0, new Meat(), 10), RoomType.BEACH_WEST);
+		eastBeach = new Beach("on the Beach", null, RoomType.BEACH_EAST);
+		northBeach = new Beach("on the Beach", null, RoomType.BEACH_NORTH);
+		southBeach = new Beach("on the Beach", null, RoomType.BEACH_SOUTH);
 		
-		office.setExit("west", lab);
+		//Initialize: Forest
+		westForest = new Forest("in the Forest", null, RoomType.FOREST);
+		eastForest = new Forest("in the Forest", null, RoomType.FOREST);
+		northForest = new Forest("in the Forest", null, RoomType.FOREST);
+		southForest = new Forest("in the Forest", null, RoomType.FOREST);
 		
-		basement.setExit("up", pub);
-
-		currentRoom = outside; // start game outside
+		redWoodTree = new Forest("at the large tree", null, RoomType.REDWOOD);
+		deepForest = new Forest("in the dark forest", null, RoomType.DEEP_FOREST);
+		
+		//Initialize: Ruin
+		ruinWestEntrance = new Ruin("in the ruins: West Entrance", null);
+		ruinEastEntrance = new Ruin("in the ruins: East Entrance", null);
+		ruinNorthEntrance = new Ruin("in the ruins: North Entrance", null);
+		ruinSouthEntrance = new Ruin("in the ruins: South Entrance", null);
+		
+		ruinStairCase0 = new Ruin("in the ruins: Staircase", null);
+		ruinStairCase1 = new Ruin("in the ruins: Staircase", null);
+		
+		ruinWatchTower = new Ruin("on the top of the Watchtower", null, RoomType.RUIN_TOP);
+		ruinLibrary = new Ruin("in the ruins: Aincient Library", null);
+		ruinPraying = new Ruin("in the ruins: Holy Artefact", null);
+		ruinMage = new Ruin("in the ruins: Mage", new Mage("Gandalf der Graue", true));
+		ruinDungeon = new Ruin("in the ruins: Dungeon", null);
+		ruinLaboratory = new Ruin("in the ruins: Abandoned Laboratory", null);
+		
+		//Set connections: Axis West-East
+		westBeach.setExit("east", westForest);
+		westForest.setExit("west", westBeach);
+		westForest.setExit("east", ruinWestEntrance);
+		ruinWestEntrance.setExit("west", westForest);
+		ruinWestEntrance.setExit("east", ruinStairCase0);
+		ruinStairCase0.setExit("west", ruinWestEntrance);
+		ruinStairCase0.setExit("east",  ruinEastEntrance);
+		ruinEastEntrance.setExit("west",  ruinStairCase0);
+		ruinEastEntrance.setExit("east", eastForest);
+		eastForest.setExit("west", ruinEastEntrance);
+		eastForest.setExit("east", eastBeach);
+		eastBeach.setExit("west", eastForest);
+		
+		//Set connections: Axis North-South
+		northBeach.setExit("south", northForest);
+		northForest.setExit("north", northBeach);
+		northForest.setExit("south", ruinNorthEntrance);
+		ruinNorthEntrance.setExit("north", northForest);
+		ruinNorthEntrance.setExit("south", ruinStairCase0);
+		ruinStairCase0.setExit("north", ruinNorthEntrance);
+		ruinStairCase0.setExit("south",  ruinSouthEntrance);
+		ruinSouthEntrance.setExit("north",  ruinStairCase0);
+		ruinSouthEntrance.setExit("south", southForest);
+		southForest.setExit("north", ruinSouthEntrance);
+		southForest.setExit("south", southBeach);
+		southBeach.setExit("north", southForest);
+		
+		//Set connections Ruins level 0
+		ruinLibrary.setExit("south",  ruinWestEntrance);
+		ruinWestEntrance.setExit("north", ruinLibrary);
+		ruinLibrary.setExit("east",  ruinNorthEntrance);
+		ruinNorthEntrance.setExit("west",  ruinLibrary);
+		
+		ruinEastEntrance.setExit("down", ruinDungeon); //dungeon has currently no way to get out.
+		
+		ruinStairCase0.setExit("down", ruinLaboratory);
+		ruinStairCase0.setExit("up", ruinStairCase1);
+		
+		//Set connections Ruins level -1
+		ruinLaboratory.setExit("up",  ruinStairCase0);
+		
+		//Set connections Ruins level 1
+		ruinStairCase1.setExit("down", ruinStairCase0);
+		ruinStairCase1.setExit("up", ruinWatchTower);
+		ruinStairCase1.setExit("west", ruinMage);
+		ruinMage.setExit("east", ruinStairCase1);
+		ruinStairCase1.setExit("south", ruinPraying);
+		ruinPraying.setExit("north", ruinStairCase1);
+		
+		//Set connections Ruins level 2
+		ruinWatchTower.setExit("down",  ruinStairCase1);
+		
+		//Set connections Outside
+		northForest.setExit("east", redWoodTree);
+		redWoodTree.setExit("west", northForest);
+		northForest.setExit("west", deepForest);
+		deepForest.setExit("east", northForest);
+		
+		currentRoom = westBeach; // start game outside
     }
 
     /**
      *  Main play routine.  Loops until end of play.
      */
     public void play() 
-    {            
+    {    
+    	
         printWelcome();
-
+        
+        //Add a new Timer to measure passed game Time.
+        Thread timeThread = new Thread(timer, "timer");
+        timeThread.start();
+        
         // Enter the main command loop.  Here we repeatedly read commands and
         // execute them until the game is over.
                 
-        boolean finished = false;
+        finished = false;
         while (! finished) {
             Command command = parser.getCommand();
             finished = processCommand(command);
+//            printTimePassed();
         }
-        System.out.println("Thank you for playing.  Good bye.");
+        System.out.println("Thank you for playing.  Good bye!");
+        timer.stopTimer();
+    }
+    
+    /*
+     * Print the Seconds that have passed since starting the game to the console.
+     */
+    private void printTimePassed() {
+    	System.out.println(timer.getTimePassedSeconds() + " seconds have passed since starting the game.");
     }
 
     /**
@@ -89,11 +186,10 @@ public class Game
     private void printWelcome()
     {
         System.out.println();
-        System.out.println("Welcome to the World of Zuul!");
-        System.out.println("World of Zuul is a new, incredibly boring adventure game.");
+        System.out.println("Welcome to the Robinson Cruizer Island Adventure!");
         System.out.println("Type 'help' if you need help.");
         System.out.println();
-        System.out.println(currentRoom.getLongDescription());
+        lookAround();
     }
 
     /**
@@ -117,16 +213,62 @@ public class Game
         else if (commandWord.equals("go")) {
             goRoom(command);
         }
+        else if(commandWord.equals("look")) {
+        	lookAround();
+        }
         else if (commandWord.equals("quit")) {
             wantToQuit = quit(command);
+        }
+        else if (commandWord.equals("attack")) {
+            playerAttack();
         }
         // else command not recognised.
         return wantToQuit;
     }
 
-    // implementations of user commands:
-
+    
     /**
+     * Processes an attack request by the player.
+     * Valid request cause damage to be transfered to a creature, therefore reducing its health.
+     * Dead creatures are removed from the rooms inventory and might drop an item.
+     */
+	private void playerAttack() {
+
+		// check if there is no creature or only an invincible one.
+		if (currentRoom.getCreature() == null || currentRoom.getCreature().isInvincible()) {
+			System.out.println("There are no creatures to attack.");
+		}
+
+		else {
+			// set the time of this attack.
+			player.setTimeOfLastAttack(timer.getTimePassedSeconds());
+
+			// get the creature of this room.
+			Creature creatureInRoom = currentRoom.getCreature();
+
+			// decrease the creatures health by the amount of damage the player can
+			// tranfered.
+			creatureInRoom.takeDamage(player.getDamage());
+
+			if (creatureInRoom.isDead()) {
+				// Try to add the drop item of the creature into the players inventory.
+				try {
+					player.getInventory().addItem(creatureInRoom.dropItem());
+				} catch (Exception e) {
+					System.out.println("The " + creatureInRoom.getName() + " dropped nothing.");
+				}
+				
+				//"deletes" the creature in the current room.
+				currentRoom.setCreature(null);
+
+				// else put the updated creature in the room.
+			} else {
+				currentRoom.setCreature(creatureInRoom);
+			}
+		}
+	}
+
+	/**
      * Print out some help information.
      * Here we print some stupid, cryptic message and a list of the 
      * command words.
@@ -134,7 +276,7 @@ public class Game
     private void printHelp() 
     {
         System.out.println("You are lost. You are alone. You wander");
-        System.out.println("around at the university.");
+        System.out.println("around the island.");
         System.out.println();
         System.out.println("Your command words are:");
         parser.showCommands();
@@ -158,7 +300,7 @@ public class Game
         Room nextRoom = currentRoom.getExit(direction);
 
         if (nextRoom == null) {
-            System.out.println("There is no door!");
+            System.out.println("There is no way to go!");
         }
         else {
             currentRoom = nextRoom;
@@ -181,4 +323,15 @@ public class Game
             return true;  // signal that we want to quit
         }
     }
+    
+    /**
+     * Prints all available exits to the console.
+     */
+    private void lookAround() {
+		System.out.println(currentRoom.getLongDescription());
+	}
+    
+    public void setFinished(boolean finished) {
+		this.finished = finished;
+	}
 }

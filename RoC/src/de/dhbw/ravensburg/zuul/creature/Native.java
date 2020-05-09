@@ -17,6 +17,7 @@ import de.dhbw.ravensburg.zuul.item.*;
 public class Native extends Human{
 
 	
+	
 	/**
 	 * Create a native the number of lifepoints the Native has.
 	 * It calls the constructor from the superclass "Human".

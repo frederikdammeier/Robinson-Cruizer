@@ -1,26 +1,20 @@
 package de.dhbw.ravensburg.zuul;
-import java.util.ArrayList;
-import de.dhbw.ravensburg.zuul.item.Item;
-
 
 /**
- * This class is part of the World of Zuul Application.
- * World of Zuul is a simple adventure game.
- * 
- * 
  * It holds variables and methods for the main protagonist of the game.
  * 
- * @author Frederik Dammeier
- * @version 1.0
+ * @author Frederik Dammeier - Philipp Schneider
+ * @version 08.05.2020
  *
  */
 public class Player {
 	private String name;
 	private int hunger;
 	private int health;
-	private ArrayList<Item> inventory;
-	private float inventorySize;
+	private Inventory inventory;
 	private int maxLife;
+	private int damage;
+	private long timeOfLastAttack;
 	
 	/**
 	 * Creates a new object of type Player
@@ -32,7 +26,8 @@ public class Player {
 		this.name = name;
 		hunger = 100;
 		health = this.maxLife = maxLife;
-		inventory = new ArrayList<>();
+		inventory = new Inventory(inventorySize);
+		damage = 100;
 	}
 	
 	
@@ -48,13 +43,26 @@ public class Player {
 	}
 	
 	/**
+	 * 
+	 * @param amount that damage increases/decreases.
+	 */
+	public void setDamage(int amount) {
+		damage = damage + amount;
+	}
+	
+	/**
 	 * Gives damage to the player by decreasing his health count.
 	 * 
-	 * @param amount 
+	 * @param amount of damage that is transfered by a creature.
+	 * @return If the player has been killed by the damage.
 	 */
-	public void takeDamage(int amount) {
-		health -= amount;
-		if(health <= 0) health = 0; //in this case, the player is dead.
+	public boolean takeDamage(int amount) {
+		health = health - amount;
+		if(health <= 0) {
+			health = 0;
+			return true;              //in this case, the player is dead.
+		}
+		return false;
 	}
 	
 	/**
@@ -65,46 +73,6 @@ public class Player {
 	public void regenerate(int amount) {
 		health += amount;
 		if(health > maxLife) health = maxLife; //a player cannot have more than maxLife health.
-	}
-	
-	/**
-	 * Adds an item to the players inventory
-	 * 
-	 * @param item  The item that gets added.
-	 * @return true if successful, false if the player already carries too much.
-	 */
-	public boolean takeItem(Item item) {
-		if(getCurrentInventoryWeight() + item.getWeight() <= inventorySize) {
-			inventory.add(item);
-			return true;
-		} else {
-			return false;
-		}
-	}
-	
-	/**
-	 * Removes an item from the players inventory.
-	 * 
-	 * @param item The item to remove.
-	 * @return true if successful. false if the inventory didn't contain the item.
-	 */
-	public boolean dropItem(Item item) {
-		return inventory.remove(item);
-	}
-	
-	/**
-	 * Calculates the current weight of all items in the players inventory.
-	 * 
-	 * @return Weight in units.
-	 */
-	public float getCurrentInventoryWeight() {
-		float amount = 0.0f;
-		
-		for(int i = 0; i < inventory.size(); i++) {
-			amount = inventory.get(i).getWeight();
-		}
-		
-		return amount;
 	}
 	
 	/**
@@ -129,16 +97,31 @@ public class Player {
 	}
 	
 	/**
-	 * @return The whole inventory as a ArrayList.
+	 * @return A reference to the players inventory.
 	 */
-	public ArrayList<Item> getInventory() {
+	public Inventory getInventory() {
 		return inventory;
+	}
+
+	/**
+	 * @return Current damage that is transfered by the player.
+	 */
+	public int getDamage() {
+		return damage;
+	}
+
+	/**
+	 * @param timeOfAttack Last time at which the player started to attack.
+	 */
+	public void setTimeOfLastAttack(long timeOfAttack) {
+		timeOfLastAttack = timeOfAttack;
 	}
 	
 	/**
-	 * @return The inventorys size (in units).
+	 * @return timeOfAttack Last time at which the player started to attack.
 	 */
-	public float getInventorySize() {
-		return inventorySize;
+	public long getTimeOfLastAttack() {
+		return timeOfLastAttack;
 	}
+	
 }

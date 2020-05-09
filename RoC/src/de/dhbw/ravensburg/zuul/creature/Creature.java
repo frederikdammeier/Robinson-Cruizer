@@ -1,7 +1,10 @@
 package de.dhbw.ravensburg.zuul.creature;
 
 
+
 import de.dhbw.ravensburg.zuul.item.*;
+
+
 
 /**
  * Class Creature - a creature in an adventure game.
@@ -13,22 +16,45 @@ import de.dhbw.ravensburg.zuul.item.*;
  * and can help or attack you. 
  * "Creature" is the superclasse from "Animal" and "Human".
  * 
- * @author  Moritz Link
- * @version 04.05.2020
+
+ * @author  Moritz Link - Philipp Schneider
+ * @version 08.05.2020
  */
 public class Creature {
-	
+
 
 	private boolean peaceful;
 	private int damage;
 	private int lifepoints;
 	private Item drop;
+
 	private String name;
 	private boolean invincible;
 	private boolean isDead;
 	
 	
+
 	
+	/**
+     * Create a "Creature" with different values: name, innocent, damage, drop.
+     * This constructor is used for "Animals". 
+     * @param name The name of the creature.
+     * @param innocent If the creature is innocent. 
+     * @param livepoints of the creature.
+     * @param damage how string the creature can damage the player.
+     * @param drop the Item the creature drops when it dies. 
+     */
+	public Creature(String name, boolean innocent, int damage, Item drop, int livepoints) {
+		this.name = name;
+		this.innocent = innocent;
+		this.damage = damage;
+		this.drop = drop;
+		this.livepoints = livepoints;
+		isDead = false;
+		invincible = false;
+	}
+
+
 	/**
      * Create a "Creature" with the value lifepoints.
      * This constructor is used for "Human" and "Animal".   
@@ -37,6 +63,8 @@ public class Creature {
 	public Creature(int lifepoints) {  
 		
 		this.lifepoints = lifepoints;	
+
+
 	}
 	
 
@@ -109,6 +137,8 @@ public class Creature {
 		this.damage = damage;
 	}
 	
+
+	
 	/** 
 	 * Define how much lifepoints the Creature has.
 	 * @param lifepoints How much lifepoints the Creature has.
@@ -150,14 +180,26 @@ public class Creature {
 	 *When their are no lifepoints anymore. The Creature is dead.
 	 * @return isDead Boolean if Creature is dead or not. 
  	 */
+
+	// Diese Methode soll �berpr�fen, ob die Creatur noch lebt und Anwort als Boolean zur�ckgeben
+//	public boolean isDead() {
+//		boolean alive = false;
+//		if (livepoints == 0) {
+//			alive = true;
+//			return alive;
+//		}
+//		return alive;
+//	}
+	
+
 	public boolean isDead() {
 		return isDead;
 	}
 	
 	/** 
-	 * Drop the Item when Creature is dead.
-	 * @return drop The Item the Creature drops when it dies. 
+	 * @return drop Drop the Item that is stored in the creatures inventory.
 	 */
+
 	// Platzhalter
 	public void dropItem() { 
 		System.out.println("The " + name + " dropped " + drop.getName());
@@ -188,7 +230,7 @@ public class Creature {
 		
 		return lifepoints;
 	}
-	
+
 
 
 }

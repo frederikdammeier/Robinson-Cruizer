@@ -1,3 +1,4 @@
+
 package de.dhbw.ravensburg.zuul.creature;
 
 
@@ -32,3 +33,5 @@ public class WaterPig extends Animal{
 	}
 
 }
+
+
