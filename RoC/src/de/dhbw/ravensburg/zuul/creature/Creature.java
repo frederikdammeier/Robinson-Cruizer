@@ -23,7 +23,10 @@ public class Creature {
 	private int damage;
 	private int lifepoints;
 	private Item drop;
-	private String name; 
+	private String name;
+	private boolean invincible;
+	private boolean isDead;
+	
 	
 	
 	/**
@@ -37,7 +40,23 @@ public class Creature {
 	}
 	
 
+	/**
+	 * Decreases the creatures livepoints by the amount of damage the player can transfer.
+	 * If the livescore is negativ, it's set to 0. A messeage is printed about the health status of the creature.
+	 * @param amount of damage that is transfered.
+	 */
+	public void takeDamage(int amount) {
+		livepoints = livepoints - amount;
+		if (livepoints<=0) {
+			livepoints = 0;
+			System.out.println(name + " has been defeated!");
+			isDead=true; 											//in this case the Creature is dead
+			return;		//leaving method to stop print a redundant message about the lifepoints.
+			}
+		System.out.println(name + " has " + livepoints + " livepoints left.");
 
+	}
+	
 	/** 
 	 * Return if the Creature is innocent.
 	 * @return innocent If the Creature is innocent.
@@ -129,15 +148,10 @@ public class Creature {
 	/** 
 	 *Return if the Creature is alive or not. 
 	 *When their are no lifepoints anymore. The Creature is dead.
-	 * @return alive Boolean if Creature is dead or not. 
+	 * @return isDead Boolean if Creature is dead or not. 
  	 */
 	public boolean isDead() {
-		boolean dead = false;
-		if(lifepoints == 0) {
-			dead = true;
-			return dead;
-		}
-		return dead;
+		return isDead;
 	}
 	
 	/** 
@@ -146,16 +160,17 @@ public class Creature {
 	 */
 	// Platzhalter
 	public void dropItem() { 
-		
-		if(isDead() == true) {
-			 //Drop Item
-			System.out.println(drop.getName() +  " Hier müsste stehen welches Objekt ausgegeben wurde");
-		}
-		else {
-			System.out.println("nichts zum Ausgeben");
+		System.out.println("The " + name + " dropped " + drop.getName());
+		return drop; 
 		}
 	}
 	
+	/**
+	*@return invincible 
+	*/
+	public boolean isInvincible() {
+		return invincible;
+	}
 	
 	/**
 	 * The Creature can attack the player with this method and cause different amount of damage. 
