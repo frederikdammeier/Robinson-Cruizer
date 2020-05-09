@@ -1,5 +1,6 @@
 package de.dhbw.ravensburg.zuul;
 
+
 /**
  * It holds variables and methods for the main protagonist of the game.
  * 
@@ -15,6 +16,8 @@ public class Player {
 	private int maxLife;
 	private int damage;
 	private long timeOfLastAttack;
+	
+	private Timer hungerTime;
 	
 	/**
 	 * Creates a new object of type Player
@@ -122,6 +125,10 @@ public class Player {
 	 */
 	public long getTimeOfLastAttack() {
 		return timeOfLastAttack;
+	}
+	
+	public void losHunger() {
+		
 	}
 	
 }
