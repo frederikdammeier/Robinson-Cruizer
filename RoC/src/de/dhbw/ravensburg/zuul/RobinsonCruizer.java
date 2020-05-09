@@ -12,7 +12,7 @@ package de.dhbw.ravensburg.zuul;
  * start to happen...
  * 
  * 
- * @author Frederick Dammeier - Moritz Link - Philipp Schneider
+ * @author Frederik Dammeier - Moritz Link - Philipp Schneider
  * @version 2020
  *
  */

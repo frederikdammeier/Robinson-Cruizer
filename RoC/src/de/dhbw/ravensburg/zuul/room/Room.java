@@ -19,7 +19,7 @@ import de.dhbw.ravensburg.zuul.Inventory;
  * stores a reference to the neighboring room.
  * 
  * @author  Michael Kölling, David J. Barnes and Frederik Dammeier
- * @version 1.1
+ * @version 09.05.2020
  */
 
 public class Room 
@@ -29,6 +29,7 @@ public class Room
     private Creature creatureInRoom;			
     private Inventory inventory;			//Stores the Items that are currently present in the room.
     private RoomType type;					//To determine the graphical representation for the room.
+    protected HashMap<String, Integer> creatureSpawnProbability;  	//Stores a mapping of creatures in percentages
 
 	/**
      * Create a room described "description". Initially, it has
@@ -90,6 +91,49 @@ public class Room
 		
         inventory.addMultipleItems(specialItems);
 	}
+	
+	
+	protected void spawnCreature() {
+		if(creatureSpawnProbability != null) {
+			String[] helperArray = new String[100];
+			for(int j = 0; j < 100; j++) {
+				helperArray[j] = "";
+			}
+			
+			int i = 0, b = 0, r;
+			Set<String> keys = creatureSpawnProbability.keySet();
+			
+			//Generate selector Array
+			for(String s : keys) {
+				b += creatureSpawnProbability.get(s);
+				for(; i < b && i < 100; i++) {
+					helperArray[i] = s;
+				}
+			}
+			
+			//Chose random number:
+			r = (int) (Math.random()*100);
+			
+			//Generate chosen Creature
+			switch(helperArray[r]){
+			case "Ape": 
+				creatureInRoom = new Ape(50);
+				break;
+			case "Mage": 
+				creatureInRoom = new Mage(50);
+				break;
+			case "Native": 
+				creatureInRoom = new Native(50);
+				break;
+			case "Snake": 
+				creatureInRoom = new Snake(50);
+				break;
+			case "Waterpig": 
+				creatureInRoom = new WaterPig(50);
+				break;
+			}
+		}
+	}
 
     /**
      * Define an exit from this room.
@@ -136,6 +180,14 @@ public class Room
             sb.append(exit);
             sb.append(": ");
             sb.append(exits.get(exit).getShortDescription());
+        }
+        if(creatureInRoom != null) {
+        	sb.append("\nCreature in Room: ");
+        	sb.append(creatureInRoom.getName());
+        }
+        if(inventory.getNumberOfItemsInInventory() > 0) {
+        	sb.append("\nItems in Room: ");
+        	sb.append(inventory.getContentsAsString());
         }
         return sb.toString();
     }

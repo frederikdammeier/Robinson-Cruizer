@@ -3,13 +3,16 @@ package de.dhbw.ravensburg.zuul.room;
 import de.dhbw.ravensburg.zuul.room.Room;
 
 import de.dhbw.ravensburg.zuul.item.*;
+
+import java.util.HashMap;
+
 import de.dhbw.ravensburg.zuul.creature.*;
 
 /**
  * Part of the beach of the island.
  * 
  * @author Frederik Dammeier
- * @version 1.0
+ * @version 09.05.2020
  */
 public class Beach extends Room {
 
@@ -23,6 +26,15 @@ public class Beach extends Room {
 	 */
 	public Beach(String description, Creature creature, RoomType type, Item... specialItems) {
 		super(description, creature, type, specialItems);
+		
+		//Make sure the probabilities don't add up to over 100%
+		if(creature == null) {
+			creatureSpawnProbability = new HashMap<>();
+			creatureSpawnProbability.put("Waterpig", 20);
+					
+			spawnCreature();
+		}
+		
 		
 		populateRoomInventory();
 	}

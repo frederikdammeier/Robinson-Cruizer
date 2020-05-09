@@ -56,7 +56,7 @@ public class Game
 		
 		
 		//Initialize: Beaches
-		westBeach = new Beach("on the Beach", new Creature("Pig", true, 0, new Meat(), 10), RoomType.BEACH_WEST);
+		westBeach = new Beach("on the Beach", new WaterPig(50), RoomType.BEACH_WEST, new Apple(), new Apple(), new Banana());
 		eastBeach = new Beach("on the Beach", null, RoomType.BEACH_EAST);
 		northBeach = new Beach("on the Beach", null, RoomType.BEACH_NORTH);
 		southBeach = new Beach("on the Beach", null, RoomType.BEACH_SOUTH);
@@ -167,7 +167,7 @@ public class Game
         while (! finished) {
             Command command = parser.getCommand();
             finished = processCommand(command);
-//            printTimePassed();
+            printTimePassed();
         }
         System.out.println("Thank you for playing.  Good bye!");
         timer.stopTimer();
