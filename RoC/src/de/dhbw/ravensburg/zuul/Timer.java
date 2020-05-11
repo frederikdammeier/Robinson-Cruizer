@@ -30,7 +30,7 @@ public class Timer implements Runnable {
 	    	    Thread.currentThread().interrupt();
 	    	}
 			timePassed = System.nanoTime()/1000000 - startTime/1000000;
-	    	// System.out.println(timePassed/1000);   	
+	    	 //System.out.println(timePassed/1000);   	
 		}
 	}
 	

@@ -15,8 +15,8 @@ import de.dhbw.ravensburg.zuul.item.*;
  *  executes the commands that the parser returns.
  * 
  * @author  Michael Kölling and David J. Barnes - 
- * 			further developed by Frederick Dammeier - Philipp Schneider
- * @version 08.05.2020
+ * 			further developed by Frederick Dammeier - Philipp Schneider - Moritz Link
+ * @version 11.05.2020
  */
 
 public class Game 
@@ -56,7 +56,7 @@ public class Game
 		
 		
 		//Initialize: Beaches
-		westBeach = new Beach("on the Beach", new Creature("Pig", true, 0, new Meat(), 10), RoomType.BEACH_WEST);
+		westBeach = new Beach("on the Beach", new WaterPig( 10), RoomType.BEACH_WEST);
 		eastBeach = new Beach("on the Beach", null, RoomType.BEACH_EAST);
 		northBeach = new Beach("on the Beach", null, RoomType.BEACH_NORTH);
 		southBeach = new Beach("on the Beach", null, RoomType.BEACH_SOUTH);
@@ -334,4 +334,11 @@ public class Game
     public void setFinished(boolean finished) {
 		this.finished = finished;
 	}
+    /**
+     * Starts the hungerCounter method in Player so the player starves with the time.
+     */
+    public void startHunger() {
+    	player.hungerCounter(3);
+    }
+   
 }
