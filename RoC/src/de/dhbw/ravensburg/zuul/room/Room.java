@@ -1,11 +1,10 @@
 package de.dhbw.ravensburg.zuul.room;
 import java.util.Set;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import de.dhbw.ravensburg.zuul.creature.*;
-import de.dhbw.ravensburg.zuul.item.Item;
+import de.dhbw.ravensburg.zuul.item.*;
 import de.dhbw.ravensburg.zuul.Inventory;
 
 /**
@@ -25,11 +24,12 @@ import de.dhbw.ravensburg.zuul.Inventory;
 public class Room 
 {
 	private String description;
-    private HashMap<String, Room> exits;        // stores exits of this room.
+    private HashMap<String, Room> exits;        					//Stores exits of this room.
     private Creature creatureInRoom;			
-    private Inventory inventory;			//Stores the Items that are currently present in the room.
-    private RoomType type;					//To determine the graphical representation for the room.
+    private Inventory inventory;									//Stores the Items that are currently present in the room.
+    private RoomType type;											//To determine the graphical representation for the room.
     protected HashMap<String, Integer> creatureSpawnProbability;  	//Stores a mapping of creatures in percentages
+    protected HashMap<String, Integer> itemSpawnProbability; 		//Stores a mapping of items in percentages
 
 	/**
      * Create a room described "description". Initially, it has
@@ -92,7 +92,11 @@ public class Room
         inventory.addMultipleItems(specialItems);
 	}
 	
-	
+	/**
+	 * Randomly chooses a creature for the instants room based on the probabilities in creatureSpawnProbability.
+	 * 
+	 * Make sure to add all newly added creatures here.
+	 */
 	protected void spawnCreature() {
 		if(creatureSpawnProbability != null) {
 			String[] helperArray = new String[100];
@@ -104,10 +108,10 @@ public class Room
 			Set<String> keys = creatureSpawnProbability.keySet();
 			
 			//Generate selector Array
-			for(String s : keys) {
-				b += creatureSpawnProbability.get(s);
+			for(String creature : keys) {
+				b += creatureSpawnProbability.get(creature);
 				for(; i < b && i < 100; i++) {
-					helperArray[i] = s;
+					helperArray[i] = creature;
 				}
 			}
 			
@@ -131,6 +135,63 @@ public class Room
 			case "Waterpig": 
 				creatureInRoom = new WaterPig(50);
 				break;
+			}
+		}
+	}
+	
+	
+	/**
+	 * Randomly chooses a item for the instants room based on the probabilities in itemSpawnProbability.
+	 * 
+	 * Make sure to add all newly added items here.
+	 */
+	protected void populateInventory() {
+		if(itemSpawnProbability != null) {
+			Set<String> keys = itemSpawnProbability.keySet();
+			int r;
+			
+			for(String item : keys) {
+				r = (int) (Math.random()*100);
+				if(r < itemSpawnProbability.get(item)) {
+					switch(item) {
+					case "Apple":
+						inventory.addItem(new Apple());
+						break;
+					case "Banana":
+						inventory.addItem(new Banana());
+						break;
+					case "Bread":
+						inventory.addItem(new Bread());
+						break;
+					case "Coconut":
+						inventory.addItem(new Coconut());
+						break;
+					case "Meat":
+						inventory.addItem(new Meat());
+						break;
+					case "Mushroom":
+						inventory.addItem(new Mushroom());
+						break;
+					case "Resin":
+						inventory.addItem(new Resin());
+						break;
+					case "Rope":
+						inventory.addItem(new Rope());
+						break;
+					case "Sail":
+						inventory.addItem(new Sail());
+						break;
+					case "Stick":
+						inventory.addItem(new Stick());
+						break;
+					case "Sword":
+						inventory.addItem(new Sword());
+						break;
+					case "Timber":
+						inventory.addItem(new Timber());
+						break;					
+					}
+				}
 			}
 		}
 	}

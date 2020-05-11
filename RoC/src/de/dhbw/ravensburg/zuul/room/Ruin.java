@@ -33,8 +33,8 @@ public class Ruin extends Room {
 			
 			spawnCreature();
 		}
-		
-		populateRoomInventory();
+		setItemProbabilites();
+		populateInventory();
 	}
 	
 	/**
@@ -48,23 +48,28 @@ public class Ruin extends Room {
 	public Ruin(String description, Creature creature, RoomType type, Item... specialItems) {
 		super(description, creature, type, specialItems);
 		
-		//Make sure the probabilities don't add up to over 100%
 		if(creature == null) {
-			creatureSpawnProbability = new HashMap<>();
-			creatureSpawnProbability.put("Native", 20);
-			creatureSpawnProbability.put("Snake", 20);
-			
+			setCreatureProbabilities();
 			spawnCreature();
 		}
-		
-		
-		populateRoomInventory();
+		setItemProbabilites();
+		populateInventory();
+	}
+	/**
+	 * Define spawn probabilities here (in %). Try not to exceed 100% in total. That would lead to unexpected results.
+	 */
+	private void setCreatureProbabilities() {
+		creatureSpawnProbability = new HashMap<>();
+		creatureSpawnProbability.put("Native", 20);			//Sets the probability to spawn a Native in a new object Ruin to 20%.
+		creatureSpawnProbability.put("Snake", 20);
 	}
 	
 	/**
-	 * This method will later pre-populate the room with items typically spawning there.
+	 * Define spawn probabilities here (in %). Try not to exceed 100% in total. That would lead to unexpected results.
 	 */
-	private void populateRoomInventory() {
-		//code for auto-generating Items here
+	private void setItemProbabilites() {
+		itemSpawnProbability = new HashMap<>();
+		itemSpawnProbability.put("Mushroom", 40);				//A Mushroom will spawn in 40% of all objects Ruin.
+		itemSpawnProbability.put("Rope", 10);
 	}	
 }

@@ -23,16 +23,12 @@ public class Forest extends Room {
 	public Forest(String description, Creature creature, Item... specialItems) {
 		super(description, creature, RoomType.FOREST, specialItems);
 		
-		//make sure total probability doesn't exceed 100%
 		if(creature == null) {
-			creatureSpawnProbability = new HashMap<>();
-			creatureSpawnProbability.put("Ape", 30);
-			creatureSpawnProbability.put("Snake", 20);
-			
+			setCreatureProbabilities();
 			spawnCreature();
 		}
-		
-		populateRoomInventory();
+		setItemProbabilites();
+		populateInventory();
 	}
 	
 	/**
@@ -46,22 +42,30 @@ public class Forest extends Room {
 	public Forest(String description, Creature creature, RoomType type, Item... specialItems) {
 		super(description, creature, type, specialItems);
 		
-		//make sure total probability doesn't exceed 100%
 		if(creature == null) {
-			creatureSpawnProbability = new HashMap<>();
-			creatureSpawnProbability.put("Ape", 30);
-			creatureSpawnProbability.put("Snake", 20);
-					
+			setCreatureProbabilities();					
 			spawnCreature();
 		}
-		
-		populateRoomInventory();
+		setItemProbabilites();
+		populateInventory();
 	}
 	
 	/**
-	 * This method will later pre-populate the room with items typically spawning there.
+	 * Define spawn probabilities here (in %). Try not to exceed 100% in total. That would lead to unexpected results.
 	 */
-	private void populateRoomInventory() {
-		//code for auto-generating Items here
+	private void setCreatureProbabilities() {
+		creatureSpawnProbability = new HashMap<>();
+		creatureSpawnProbability.put("Ape", 30);			//Sets the probability to spawn an Ape in a new object Forest to 30%.
+		creatureSpawnProbability.put("Snake", 20);
+	}
+	
+	/**
+	 * Define spawn probabilities here (in %). Try not to exceed 100% in total. That would lead to unexpected results.
+	 */
+	private void setItemProbabilites() {
+		itemSpawnProbability = new HashMap<>();
+		itemSpawnProbability.put("Banana", 20);				//A Banana will spawn in 20% of all objects Forests.
+		itemSpawnProbability.put("Stick", 15);
+		itemSpawnProbability.put("Timber", 15);
 	}	
 }
