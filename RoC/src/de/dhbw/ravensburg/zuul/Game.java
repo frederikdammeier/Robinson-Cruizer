@@ -3,6 +3,8 @@ package de.dhbw.ravensburg.zuul;
 import de.dhbw.ravensburg.zuul.room.*;
 import de.dhbw.ravensburg.zuul.creature.*;
 import de.dhbw.ravensburg.zuul.item.*;
+import java.util.ArrayList;
+
 
 /**
  *  This class is the main class of the "RobinsonCruizer" application. 
@@ -26,6 +28,7 @@ public class Game
     private Timer timer;
     private Player player;
     private boolean finished;
+    private ArrayList<Room> map;
     
     
 
@@ -45,6 +48,8 @@ public class Game
      */
     private void createRooms()
     {
+    	map = new ArrayList<>();
+    	
 		Room westBeach, eastBeach, northBeach, southBeach;
 		Room westForest, eastForest, northForest, southForest;
 		Room redWoodTree, deepForest;
@@ -55,36 +60,59 @@ public class Game
 		Room finalRoom;
 		
 		
+		
 		//Initialize: Beaches
 		westBeach = new Beach("on the Beach", new WaterPig(50), RoomType.BEACH_WEST, new Apple(), new Apple(), new Banana());
+		map.add(westBeach);
 		eastBeach = new Beach("on the Beach", null, RoomType.BEACH_EAST);
+		map.add(eastBeach);
 		northBeach = new Beach("on the Beach", null, RoomType.BEACH_NORTH);
+		map.add(northBeach);
 		southBeach = new Beach("on the Beach", null, RoomType.BEACH_SOUTH);
+		map.add(southBeach);
 		
 		//Initialize: Forest
 		westForest = new Forest("in the Forest", null, RoomType.FOREST);
+		map.add(westForest);
 		eastForest = new Forest("in the Forest", null, RoomType.FOREST);
+		map.add(eastForest);
 		northForest = new Forest("in the Forest", null, RoomType.FOREST);
+		map.add(northForest);
 		southForest = new Forest("in the Forest", null, RoomType.FOREST);
+		map.add(southForest);
 		
 		redWoodTree = new Forest("at the large tree", null, RoomType.REDWOOD);
+		map.add(redWoodTree);
 		deepForest = new Forest("in the dark forest", null, RoomType.DEEP_FOREST);
+		map.add(deepForest);
 		
 		//Initialize: Ruin
 		ruinWestEntrance = new Ruin("in the ruins: West Entrance", null);
+		map.add(ruinWestEntrance);
 		ruinEastEntrance = new Ruin("in the ruins: East Entrance", null);
+		map.add(ruinEastEntrance);
 		ruinNorthEntrance = new Ruin("in the ruins: North Entrance", null);
+		map.add(ruinNorthEntrance);
 		ruinSouthEntrance = new Ruin("in the ruins: South Entrance", null);
+		map.add(ruinSouthEntrance);
 		
 		ruinStairCase0 = new Ruin("in the ruins: Staircase", null);
+		map.add(ruinStairCase0);
 		ruinStairCase1 = new Ruin("in the ruins: Staircase", null);
+		map.add(ruinStairCase1);
 		
 		ruinWatchTower = new Ruin("on the top of the Watchtower", null, RoomType.RUIN_TOP);
+		map.add(ruinWatchTower);
 		ruinLibrary = new Ruin("in the ruins: Aincient Library", null);
+		map.add(ruinLibrary);
 		ruinPraying = new Ruin("in the ruins: Holy Artefact", null);
+		map.add(ruinPraying);
 		ruinMage = new Ruin("in the ruins: Mage", new Mage(60));
+		map.add(ruinMage);
 		ruinDungeon = new Ruin("in the ruins: Dungeon", null);
+		map.add(ruinDungeon);
 		ruinLaboratory = new Ruin("in the ruins: Abandoned Laboratory", null);
+		map.add(ruinLaboratory);
 		
 		//Set connections: Axis West-East
 		westBeach.setExit("east", westForest);
@@ -221,6 +249,8 @@ public class Game
         }
         else if (commandWord.equals("attack")) {
             playerAttack();
+        } else if (commandWord.equals("teleport")) {
+        	teleport();
         }
         // else command not recognised.
         return wantToQuit;
@@ -322,6 +352,23 @@ public class Game
         else {
             return true;  // signal that we want to quit
         }
+    }
+    
+    /**
+     * "Teleports" the player to a random room that isn't the current room.
+     * 
+     * To be called when interacting with the mage.
+     */
+    private void teleport() {
+    	int l = map.size();
+    	int r;
+    	
+    	do {
+    		r = (int) (Math.random()*l);
+    	} while (currentRoom == map.get(r));
+    	
+    	currentRoom = map.get(r);
+    	lookAround();
     }
     
     /**
