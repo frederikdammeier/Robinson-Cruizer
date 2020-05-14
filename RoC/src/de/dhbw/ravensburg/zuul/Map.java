@@ -19,7 +19,7 @@ public class Map {
 	private Room currentRoom;
 	private ArrayList<Room> map; //List that only holds references to the rooms in which the player can be teleported randomly.
 	
-	private Map()
+	public Map()
     {
     	map = new ArrayList<>();
     	
@@ -162,7 +162,8 @@ public class Map {
 	        System.out.println("There is no way to go!");
 	    }
 	    else {
-	        currentRoom = nextRoom;   
+	        currentRoom = nextRoom; 
+	        System.out.println(currentRoom.getLongDescription());
 	    }
 	    return currentRoom;
 	}
