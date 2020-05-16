@@ -189,10 +189,10 @@ public class Player {
 						
 					}
 					// dem Timer wieder den Wert geben. Muss man manuell machen.
-					timer = 3;
+					timer = 20;
 					
 					//Bei 4 hungerpunkten soll eine Warunug ausgegeben werden.
-					if(getHunger()== 4) {
+					if(getHunger()== 15) {
 						System.out.println("Sie sollten was essen! Sie verhungern gerade. ");
 					}
 					
@@ -209,6 +209,7 @@ public class Player {
 					if(getHealth()== 0) {
 						TimerHunger.cancel();
 					}
+					
 //					if(getHealth() == 97) {
 //						eat(20);
 //						regenerate(5);

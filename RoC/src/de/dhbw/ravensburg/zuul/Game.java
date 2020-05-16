@@ -338,7 +338,7 @@ public class Game
      * Starts the hungerCounter method in Player so the player starves with the time.
      */
     public void startHunger() {
-    	player.hungerCounter(3);
+    	player.hungerCounter(20);
     }
    
 }
