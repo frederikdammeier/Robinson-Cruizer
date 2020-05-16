@@ -45,7 +45,7 @@ public class Beach extends Room {
 	}
 	
 	/**
-	 * Define spawn probabilities here (in %). Try not to exceed 100% in total. That would lead to unexpected results.
+	 * Define spawn probabilities here (in %). 
 	 */
 	private void setItemProbabilites() {
 		itemSpawnProbability = new HashMap<>();

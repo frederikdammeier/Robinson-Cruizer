@@ -213,6 +213,9 @@ public class Game
         }
     }
     
+    /**
+     * Teleports the player into a randomly chosen room on the map.
+     */
     private void teleport() {
     	currentRoom = map.teleport();
     	lookAround();
