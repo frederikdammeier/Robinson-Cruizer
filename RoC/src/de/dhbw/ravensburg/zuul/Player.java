@@ -1,5 +1,7 @@
 package de.dhbw.ravensburg.zuul;
 
+import de.dhbw.ravensburg.zuul.item.Weapon;
+
 /**
  * It holds variables and methods for the main protagonist of the game.
  * 
@@ -107,6 +109,8 @@ public class Player {
 	 * @return Current damage that is transfered by the player.
 	 */
 	public int getDamage() {
+			
+		
 		return damage;
 	}
 

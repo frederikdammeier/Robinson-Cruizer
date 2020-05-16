@@ -22,10 +22,11 @@ import de.dhbw.ravensburg.zuul.item.*;
 public class Game 
 {
     private Parser parser;
-    private Room currentRoom; 
-    private Timer timer;
-    private Player player;
-    private boolean finished;
+    private static Room currentRoom; 
+	private static Timer timer;
+    private static Player player;
+	private static boolean finished;
+	private Preditor preditor;
     
     
 
@@ -35,8 +36,9 @@ public class Game
     public Game() 
     {
     	timer = new Timer();
+    	preditor = new Preditor();
         createRooms();
-        parser = new Parser();
+        parser = new Parser();				//------------------------------------------------------------
         player = new Player("Players Name", 20f, 100); 
     }
 
@@ -56,16 +58,16 @@ public class Game
 		
 		
 		//Initialize: Beaches
-		westBeach = new Beach("on the Beach", new Creature("Pig", true, 0, new Meat(), 10), RoomType.BEACH_WEST);
+		westBeach = new Beach("on the Beach", new Ape(50), RoomType.BEACH_WEST);
 		eastBeach = new Beach("on the Beach", null, RoomType.BEACH_EAST);
 		northBeach = new Beach("on the Beach", null, RoomType.BEACH_NORTH);
 		southBeach = new Beach("on the Beach", null, RoomType.BEACH_SOUTH);
 		
 		//Initialize: Forest
-		westForest = new Forest("in the Forest", null, RoomType.FOREST);
-		eastForest = new Forest("in the Forest", null, RoomType.FOREST);
-		northForest = new Forest("in the Forest", null, RoomType.FOREST);
-		southForest = new Forest("in the Forest", null, RoomType.FOREST);
+		westForest = new Forest("in the Forest", new Ape(50), RoomType.FOREST);
+		eastForest = new Forest("in the Forest",new Ape(50), RoomType.FOREST);
+		northForest = new Forest("in the Forest", new Ape(50), RoomType.FOREST);
+		southForest = new Forest("in the Forest", new Ape(50), RoomType.FOREST);
 		
 		redWoodTree = new Forest("at the large tree", null, RoomType.REDWOOD);
 		deepForest = new Forest("in the dark forest", null, RoomType.DEEP_FOREST);
@@ -153,27 +155,31 @@ public class Game
      */
     public void play() 
     {    
-    	
+    	// execute them until the game is over.
+    	finished = false;
         printWelcome();
-        
         //Add a new Timer to measure passed game Time.
         Thread timeThread = new Thread(timer, "timer");
         timeThread.start();
         
-        // Enter the main command loop.  Here we repeatedly read commands and
-        // execute them until the game is over.
+        //Starts the preditor class, so preditor creatures will attack the player
+        Thread preditorThread = new Thread(preditor, "preditor");		//----------------------------
+        preditorThread.start();
                 
-        finished = false;
+        // Enter the main command loop.  Here we repeatedly read commands and
+                        
         while (! finished) {
+        	
             Command command = parser.getCommand();
             finished = processCommand(command);
-//            printTimePassed();
+
         }
         System.out.println("Thank you for playing.  Good bye!");
         timer.stopTimer();
     }
     
-    /*
+
+	/*
      * Print the Seconds that have passed since starting the game to the console.
      */
     private void printTimePassed() {
@@ -245,9 +251,9 @@ public class Game
 
 			// get the creature of this room.
 			Creature creatureInRoom = currentRoom.getCreature();
-
 			// decrease the creatures health by the amount of damage the player can
-			// tranfered.
+			// transfered.
+			
 			creatureInRoom.takeDamage(player.getDamage());
 
 			if (creatureInRoom.isDead()) {
@@ -305,6 +311,7 @@ public class Game
         else {
             currentRoom = nextRoom;
             System.out.println(currentRoom.getLongDescription());
+            
         }
     }
 
@@ -324,6 +331,10 @@ public class Game
         }
     }
     
+    /*
+     * "Activating" the preditors means, that the 
+     */
+    
     /**
      * Prints all available exits to the console.
      */
@@ -331,7 +342,30 @@ public class Game
 		System.out.println(currentRoom.getLongDescription());
 	}
     
-    public void setFinished(boolean finished) {
-		this.finished = finished;
+    /*
+     *sets boolean "finished" true. therefore ends the game.
+     */
+    public static void setFinished() {
+		finished = true;
+	}
+    
+    /*
+     * @return the current room the player is in
+     */
+    public static Room getCurrentRoom() {
+		return currentRoom;
+	}
+    
+    /*
+     * @return time since the game was started
+     */
+    public static long getGameTime() {
+    	return timer.getTimePassedSeconds();
+    }
+    /*
+     * @return the player
+     */
+    public static Player getPlayer() {
+		return player;
 	}
 }

@@ -68,6 +68,7 @@ public class Inventory {
 	 * @return true if successful. false if the inventory didn't contain the item.
 	 */
 	public boolean removeItem(Item item) {
+		
 		return inventory.remove(item);
 	}
 	
