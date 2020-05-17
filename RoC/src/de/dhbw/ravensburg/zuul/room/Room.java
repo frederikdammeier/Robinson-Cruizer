@@ -1,11 +1,10 @@
 package de.dhbw.ravensburg.zuul.room;
 import java.util.Set;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import de.dhbw.ravensburg.zuul.creature.*;
-import de.dhbw.ravensburg.zuul.item.Item;
+import de.dhbw.ravensburg.zuul.item.*;
 import de.dhbw.ravensburg.zuul.Inventory;
 
 /**
@@ -19,16 +18,18 @@ import de.dhbw.ravensburg.zuul.Inventory;
  * stores a reference to the neighboring room.
  * 
  * @author  Michael Kölling, David J. Barnes and Frederik Dammeier
- * @version 1.1
+ * @version 09.05.2020
  */
 
 public class Room 
 {
 	private String description;
-    private HashMap<String, Room> exits;        // stores exits of this room.
+    private HashMap<String, Room> exits;        					//Stores exits of this room.
     private Creature creatureInRoom;			
-    private Inventory inventory;			//Stores the Items that are currently present in the room.
-    private RoomType type;					//To determine the graphical representation for the room.
+    private Inventory inventory;									//Stores the Items that are currently present in the room.
+    private RoomType type;											//To determine the graphical representation for the room.
+    protected HashMap<String, Integer> creatureSpawnProbability;  	//Stores a mapping of creatures in percentages
+    protected HashMap<String, Integer> itemSpawnProbability; 		//Stores a mapping of items in percentages
 
 	/**
      * Create a room described "description". Initially, it has
@@ -90,6 +91,110 @@ public class Room
 		
         inventory.addMultipleItems(specialItems);
 	}
+	
+	/**
+	 * Randomly chooses a creature for the instants room based on the probabilities in creatureSpawnProbability.
+	 * 
+	 * Make sure to add all newly added creatures here.
+	 */
+	protected void spawnCreature() {
+		if(creatureSpawnProbability != null) {
+			String[] helperArray = new String[100];
+			for(int j = 0; j < 100; j++) {
+				helperArray[j] = "";
+			}
+			
+			int i = 0, b = 0, r;
+			Set<String> keys = creatureSpawnProbability.keySet();
+			
+			//Generate selector Array
+			for(String creature : keys) {
+				b += creatureSpawnProbability.get(creature);
+				for(; i < b && i < 100; i++) {
+					helperArray[i] = creature;
+				}
+			}
+			
+			//Chose random number:
+			r = (int) (Math.random()*100);
+			
+			//Generate chosen Creature
+			switch(helperArray[r]){
+			case "Ape": 
+				creatureInRoom = new Ape(50);
+				break;
+			case "Mage": 
+				creatureInRoom = new Mage(50);
+				break;
+			case "Native": 
+				creatureInRoom = new Native(50);
+				break;
+			case "Snake": 
+				creatureInRoom = new Snake(50);
+				break;
+			case "Waterpig": 
+				creatureInRoom = new WaterPig(50);
+				break;
+			}
+		}
+	}
+	
+	
+	/**
+	 * Randomly chooses a item for the instants room based on the probabilities in itemSpawnProbability.
+	 * 
+	 * Make sure to add all newly added items here.
+	 */
+	protected void populateInventory() {
+		if(itemSpawnProbability != null) {
+			Set<String> keys = itemSpawnProbability.keySet();
+			int r;
+			
+			for(String item : keys) {
+				r = (int) (Math.random()*100);
+				if(r < itemSpawnProbability.get(item)) {
+					switch(item) {
+					case "Apple":
+						inventory.addItem(new Apple());
+						break;
+					case "Banana":
+						inventory.addItem(new Banana());
+						break;
+					case "Bread":
+						inventory.addItem(new Bread());
+						break;
+					case "Coconut":
+						inventory.addItem(new Coconut());
+						break;
+					case "Meat":
+						inventory.addItem(new Meat());
+						break;
+					case "Mushroom":
+						inventory.addItem(new Mushroom());
+						break;
+					case "Resin":
+						inventory.addItem(new Resin());
+						break;
+					case "Rope":
+						inventory.addItem(new Rope());
+						break;
+					case "Sail":
+						inventory.addItem(new Sail());
+						break;
+					case "Stick":
+						inventory.addItem(new Stick());
+						break;
+					case "Sword":
+						inventory.addItem(new Sword());
+						break;
+					case "Timber":
+						inventory.addItem(new Timber());
+						break;					
+					}
+				}
+			}
+		}
+	}
 
     /**
      * Define an exit from this room.
@@ -136,6 +241,14 @@ public class Room
             sb.append(exit);
             sb.append(": ");
             sb.append(exits.get(exit).getShortDescription());
+        }
+        if(creatureInRoom != null) {
+        	sb.append("\nCreature in Room: ");
+        	sb.append(creatureInRoom.getName());
+        }
+        if(inventory.getNumberOfItemsInInventory() > 0) {
+        	sb.append("\nItems in Room: ");
+        	sb.append(inventory.getContentsAsString());
         }
         return sb.toString();
     }

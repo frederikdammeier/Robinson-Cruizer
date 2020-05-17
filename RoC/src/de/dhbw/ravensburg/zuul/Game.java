@@ -3,6 +3,8 @@ package de.dhbw.ravensburg.zuul;
 import de.dhbw.ravensburg.zuul.room.*;
 import de.dhbw.ravensburg.zuul.creature.*;
 import de.dhbw.ravensburg.zuul.item.*;
+import java.util.ArrayList;
+
 
 /**
  *  This class is the main class of the "RobinsonCruizer" application. 
@@ -26,126 +28,20 @@ public class Game
     private Timer timer;
     private Player player;
     private boolean finished;
+    private Map map;
     
     
 
 	/**
-     * Create the game and initialise its internal map.
+     * Create the game and initialize its internal map.
      */
     public Game() 
     {
     	timer = new Timer();
-        createRooms();
+        map = new Map();
         parser = new Parser();
         player = new Player("Players Name", 20f, 100); 
-    }
-
-    /**
-     * Create all the rooms and link their exits together.
-     */
-    private void createRooms()
-    {
-		Room westBeach, eastBeach, northBeach, southBeach;
-		Room westForest, eastForest, northForest, southForest;
-		Room redWoodTree, deepForest;
-		Room ruinWestEntrance, ruinEastEntrance, ruinNorthEntrance, ruinSouthEntrance;
-		Room ruinStairCase0, ruinStairCase1;
-		Room ruinWatchTower, ruinLibrary, ruinPraying, ruinMage, ruinDungeon, ruinLaboratory;
-		
-		Room finalRoom;
-		
-		
-		//Initialize: Beaches
-		westBeach = new Beach("on the Beach", new Creature("Pig", true, 0, new Meat(), 10), RoomType.BEACH_WEST);
-		eastBeach = new Beach("on the Beach", null, RoomType.BEACH_EAST);
-		northBeach = new Beach("on the Beach", null, RoomType.BEACH_NORTH);
-		southBeach = new Beach("on the Beach", null, RoomType.BEACH_SOUTH);
-		
-		//Initialize: Forest
-		westForest = new Forest("in the Forest", null, RoomType.FOREST);
-		eastForest = new Forest("in the Forest", null, RoomType.FOREST);
-		northForest = new Forest("in the Forest", null, RoomType.FOREST);
-		southForest = new Forest("in the Forest", null, RoomType.FOREST);
-		
-		redWoodTree = new Forest("at the large tree", null, RoomType.REDWOOD);
-		deepForest = new Forest("in the dark forest", null, RoomType.DEEP_FOREST);
-		
-		//Initialize: Ruin
-		ruinWestEntrance = new Ruin("in the ruins: West Entrance", null);
-		ruinEastEntrance = new Ruin("in the ruins: East Entrance", null);
-		ruinNorthEntrance = new Ruin("in the ruins: North Entrance", null);
-		ruinSouthEntrance = new Ruin("in the ruins: South Entrance", null);
-		
-		ruinStairCase0 = new Ruin("in the ruins: Staircase", null);
-		ruinStairCase1 = new Ruin("in the ruins: Staircase", null);
-		
-		ruinWatchTower = new Ruin("on the top of the Watchtower", null, RoomType.RUIN_TOP);
-		ruinLibrary = new Ruin("in the ruins: Aincient Library", null);
-		ruinPraying = new Ruin("in the ruins: Holy Artefact", null);
-		ruinMage = new Ruin("in the ruins: Mage", new Mage(60));
-		ruinDungeon = new Ruin("in the ruins: Dungeon", null);
-		ruinLaboratory = new Ruin("in the ruins: Abandoned Laboratory", null);
-		
-		//Set connections: Axis West-East
-		westBeach.setExit("east", westForest);
-		westForest.setExit("west", westBeach);
-		westForest.setExit("east", ruinWestEntrance);
-		ruinWestEntrance.setExit("west", westForest);
-		ruinWestEntrance.setExit("east", ruinStairCase0);
-		ruinStairCase0.setExit("west", ruinWestEntrance);
-		ruinStairCase0.setExit("east",  ruinEastEntrance);
-		ruinEastEntrance.setExit("west",  ruinStairCase0);
-		ruinEastEntrance.setExit("east", eastForest);
-		eastForest.setExit("west", ruinEastEntrance);
-		eastForest.setExit("east", eastBeach);
-		eastBeach.setExit("west", eastForest);
-		
-		//Set connections: Axis North-South
-		northBeach.setExit("south", northForest);
-		northForest.setExit("north", northBeach);
-		northForest.setExit("south", ruinNorthEntrance);
-		ruinNorthEntrance.setExit("north", northForest);
-		ruinNorthEntrance.setExit("south", ruinStairCase0);
-		ruinStairCase0.setExit("north", ruinNorthEntrance);
-		ruinStairCase0.setExit("south",  ruinSouthEntrance);
-		ruinSouthEntrance.setExit("north",  ruinStairCase0);
-		ruinSouthEntrance.setExit("south", southForest);
-		southForest.setExit("north", ruinSouthEntrance);
-		southForest.setExit("south", southBeach);
-		southBeach.setExit("north", southForest);
-		
-		//Set connections Ruins level 0
-		ruinLibrary.setExit("south",  ruinWestEntrance);
-		ruinWestEntrance.setExit("north", ruinLibrary);
-		ruinLibrary.setExit("east",  ruinNorthEntrance);
-		ruinNorthEntrance.setExit("west",  ruinLibrary);
-		
-		ruinEastEntrance.setExit("down", ruinDungeon); //dungeon has currently no way to get out.
-		
-		ruinStairCase0.setExit("down", ruinLaboratory);
-		ruinStairCase0.setExit("up", ruinStairCase1);
-		
-		//Set connections Ruins level -1
-		ruinLaboratory.setExit("up",  ruinStairCase0);
-		
-		//Set connections Ruins level 1
-		ruinStairCase1.setExit("down", ruinStairCase0);
-		ruinStairCase1.setExit("up", ruinWatchTower);
-		ruinStairCase1.setExit("west", ruinMage);
-		ruinMage.setExit("east", ruinStairCase1);
-		ruinStairCase1.setExit("south", ruinPraying);
-		ruinPraying.setExit("north", ruinStairCase1);
-		
-		//Set connections Ruins level 2
-		ruinWatchTower.setExit("down",  ruinStairCase1);
-		
-		//Set connections Outside
-		northForest.setExit("east", redWoodTree);
-		redWoodTree.setExit("west", northForest);
-		northForest.setExit("west", deepForest);
-		deepForest.setExit("east", northForest);
-		
-		currentRoom = westBeach; // start game outside
+        currentRoom = map.getCurrentRoom();
     }
 
     /**
@@ -167,7 +63,7 @@ public class Game
         while (! finished) {
             Command command = parser.getCommand();
             finished = processCommand(command);
-//            printTimePassed();
+            printTimePassed();
         }
         System.out.println("Thank you for playing.  Good bye!");
         timer.stopTimer();
@@ -221,6 +117,8 @@ public class Game
         }
         else if (commandWord.equals("attack")) {
             playerAttack();
+        } else if (commandWord.equals("teleport")) {
+        	teleport();
         }
         // else command not recognised.
         return wantToQuit;
@@ -283,7 +181,7 @@ public class Game
     }
 
     /** 
-     * Try to in to one direction. If there is an exit, enter the new
+     * Try to go in to one direction. If there is an exit, enter the new
      * room, otherwise print an error message.
      */
     private void goRoom(Command command) 
@@ -296,16 +194,7 @@ public class Game
 
         String direction = command.getSecondWord();
 
-        // Try to leave current room.
-        Room nextRoom = currentRoom.getExit(direction);
-
-        if (nextRoom == null) {
-            System.out.println("There is no way to go!");
-        }
-        else {
-            currentRoom = nextRoom;
-            System.out.println(currentRoom.getLongDescription());
-        }
+        currentRoom = map.movePlayer(direction);
     }
 
     /** 
@@ -322,6 +211,14 @@ public class Game
         else {
             return true;  // signal that we want to quit
         }
+    }
+    
+    /**
+     * Teleports the player into a randomly chosen room on the map.
+     */
+    private void teleport() {
+    	currentRoom = map.teleport();
+    	lookAround();
     }
     
     /**

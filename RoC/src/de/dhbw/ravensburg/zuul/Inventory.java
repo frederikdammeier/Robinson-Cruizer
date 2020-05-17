@@ -9,7 +9,7 @@ import de.dhbw.ravensburg.zuul.item.Item;
  * To be used in Player, Room and Creature.
  * 
  * @author Frederik Dammeier
- * @version 1.0
+ * @version 09.05.2020
  *
  */
 public class Inventory {
@@ -146,7 +146,7 @@ public class Inventory {
 		for(int i = 0; i < inventory.size(); i++) {
 			currentItem = inventory.get(i).getName();
 			if(tmp.containsKey(currentItem)) {
-				tmp.replace(currentItem, tmp.get(currentItem)+1);
+				tmp.put(currentItem, tmp.get(currentItem)+1);
 			} else {
 				tmp.put(currentItem, 1);
 			}
@@ -157,5 +157,29 @@ public class Inventory {
 			}
 		}	
 	}
+	
+	
+	public String getContentsAsString() {
+		HashMap<String, Integer> tmp = new HashMap<>(); //HashMap to map the number of a specific item in the inventory to the item
+		String currentItem;
+		StringBuilder sb = new StringBuilder();
+		
+		for(int i = 0; i < inventory.size(); i++) {
+			currentItem = inventory.get(i).getName();
+			if(tmp.containsKey(currentItem)) {
+				tmp.put(currentItem, tmp.get(currentItem)+1);
+			} else {
+				tmp.put(currentItem, 1);
+			}
+		}
+		if(tmp.size() > 0) {
+			for(String i : tmp.keySet()) {
+				sb.append("\n" + i + ": " + tmp.get(i) + "x");
+			}
+		}
+		return sb.toString();
+	}
+	
+	
 } 
 
