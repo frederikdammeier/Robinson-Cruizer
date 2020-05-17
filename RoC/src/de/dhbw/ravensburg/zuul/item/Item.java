@@ -1,5 +1,7 @@
 package de.dhbw.ravensburg.zuul.item;
 
+import java.util.Objects;
+
 /**
  * Class Item - an item in the game.
  * 
@@ -52,11 +54,21 @@ public class Item {
 	 * @param Item the Item to compare to.
 	 * @return 
 	 */
-	public boolean equals(Item item) {
-		if(item != null) {
+	@Override
+	public boolean equals(Object o) {
+		if(o != null && o instanceof Item) {
+			Item item = (Item) o;
 			return item.getWeight() == weight && item.getName().equals(name);
 		} else {
 			return false;
 		}
-	}		
+	}	
+	
+	/**
+	 * To check if 2 items are internally identical.
+	 */
+	@Override
+	public int hashCode() {
+		return Objects.hash(name, weight);
+	}
 }

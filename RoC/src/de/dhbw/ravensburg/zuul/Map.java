@@ -19,21 +19,20 @@ public class Map {
 	private Room currentRoom;
 	private ArrayList<Room> map; //List that only holds references to the rooms in which the player can be teleported randomly.
 	
+	private Room westBeach, eastBeach, northBeach, southBeach;
+	private Room westForest, eastForest, northForest, southForest;
+	private Room redWoodTree, deepForest;
+	private Room ruinWestEntrance, ruinEastEntrance, ruinNorthEntrance, ruinSouthEntrance;
+	private Room ruinStairCase0, ruinStairCase1;
+	private Room ruinWatchTower, ruinLibrary, ruinPraying, ruinMage, ruinDungeon, ruinLaboratory;
+	
+	private Room finalRoom;
+	
+	
 	public Map()
     {
     	map = new ArrayList<>();
-    	
-		Room westBeach, eastBeach, northBeach, southBeach;
-		Room westForest, eastForest, northForest, southForest;
-		Room redWoodTree, deepForest;
-		Room ruinWestEntrance, ruinEastEntrance, ruinNorthEntrance, ruinSouthEntrance;
-		Room ruinStairCase0, ruinStairCase1;
-		Room ruinWatchTower, ruinLibrary, ruinPraying, ruinMage, ruinDungeon, ruinLaboratory;
-		
-		Room finalRoom;
-		
-		
-		
+
 		//Initialize: Beaches
 		westBeach = new Beach("on the Beach", new WaterPig(50), RoomType.BEACH_WEST, new Apple(), new Apple(), new Banana());
 		map.add(westBeach);
@@ -86,6 +85,9 @@ public class Map {
 		ruinDungeon = new Ruin("in the ruins: Dungeon", null);
 		ruinLaboratory = new Ruin("in the ruins: Abandoned Laboratory", null);
 		map.add(ruinLaboratory);
+		
+		//initialize: final room
+		finalRoom = new Room("in the final room", null, RoomType.FINISH);
 		
 		//Set connections: Axis West-East
 		westBeach.setExit("east", westForest);
@@ -172,5 +174,15 @@ public class Map {
     	currentRoom = map.get(r);
     	return currentRoom;
     	
+    }
+    
+    /**
+     * Sets exits for the beaches so the player is able to leave with the boat
+     */
+    public void activateFinish() {
+    	westBeach.setExit("west", finalRoom);
+    	eastBeach.setExit("east", finalRoom);
+    	northBeach.setExit("east", finalRoom);
+    	southBeach.setExit("south", finalRoom);
     }
 }

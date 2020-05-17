@@ -217,6 +217,30 @@ public class Inventory {
 		return sb.toString();
 	}
 	
+	/**
+	 * Checks whether the inventory contains a HashMap<Item, Amount> of Items.
+	 * 
+	 * @param list A HashMap<Item, Integer>
+	 * @return true if all items are contained in the specified quantities
+	 */
+	public boolean containsItemList(HashMap<Item, Integer> list){
+		ListIterator<Item> it = inventory.listIterator();
+		HashMap<Item, Integer> tmp = new HashMap<>(list);
+		Item currentItem;
+		
+		while(it.hasNext()) {
+			currentItem = it.next();
+			if(tmp.containsKey(currentItem)) {
+				if(tmp.get(currentItem) > 1){
+					tmp.put(currentItem, tmp.get(currentItem)-1);		
+				} else {
+					tmp.remove(currentItem);
+				}
+			}
+		}
+		return tmp.isEmpty();
+	}
+	
 	
 } 
 
