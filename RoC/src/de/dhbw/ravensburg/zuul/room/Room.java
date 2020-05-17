@@ -361,6 +361,25 @@ public class Room
 		this.type = type;
 	}
 	
+	/**
+	 * Checks whether a given directional exit exists for a room.
+	 * 
+	 * @param exit
+	 * @return
+	 */
+	public boolean hasExit(String exit) {
+		return exits.containsKey(exit);
+	}
+	
+	/**
+	 * Checks whether the room has an exit towards the given room.
+	 * 
+	 * @param room The room to check for.
+	 * @return
+	 */
+	public boolean hasExitToRoom(Room room) {
+		return exits.containsValue(room);
+	}
 	
 }
 

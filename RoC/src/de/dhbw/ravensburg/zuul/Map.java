@@ -150,37 +150,6 @@ public class Map {
     }
 	
 	/**
-	 * Tries to move the player into another room given a direction.
-	 * 
-	 * @param direction The direction in which to move the player.
-	 * @param playerInv The players inventory. Needed to check whether he own the needed key.
-	 * @return The room in which the player got moved. Returns the currentRoom if exit doesn't exist.
-	 */
-	public Room movePlayer(String direction, Inventory playerInv) {
-		// Try to leave current room.
-	    Room nextRoom = currentRoom.getExit(direction);
-
-	    if (nextRoom == null) {
-	        System.out.println("There is no way to go!");
-	    }
-	    else if(nextRoom.isLocked()){
-	    	if(playerInv.containsItem(nextRoom.getKey().getName())) {
-	    		nextRoom.unLock();
-	    		currentRoom = nextRoom;
-	    		System.out.println("The next room has been unlocked because you have the key in your inventory.");
-	    		System.out.println(currentRoom.getLongDescription());
-	    	} else {
-	    		System.out.println("The room is locked. Try to find a key.");
-	    	}
-	    	
-	    } else {
-	        currentRoom = nextRoom; 
-	        System.out.println(currentRoom.getLongDescription());
-	    }
-	    return currentRoom;
-	}
-	
-	/**
 	 * @return The room in which the player is currently residing.
 	 */
 	public Room getCurrentRoom() {
