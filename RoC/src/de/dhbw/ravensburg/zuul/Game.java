@@ -29,19 +29,23 @@ public class Game
     private Player player;
     private boolean finished;
     private Map map;
+    private long timeLimit;
+    private float enemyDamageRate;
     
     
 
 	/**
      * Create the game and initialize its internal map.
      */
-    public Game() 
+    public Game(Difficulty difficulty) 
     {
     	timer = new Timer();
         map = new Map();
         parser = new Parser();
-        player = new Player("Players Name", 20f, 100); 
+        player = new Player("Players Name", difficulty.getInventoryCapacity(), 100); 
         currentRoom = map.getCurrentRoom();
+        timeLimit = difficulty.getTimeLimit();
+        enemyDamageRate = difficulty.getEnemyDamageRate();
     }
 
     /**
@@ -60,7 +64,7 @@ public class Game
         // execute them until the game is over.
                 
         finished = false;
-        while (! finished) {
+        while (! finished && timer.getTimePassedSeconds() < timeLimit) {
             Command command = parser.getCommand();
             finished = processCommand(command);
             printTimePassed();
