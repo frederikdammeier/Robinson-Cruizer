@@ -1,6 +1,7 @@
 package de.dhbw.ravensburg.zuul;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.ListIterator;
 
 import de.dhbw.ravensburg.zuul.item.Item;
@@ -11,7 +12,7 @@ import de.dhbw.ravensburg.zuul.item.Item;
  * To be used in Player, Room and Creature.
  * 
  * @author Frederik Dammeier
- * @version 09.05.2020
+ * @version 17.05.2020
  *
  */
 public class Inventory {
@@ -49,12 +50,12 @@ public class Inventory {
 	}
 	
 	/**
-	 * Checks whether the inventory contains the given item.
+	 * Returns an Item in the list by its name.
 	 * 
-	 * @param item 
-	 * @return
+	 * @param name The name to look for.
+	 * @return null if Item not in list
 	 */
-	public boolean containsItem(String item) {
+	public Item getItemByName(String name) {
 		boolean foundItem = false;
 		Item tmp;
 		
@@ -62,11 +63,12 @@ public class Inventory {
 		
 		while(!foundItem && it.hasNext()) {
 			tmp = it.next();
-			if(item.equals(tmp.getName())) {
-				return true;
+			if(name.equals(tmp.getName())) {
+				return tmp;
 			}
 		}
-		return false;
+		System.out.println("Item not found!");
+		return null;
 	}
 	
 	/**
@@ -108,6 +110,7 @@ public class Inventory {
 			inventory.add(item);
 			return true;
 		} else {
+			System.out.println("The item you're trying to add is too heavy.");
 			return false;
 		}
 	}
@@ -164,24 +167,14 @@ public class Inventory {
 	 * Prints the contents of the inventory to the console. To be changed for the GuI later.
 	 */
 	public void printContents() {
-		HashMap<String, Integer> tmp = new HashMap<>(); //HashMap to map the number of a specific item in the inventory to the item
-		String currentItem;
-		for(int i = 0; i < inventory.size(); i++) {
-			currentItem = inventory.get(i).getName();
-			if(tmp.containsKey(currentItem)) {
-				tmp.put(currentItem, tmp.get(currentItem)+1);
-			} else {
-				tmp.put(currentItem, 1);
-			}
-		}
-		if(tmp.size() > 0) {
-			for(String i : tmp.keySet()) {
-				System.out.println(i + ": " + tmp.get(i) + "x");
-			}
-		}	
+		System.out.println(getContentsAsString());
 	}
 	
-	
+	/**
+	 * Returns the the contents of the inventory as a String if form of a list.
+	 * 
+	 * @return The contents as a String.
+	 */
 	public String getContentsAsString() {
 		HashMap<String, Integer> tmp = new HashMap<>(); //HashMap to map the number of a specific item in the inventory to the item
 		String currentItem;

@@ -17,8 +17,8 @@ import java.util.ArrayList;
  *  executes the commands that the parser returns.
  * 
  * @author  Michael Kölling and David J. Barnes - 
- * 			further developed by Frederick Dammeier - Philipp Schneider
- * @version 08.05.2020
+ * 			further developed by Frederik Dammeier - Philipp Schneider
+ * @version 17.05.2020
  */
 
 public class Game 
@@ -117,8 +117,18 @@ public class Game
         }
         else if (commandWord.equals("attack")) {
             playerAttack();
-        } else if (commandWord.equals("teleport")) {
+        } 
+        else if (commandWord.equals("teleport")) {
         	teleport();
+        }
+        else if (commandWord.equals("take")) {
+        	takeItem(command);
+        }
+        else if (commandWord.equals("drop")) {
+        	dropItem(command);
+        }
+        else if (commandWord.equals("showInv")) {
+        	player.getInventory().printContents();
         }
         // else command not recognised.
         return wantToQuit;
@@ -179,32 +189,10 @@ public class Game
         System.out.println("Your command words are:");
         parser.showCommands();
     }
-    
-    /**
-     * Can be used to ask the player a yes/no question.
-     * 
-     * @param command
-     * @return true if yes, false if otherwise
-     */
-    private boolean getYesNoAnswer(Command command) {
-    	if(command.isUnknown()) {
-    		System.out.println("I dont know what you mean.");
-    		return false;
-    	} else if(command.getCommandWord().equals("yes")) {
-    		return true;
-    	} 
-    	return false;
-    }
-    
+
     /** 
      * Try to go in to one direction. If there is an exit, enter the new
      * room, otherwise print an error message.
-     * 
-     * If a room is locked, the method checks whether the player has the correct key to open it.
-     * Then the player gets asks whether he would like to open the door to the next room.
-     * 
-     * If a room can only be entered through a trap door, the player gets a warning.
-     * He gets asked whether he would like to proceed anyways.
      */
     private void goRoom(Command command) 
     {
@@ -216,50 +204,51 @@ public class Game
 
         String direction = command.getSecondWord();
 
-        // Try to leave current room.
-	    Room nextRoom = currentRoom.getExit(direction);
-	    
-	    //check if a exit to the desired direction even exists.
-	    if (nextRoom == null) {
-	        System.out.println("There is no way to go!");
-	    
-	        
-	    //Check whether the room is locked.
-	    } else if(nextRoom.isLocked()){
-	    	if(player.getInventory().containsItem(nextRoom.getKey().getName())) {
-	    		
-	    		//Ask the player if he wants to unlock the room.
-	    		System.out.println("The room is locked. Do you want to unlock it now? (yes/no)");
-	    		if(getYesNoAnswer(parser.getCommand())) {
-		    		nextRoom.unLock();
-			    	currentRoom = nextRoom;
-			    	System.out.println("Room unlocked.");
-			    	System.out.println(currentRoom.getLongDescription());
-	    		} else {
-		    		System.out.println("Allright, have a nice day.");
-		    	}			
-	    	} else {
-	    		System.out.println("The room is locked. Try to find a key.");
-	    	}
-	    
-	    //Check whether the exit is through a trapdoor.
-	    } else if(!nextRoom.hasExitToRoom(currentRoom)) {
-	    	
-	    	//Asks the player if he would like to enter anyways.
-	    	System.out.println("You are trying to enter a trapdoor. Proceed? (yes/no)");
-	    	if(getYesNoAnswer(parser.getCommand())) {
-		    	currentRoom = nextRoom;
-		    	System.out.println("Good Luck!");
-		    	System.out.println(currentRoom.getLongDescription());
-	    	} else {
-	    		System.out.println("Allright, have a nice day.");
-	    	}
-    	//Default
-	    } else {
-	        currentRoom = nextRoom; 
-	        System.out.println(currentRoom.getLongDescription());
-	    }
-	}
+        currentRoom = map.movePlayer(direction);
+    }
+    
+    /**
+     * Takes an item from the rooms inventory and places it into the players inventory.
+     * 
+     * @param command The command that contains the item to transfer.
+     */
+    private void takeItem(Command command) {
+    	if(!command.hasSecondWord()) {
+    		System.out.println("Take what?");
+    	} else {
+    		transferItem(currentRoom.getInventory(), player.getInventory(), command.getSecondWord());
+    	}
+    }
+    
+    /**
+     * Takes an item from the players inventory and places it into the rooms inventory.
+     * 
+     * @param command The command that contains the item to transfer.
+     */
+    private void dropItem(Command command) {
+    	if(!command.hasSecondWord()) {
+    		System.out.println("Drop what?");
+    	} else {
+    		transferItem(player.getInventory(), currentRoom.getInventory(), command.getSecondWord());
+    	}
+    }
+    
+    /**
+     * Transfers an item between two inventories. 
+     * 
+     * @param origin The inventory that currently contains the item.
+     * @param recipient The inventory in which to move the item.
+     * @param item The items name.
+     */
+    private void transferItem(Inventory origin, Inventory recipient, String item) {
+    	Item transfer = origin.getItemByName(item);
+    	if(transfer != null) {
+    		recipient.addItem(transfer);
+    		origin.removeItem(transfer);
+    	} else {
+    		System.out.println("The origin inventory doesn't contain the item youre trying to exchange.");
+    	}
+    }
 
     /** 
      * "Quit" was entered. Check the rest of the command to see
