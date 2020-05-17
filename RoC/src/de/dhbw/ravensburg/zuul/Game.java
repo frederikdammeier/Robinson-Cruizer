@@ -189,10 +189,32 @@ public class Game
         System.out.println("Your command words are:");
         parser.showCommands();
     }
+    
+    /**
+     * Can be used to ask the player a yes/no question.
+     * 
+     * @param command
+     * @return true if yes, false if otherwise
+     */
+    private boolean getYesNoAnswer(Command command) {
+    	if(command.isUnknown()) {
+    		System.out.println("I dont know what you mean.");
+    		return false;
+    	} else if(command.getCommandWord().equals("yes")) {
+    		return true;
+    	} 
+    	return false;
+    }
 
     /** 
      * Try to go in to one direction. If there is an exit, enter the new
      * room, otherwise print an error message.
+     * 
+     * If a room is locked, the method checks whether the player has the correct key to open it.
+     * Then the player gets asks whether he would like to open the door to the next room.
+     * 
+     * If a room can only be entered through a trap door, the player gets a warning.
+     * He gets asked whether he would like to proceed anyways.
      */
     private void goRoom(Command command) 
     {
@@ -204,8 +226,51 @@ public class Game
 
         String direction = command.getSecondWord();
 
-        currentRoom = map.movePlayer(direction);
-    }
+        // Try to leave current room.
+	    Room nextRoom = currentRoom.getExit(direction);
+	    
+	    //check if a exit to the desired direction even exists.
+	    if (nextRoom == null) {
+	        System.out.println("There is no way to go!");
+	    
+	        
+	    //Check whether the room is locked.
+	    } else if(nextRoom.isLocked()){
+	    	if(player.getInventory().containsItem(nextRoom.getKey().getName())) {
+	    		
+	    		//Ask the player if he wants to unlock the room.
+	    		System.out.println("The room is locked. Do you want to unlock it now? (yes/no)");
+	    		if(getYesNoAnswer(parser.getCommand())) {
+		    		nextRoom.unLock();
+			    	currentRoom = nextRoom;
+			    	System.out.println("Room unlocked.");
+			    	System.out.println(currentRoom.getLongDescription());
+	    		} else {
+		    		System.out.println("Allright, have a nice day.");
+		    	}			
+	    	} else {
+	    		System.out.println("The room is locked. Try to find a key.");
+	    	}
+	    
+	    //Check whether the exit is through a trapdoor.
+	    } else if(!nextRoom.hasExitToRoom(currentRoom)) {
+	    	
+	    	//Asks the player if he would like to enter anyways.
+	    	System.out.println("You are trying to enter a trapdoor. Proceed? (yes/no)");
+	    	if(getYesNoAnswer(parser.getCommand())) {
+		    	currentRoom = nextRoom;
+		    	System.out.println("Good Luck!");
+		    	System.out.println(currentRoom.getLongDescription());
+	    	} else {
+	    		System.out.println("Allright, have a nice day.");
+	    	}
+    	//Default
+	    } else {
+	        currentRoom = nextRoom; 
+	        System.out.println(currentRoom.getLongDescription());
+	    }
+	}
+
     
     /**
      * Takes an item from the rooms inventory and places it into the players inventory.

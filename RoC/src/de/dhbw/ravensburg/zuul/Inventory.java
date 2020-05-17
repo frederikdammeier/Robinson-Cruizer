@@ -50,6 +50,27 @@ public class Inventory {
 	}
 	
 	/**
+	 * Checks whether the inventory contains the given item.
+	 * 
+	 * @param item 
+	 * @return
+	 */
+	public boolean containsItem(String item) {
+		boolean foundItem = false;
+		Item tmp;
+		
+		ListIterator<Item> it = inventory.listIterator();
+		
+		while(!foundItem && it.hasNext()) {
+			tmp = it.next();
+			if(item.equals(tmp.getName())) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	/**
 	 * Returns an Item in the list by its name.
 	 * 
 	 * @param name The name to look for.
