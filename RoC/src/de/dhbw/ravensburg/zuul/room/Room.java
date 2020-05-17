@@ -30,7 +30,9 @@ public class Room
     private RoomType type;											//To determine the graphical representation for the room.
     protected HashMap<String, Integer> creatureSpawnProbability;  	//Stores a mapping of creatures in percentages
     protected HashMap<String, Integer> itemSpawnProbability; 		//Stores a mapping of items in percentages
-
+    private boolean locked;
+    private RoomKey key;
+    
 	/**
      * Create a room described "description". Initially, it has
      * no exits. "description" is something like "a kitchen" or
@@ -41,13 +43,14 @@ public class Room
      */
     public Room(String description, Item... specialItems) 
     {
+    	locked = false;
         this.description = description;
         exits = new HashMap<>();
         setInventory();
         creatureInRoom = null;
         type = RoomType.EMPTY_ROOM;
         
-        inventory.addMultipleItems(specialItems);
+        inventory.addMultipleItems(specialItems);  
     }
     
     /**
@@ -61,6 +64,7 @@ public class Room
      * @param specialItems Items to add to the room.
      */
     public Room(String description, Creature creature, Item... specialItems) {
+    	locked = false;
     	this.description = description;
         exits = new HashMap<>();
         setInventory();
@@ -83,6 +87,7 @@ public class Room
      * @param specialItems Items to add to the room.
      */
 	public Room(String description, Creature creature, RoomType type, Item... specialItems) {
+		locked = false;
 		this.description = description;
         exits = new HashMap<>();
         setInventory();
@@ -297,12 +302,47 @@ public class Room
     }
     
     /**
-     * A reference to the rooms inventory instance.
+     * To be called on initialization if a room should be locked.
      * 
-     * @return The rooms inventory instance.
+     * @param key The key required to unlock the room;
+     */
+    public void lockRoom(RoomKey key) {
+    	locked = true;
+    	this.key = key;
+    }
+    
+    /**
+     * Check whether the room is locked.
+     * 
+     * @return true if locked, false if unlocked.
+     */
+    public boolean isLocked() {
+    	return locked;
+    }
+    
+    /**
+     * Unlocks the room.
+     */
+    public void unLock() {
+    	locked = false;
+    }
+    
+    /**
+     * A reference to the room's inventory instance.
+     * 
+     * @return The room's inventory instance.
      */
     public Inventory getInventory() {
     	return inventory;
+    }
+    
+    /**
+     * Getter for the room's key.
+     * 
+     * @return The room's key.
+     */
+    public RoomKey getKey(){
+    	return key;
     }
     
     /**
@@ -320,5 +360,26 @@ public class Room
 	protected void setType(RoomType type) {
 		this.type = type;
 	}
+	
+	/**
+	 * Checks whether a given directional exit exists for a room.
+	 * 
+	 * @param exit
+	 * @return
+	 */
+	public boolean hasExit(String exit) {
+		return exits.containsKey(exit);
+	}
+	
+	/**
+	 * Checks whether the room has an exit towards the given room.
+	 * 
+	 * @param room The room to check for.
+	 * @return
+	 */
+	public boolean hasExitToRoom(Room room) {
+		return exits.containsValue(room);
+	}
+	
 }
 

@@ -9,7 +9,7 @@ package de.dhbw.ravensburg.zuul.item;
  * All items can be taken into the "Player"s inventory.
  * 
  * @author Philipp Schneider
- * @version 02.05.2020
+ * @version 17.05.2020
  */
 
 public class Item {
@@ -45,5 +45,18 @@ public class Item {
 	public float getWeight() {
 		return weight;
 	}
-		
+	
+	/**
+	 * To check if 2 items are internally identical.
+	 * 
+	 * @param Item the Item to compare to.
+	 * @return 
+	 */
+	public boolean equals(Item item) {
+		if(item != null) {
+			return item.getWeight() == weight && item.getName().equals(name);
+		} else {
+			return false;
+		}
+	}		
 }

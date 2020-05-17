@@ -1,6 +1,8 @@
 package de.dhbw.ravensburg.zuul;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.ListIterator;
+
 import de.dhbw.ravensburg.zuul.item.Item;
 
 /**
@@ -44,6 +46,27 @@ public class Inventory {
 	 */
 	public boolean containsItem(Item item) {
 		return inventory.contains(item);
+	}
+	
+	/**
+	 * Checks whether the inventory contains the given item.
+	 * 
+	 * @param item 
+	 * @return
+	 */
+	public boolean containsItem(String item) {
+		boolean foundItem = false;
+		Item tmp;
+		
+		ListIterator<Item> it = inventory.listIterator();
+		
+		while(!foundItem && it.hasNext()) {
+			tmp = it.next();
+			if(item.equals(tmp.getName())) {
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	/**
