@@ -194,7 +194,7 @@ public class Game
 
         String direction = command.getSecondWord();
 
-        currentRoom = map.movePlayer(direction);
+        currentRoom = map.movePlayer(direction, player.getInventory());
     }
 
     /** 

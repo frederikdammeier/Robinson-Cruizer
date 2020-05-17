@@ -13,7 +13,7 @@ import de.dhbw.ravensburg.zuul.room.*;
  * 
  * @author Frederik Dammeier
  * 
- *@version 14.05.2020
+ *@version 17.05.2020
  */
 public class Map {
 	private Room currentRoom;
@@ -74,9 +74,10 @@ public class Map {
 		ruinStairCase1 = new Ruin("in the ruins: Staircase", null);
 		map.add(ruinStairCase1);
 		
-		ruinWatchTower = new Ruin("on the top of the Watchtower", null, RoomType.RUIN_TOP);
+		ruinWatchTower = new Ruin("on the top of the Watchtower", null, RoomType.RUIN_TOP, new RoomKey("Key to the Library"));
 		map.add(ruinWatchTower);
 		ruinLibrary = new Ruin("in the ruins: Aincient Library", null);
+		ruinLibrary.lockRoom(new RoomKey("Key to the Library"));
 		map.add(ruinLibrary);
 		ruinPraying = new Ruin("in the ruins: Holy Artefact", null);
 		map.add(ruinPraying);
@@ -152,16 +153,27 @@ public class Map {
 	 * Tries to move the player into another room given a direction.
 	 * 
 	 * @param direction The direction in which to move the player.
+	 * @param playerInv The players inventory. Needed to check whether he own the needed key.
 	 * @return The room in which the player got moved. Returns the currentRoom if exit doesn't exist.
 	 */
-	public Room movePlayer(String direction) {
+	public Room movePlayer(String direction, Inventory playerInv) {
 		// Try to leave current room.
 	    Room nextRoom = currentRoom.getExit(direction);
 
 	    if (nextRoom == null) {
 	        System.out.println("There is no way to go!");
 	    }
-	    else {
+	    else if(nextRoom.isLocked()){
+	    	if(playerInv.containsItem(nextRoom.getKey().getName())) {
+	    		nextRoom.unLock();
+	    		currentRoom = nextRoom;
+	    		System.out.println("The next room has been unlocked because you have the key in your inventory.");
+	    		System.out.println(currentRoom.getLongDescription());
+	    	} else {
+	    		System.out.println("The room is locked. Try to find a key.");
+	    	}
+	    	
+	    } else {
 	        currentRoom = nextRoom; 
 	        System.out.println(currentRoom.getLongDescription());
 	    }
