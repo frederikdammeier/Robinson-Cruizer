@@ -28,10 +28,12 @@ public class Game
     private Timer timer;
     private Player player;
     private boolean finished;
+    private boolean dead;
     private Map map;
     private long timeLimit;
     private float enemyDamageRate;
-    
+    private Predator predator;
+	private Thread predatorThread;
     
 
 	/**
@@ -42,10 +44,12 @@ public class Game
     	timer = new Timer();
         map = new Map();
         parser = new Parser();
+        predator = new Predator(this);
         player = new Player("Players Name", difficulty.getInventoryCapacity(), 100); 
         currentRoom = map.getCurrentRoom();
         timeLimit = difficulty.getTimeLimit();
         enemyDamageRate = difficulty.getEnemyDamageRate();
+        
     }
 
     /**
@@ -60,11 +64,16 @@ public class Game
         Thread timeThread = new Thread(timer, "timer");
         timeThread.start();
         
+        //Starts the preditor class for the first time.
+        predatorThread = new Thread(predator, "predator");		
+        predatorThread.start();
+        
         // Enter the main command loop.  Here we repeatedly read commands and
         // execute them until the game is over.
-                
+           
+        dead = false;
         finished = false;
-        while (! finished && timer.getTimePassedSeconds() < timeLimit) {
+        while (! finished && timer.getTimePassedSeconds() < timeLimit && !dead) {
             Command command = parser.getCommand();
             finished = processCommand(command);
             printTimePassed();
@@ -270,8 +279,14 @@ public class Game
 	    	}
     	//Default
 	    } else {
-	        currentRoom = nextRoom; 
-	        System.out.println(currentRoom.getLongDescription());
+	    	//interrupt preditorThread when leaving a room
+        	predatorThread.interrupt();
+            currentRoom = nextRoom;
+            System.out.println(currentRoom.getLongDescription());
+            
+            //restarting the preditorThread
+            predatorThread = new Thread(predator, "predator");
+            predatorThread.start();
 	    }
 	}
 
@@ -352,5 +367,21 @@ public class Game
     
     public void setFinished(boolean finished) {
 		this.finished = finished;
+	}
+
+	public Player getPlayer() {
+		return player;
+	}
+
+	public Room getCurrentRoom() {
+		return currentRoom;
+	}
+
+	public long getGameTime() {
+		return timer.getTimePassedSeconds();
+	}
+
+	public void setDead() {
+		dead = true;
 	}
 }
