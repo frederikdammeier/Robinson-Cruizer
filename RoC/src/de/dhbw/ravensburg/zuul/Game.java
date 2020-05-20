@@ -22,11 +22,13 @@ import de.dhbw.ravensburg.zuul.item.*;
 public class Game 
 {
     private Parser parser;
-    private static Room currentRoom; 
-	private static Timer timer;
-    private static Player player;
-	private static boolean finished;
-	private Preditor preditor;
+    private Room currentRoom; 
+	private Timer timer;
+    private Player player;
+	private boolean finished;
+	private boolean dead;
+	private Predator predator;
+	private Thread predatorThread;
     
     
 
@@ -35,11 +37,13 @@ public class Game
      */
     public Game() 
     {
+    	dead = false;
     	timer = new Timer();
-    	preditor = new Preditor();
         createRooms();
-        parser = new Parser();				//------------------------------------------------------------
-        player = new Player("Players Name", 20f, 100); 
+        parser = new Parser();				
+        player = new Player("Players Name", 20f, 50); 
+        predator = new Predator(this);
+
     }
 
     /**
@@ -64,7 +68,7 @@ public class Game
 		southBeach = new Beach("on the Beach", null, RoomType.BEACH_SOUTH);
 		
 		//Initialize: Forest
-		westForest = new Forest("in the Forest", new Ape(50), RoomType.FOREST);
+		westForest = new Forest("in the West Forest", new WaterPig(50), RoomType.FOREST);
 		eastForest = new Forest("in the Forest",new Ape(50), RoomType.FOREST);
 		northForest = new Forest("in the Forest", new Ape(50), RoomType.FOREST);
 		southForest = new Forest("in the Forest", new Ape(50), RoomType.FOREST);
@@ -155,20 +159,22 @@ public class Game
      */
     public void play() 
     {    
-    	// execute them until the game is over.
-    	finished = false;
+    	
+    	finished = false;  
         printWelcome();
         //Add a new Timer to measure passed game Time.
         Thread timeThread = new Thread(timer, "timer");
         timeThread.start();
         
-        //Starts the preditor class, so preditor creatures will attack the player
-        Thread preditorThread = new Thread(preditor, "preditor");		//----------------------------
-        preditorThread.start();
+        
+        //Starts the preditor class for the first time.
+        predatorThread = new Thread(predator, "predator");		
+        predatorThread.start();
+       
                 
         // Enter the main command loop.  Here we repeatedly read commands and
-                        
-        while (! finished) {
+        // execute them until the game is over.
+        while (! finished && !dead) {
         	
             Command command = parser.getCommand();
             finished = processCommand(command);
@@ -309,8 +315,15 @@ public class Game
             System.out.println("There is no way to go!");
         }
         else {
+        	
+        	//interrupt preditorThread when leaving a room
+        	predatorThread.interrupt();
             currentRoom = nextRoom;
             System.out.println(currentRoom.getLongDescription());
+            
+            //restarting the preditorThread
+            predatorThread = new Thread(predator, "predator");
+            predatorThread.start();
             
         }
     }
@@ -345,27 +358,27 @@ public class Game
     /*
      *sets boolean "finished" true. therefore ends the game.
      */
-    public static void setFinished() {
-		finished = true;
+    public void setDead() {
+		dead = true;
 	}
     
     /*
      * @return the current room the player is in
      */
-    public static Room getCurrentRoom() {
+    public Room getCurrentRoom() {
 		return currentRoom;
 	}
     
     /*
      * @return time since the game was started
      */
-    public static long getGameTime() {
+    public long getGameTime() {
     	return timer.getTimePassedSeconds();
     }
     /*
      * @return the player
      */
-    public static Player getPlayer() {
+    public Player getPlayer() {
 		return player;
 	}
 }

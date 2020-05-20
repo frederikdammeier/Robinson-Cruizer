@@ -29,7 +29,7 @@ public class Player {
 		hunger = 100;
 		health = this.maxLife = maxLife;
 		inventory = new Inventory(inventorySize);
-		damage = 100;
+		damage = 20;
 	}
 	
 	
