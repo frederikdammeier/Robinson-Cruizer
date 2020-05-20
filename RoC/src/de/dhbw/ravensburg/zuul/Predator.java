@@ -3,10 +3,11 @@ package de.dhbw.ravensburg.zuul;
 import de.dhbw.ravensburg.zuul.creature.*;
 
 /**
- * The predator thread handels peaceful and agressive interactions by creatures.
+ * The predator thread handels peaceful and agressive actions by creatures.
  * 
- * If a creature is peaceful, the thread is still running, to check if this is going to change.
+ * 
  * If a creature is aggressive, damage is transefers to the player.
+ * If a creature is peaceful, the thread is still running, to check if this is going to change.
  * If there is no creature in a room (anymore), the thread is ended.
  * 
  * @author Philipp Schneider
