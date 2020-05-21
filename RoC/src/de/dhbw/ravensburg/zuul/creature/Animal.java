@@ -3,9 +3,7 @@ import de.dhbw.ravensburg.zuul.item.*;
 
 /**
  * Class Animal - an animal in an adventure game.
- *
- * This class is part of the "World of Zuul" application. 
- * "World of Zuul" is a very simple, text based adventure game.  
+ *  
  *
  * A "Animal" can be a monkey, ape,snake or water pig. They have the ability. 
  * Some attack the player and cause damage. A dead animal will drop an Item.  
@@ -17,12 +15,11 @@ import de.dhbw.ravensburg.zuul.item.*;
 public class Animal extends Creature {
 	
 	/**
-	 * Create an animal the number of lifepoints the animal has.
-	 * It calls the constructor from the superclass "Creature".
-	 * @param lifepoints  The number of lifepoints the animal has. 
+	 * Create an animal.
+	 * It calls the constructor from the superclass "Creature". 
 	 */	
-	public Animal(int lifepoints) {
-		super(lifepoints);
+	public Animal() {
+		super();
 		setDropItem(new Meat());
 		
 	}

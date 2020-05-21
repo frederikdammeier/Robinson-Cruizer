@@ -7,10 +7,7 @@ import de.dhbw.ravensburg.zuul.item.*;
 
 
 /**
- * Class Creature - a creature in an adventure game.
- *
- * This class is part of the "World of Zuul" application. 
- * "World of Zuul" is a very simple, text based adventure game.  
+ * Class Creature - a creature in an adventure game. 
  *
  * A "Creature" can be an "Animal" or an "Human". Creatures have different abilities
  * and can help or attack you. 
@@ -35,14 +32,10 @@ public class Creature {
 
 
 	/**
-     * Create a "Creature" with the value lifepoints.
+     * Create a "Creature".
      * This constructor is used for "Human" and "Animal".   
-     * @param lifepoints  The number of lifepoints the Creature has.
      */
-	public Creature(int lifepoints) {  
-		
-		this.lifepoints = lifepoints;	
-
+	public Creature() {  	
 
 	}
 	
