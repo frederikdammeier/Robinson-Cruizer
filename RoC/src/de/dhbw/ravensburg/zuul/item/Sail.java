@@ -14,6 +14,7 @@ public class Sail extends Item {
 	 */
 	public Sail() {
 		super("Sail", 3f);
+		setPortable(true);
 	}
 
 }

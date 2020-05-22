@@ -17,7 +17,6 @@ public class Sword extends Weapon {
 
 	public Sword() {
 		super("Sword", 2.0f , 60);
-		// TODO Auto-generated constructor stub
 	}
 
 }

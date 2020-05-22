@@ -35,7 +35,7 @@ public class Map {
 		
 		
 		//Initialize: Beaches
-		westBeach = new Beach("on the Beach", new WaterPig(50), RoomType.BEACH_WEST, new Apple(), new Apple(), new Banana());
+		westBeach = new Beach("on the Beach", new WaterPig(50), RoomType.BEACH_WEST, new Stick(), new Sword(), new Apple(), new Apple(), new Banana());
 		map.add(westBeach);
 		eastBeach = new Beach("on the Beach", null, RoomType.BEACH_EAST);
 		map.add(eastBeach);
@@ -54,7 +54,7 @@ public class Map {
 		southForest = new Forest("in the Forest", null, RoomType.FOREST);
 		map.add(southForest);
 		
-		redWoodTree = new Forest("at the large tree", null, RoomType.REDWOOD);
+		redWoodTree = new Forest("at the large tree", null, RoomType.REDWOOD, new MagicMushroom());
 		map.add(redWoodTree);
 		deepForest = new Forest("in the dark forest", null, RoomType.DEEP_FOREST);
 		map.add(deepForest);

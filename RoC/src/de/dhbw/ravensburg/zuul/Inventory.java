@@ -217,6 +217,10 @@ public class Inventory {
 		return sb.toString();
 	}
 	
+	public void setUnlimited() {
+		unlimited = true;
+	}
+	
 	
 } 
 

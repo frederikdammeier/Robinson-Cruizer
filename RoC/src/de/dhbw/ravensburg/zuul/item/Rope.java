@@ -15,6 +15,7 @@ public class Rope extends Item {
 	 */
 	public Rope() {
 		super("Rope", 1.5f);
+		setPortable(true);
 	}
 
 }

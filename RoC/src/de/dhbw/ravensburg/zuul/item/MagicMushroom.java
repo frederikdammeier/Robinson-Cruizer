@@ -1,11 +1,13 @@
 package de.dhbw.ravensburg.zuul.item;
 
+
 /**
  * Class MagicMushroom - Food with predefined values and special features.
  * 
  * @author Philipp Schneider
  * @version 03.05.2020
  */
+
 
 public class MagicMushroom extends Food {
 
@@ -15,8 +17,7 @@ public class MagicMushroom extends Food {
 	 * @param nutrition	The nutritional-value of this food.
 	 */
 	public MagicMushroom() {
-		super("Magic Mushroom", 0.333f, 100);
-
+		super("Magic-Mushroom", 0.333f, 100);
 	}
 
 }

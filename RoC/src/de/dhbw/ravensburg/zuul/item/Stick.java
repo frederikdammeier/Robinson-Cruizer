@@ -17,7 +17,7 @@ public class Stick extends Weapon {
 	
 	public Stick() {
 		super("Stick", 0.2f, 20);
-		
+
 	}
 
 }

@@ -23,8 +23,10 @@ public class Food extends Item {
 	 * @param nutrition	The nutrional value of the food.
 	 */
 	public Food(String name, float weight, int nutrition) {
+		
 		super(name, weight);
 		this.nutrition = nutrition;
+		setPortable(true);
 	}
 
 	/**
