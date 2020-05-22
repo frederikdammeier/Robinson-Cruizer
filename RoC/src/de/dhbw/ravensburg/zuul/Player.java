@@ -1,5 +1,6 @@
 package de.dhbw.ravensburg.zuul;
 
+
 /**
  * It holds variables and methods for the main protagonist of the game.
  * 
@@ -27,7 +28,7 @@ public class Player {
 		hunger = 100;
 		health = this.maxLife = maxLife;
 		inventory = new Inventory(inventorySize);
-		damage = 100;
+		damage = 0;
 	}
 	
 	
@@ -40,14 +41,14 @@ public class Player {
 		hunger += amount;
 		if(hunger < 0) hunger = 0;
 		else if(hunger > 100) hunger = 100;
+		
 	}
 	
 	/**
-	 * 
 	 * @param amount that damage increases/decreases.
 	 */
 	public void setDamage(int amount) {
-		damage = damage + amount;
+		damage =  amount;
 	}
 	
 	/**

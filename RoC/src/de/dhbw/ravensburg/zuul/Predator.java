@@ -32,7 +32,8 @@ public class Predator implements Runnable {
 	@Override
 	public void run() {
 System.out.println("");
-		
+
+
 		// Check if the thread has been interrupted
 		while (!Thread.currentThread().isInterrupted()) {
 
@@ -66,6 +67,8 @@ System.out.println("");
 				} else {
 					System.out.println("killed by " + creatureInRoom.getName());
 					game.setDead();
+					Command quitGame = new Command("quit", null); //----Kill player
+					game.quit(quitGame);
 					return;
 				}
 

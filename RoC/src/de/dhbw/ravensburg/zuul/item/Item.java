@@ -18,6 +18,8 @@ public class Item {
 	private String name;
 	/** The weight of an item*/
 	private float weight;
+	/** The weight of an item*/
+	private boolean portable;
 	
 	/**
 	 * Create an item that is described with "name" and has a specific weight.
@@ -58,5 +60,12 @@ public class Item {
 		} else {
 			return false;
 		}
-	}		
+	}
+
+	public boolean isPortable() {
+		return portable;
+	}
+	public void setPortable(boolean value) {
+		portable= value;
+	}
 }

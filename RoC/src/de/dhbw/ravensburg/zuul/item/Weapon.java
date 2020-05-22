@@ -25,6 +25,7 @@ public class Weapon extends Item {
 	public Weapon(String name, float weight, int damage) {
 		super(name, weight);
 		this.damage = damage;
+		setPortable(true);
 	}
 
 	/**

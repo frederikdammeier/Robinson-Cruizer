@@ -14,5 +14,6 @@ public class RoomKey extends Item {
 	 */
 	public RoomKey(String name) {
 		super(name, 0.0f);
+		setPortable(true);
 	}
 }

@@ -13,6 +13,7 @@ public class Timber extends Item {
 	 */
 	public Timber() {
 		super("Timber", 5f);
+		setPortable(true);
 	}
 
 }

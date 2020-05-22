@@ -15,6 +15,7 @@ public class Resin extends Item {
 	 */
 	public Resin() {
 		super("Resin", 1f);
+		setPortable(true);
 	}
 
 }
