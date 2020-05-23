@@ -5,14 +5,14 @@ package de.dhbw.ravensburg.zuul;
  * It is used to recognise commands as they are typed in.
  *
  * @author  Michael Kölling and David J. Barnes
- * @version 17.05.2020
+ * @version 23.05.2020
  */
 
 public class CommandWords
 {
     // a constant array that holds all valid command words
     private static final String[] validCommands = {
-        "go", "quit", "help", "look", "attack", "teleport", "take", "drop", "showInv", "yes", "no", "buildBoat"
+        "go", "quit", "help", "look", "attack", "teleport", "take", "drop", "showInv","talk", "yes", "no", "buildBoat"
     };
 
     /**

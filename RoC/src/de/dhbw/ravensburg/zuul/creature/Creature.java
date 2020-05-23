@@ -1,24 +1,22 @@
 package de.dhbw.ravensburg.zuul.creature;
 
-
-
+import de.dhbw.ravensburg.zuul.Parser;
+import de.dhbw.ravensburg.zuul.Inventory;
+import de.dhbw.ravensburg.zuul.Player;
 import de.dhbw.ravensburg.zuul.item.*;
 
 
 
 /**
  * Class Creature - a creature in an adventure game.
- *
- * This class is part of the "World of Zuul" application. 
- * "World of Zuul" is a very simple, text based adventure game.  
- *
+
  * A "Creature" can be an "Animal" or an "Human". Creatures have different abilities
  * and can help or attack you. 
  * "Creature" is the superclasse from "Animal" and "Human".
  * 
 
  * @author  Moritz Link - Philipp Schneider
- * @version 08.05.2020
+ * @version 23.05.2020
  */
 public class Creature {
 
@@ -35,18 +33,14 @@ public class Creature {
 
 
 	/**
-     * Create a "Creature" with the value lifepoints.
+     * Create a "Creature".
      * This constructor is used for "Human" and "Animal".   
-     * @param lifepoints  The number of lifepoints the Creature has.
      */
-	public Creature(int lifepoints) {  
-		
-		this.lifepoints = lifepoints;	
-
-
+	public Creature() {  
+			
 	}
 	
-
+	public void talk(Inventory inventory, Parser parser) {  }
 	/**
 	 * Decreases the creatures livepoints by the amount of damage the player can transfer.
 	 * If the livescore is negativ, it's set to 0. A messeage is printed about the health status of the creature.

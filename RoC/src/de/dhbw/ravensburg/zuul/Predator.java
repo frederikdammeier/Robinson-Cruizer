@@ -31,7 +31,7 @@ public class Predator implements Runnable {
 
 	@Override
 	public void run() {
-System.out.println("");
+		System.out.println("");
 
 
 		// Check if the thread has been interrupted

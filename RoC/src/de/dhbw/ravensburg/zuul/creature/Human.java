@@ -1,50 +1,34 @@
 package de.dhbw.ravensburg.zuul.creature;
-
+import de.dhbw.ravensburg.zuul.Inventory;
+import de.dhbw.ravensburg.zuul.Parser;
 
 /**
  * Class Human - an human in an adventure game.
- *
- * This class is part of the "World of Zuul" application. 
- * "World of Zuul" is a very simple, text based adventure game.  
- *
- * A "Human" can be a mage or an native. They have different abilities
+
+ * A "Human" can be a mage, an native, a prisoner, Freitag or a hunter. They have different abilities
  * and can help or attack you. 
  * "Human" is a subclass from "Creature" and uses one constructor of "Creature". 
- * "Human" is the superclass from "Mage" and "Native".
  * 
  * @author  Moritz Link
- * @version 04.05.2020
+ * @version 23.05.2020
  */
 public class Human extends Creature{
 	
 	
 	/**
-     * Create a human  with with number of lifepoints. 
-     * It calls the constructor from the superclass "Creature".
-     * This constructor is used for "Native" and "Mage". 
-     * @param lifepoints  The number of lifepoints the Human has. 
+     * Create a human. 
+     * It calls the constructor from the superclass "Creature". 
      */	
-	public Human(int lifepoints) {
-		super( lifepoints);	
+	public Human() {
+		super( );	
 		
 	}
 
 	
-	/**
-     * Defines what the human can tell you and if he is a friend or an enemy. 
-     * @return String which depends on the value of innocent. 
-     */
-	public void talk() {
-		if(getPeaceful() == true) {
-			System.out.println("Hello nice to meet you my friend. My name is " + getName());
-			System.out.println("I can help you if you want.");
-		}
-		else if(getPeaceful() == false) {
-			System.out.println(getName() + " I want to kill you." );
-		
-		}
-		
-		
-	}
+	/* * Defines the Dialog between the player and the other Human.
+	 * Defines what happens when the player wants to talk with the Human. 
+	 * The effect depends on the different Human.
+	 */
+	public void talk(Inventory inventory, Parser parser) {  }
 
 }

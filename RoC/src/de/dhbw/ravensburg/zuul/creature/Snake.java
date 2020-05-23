@@ -3,10 +3,7 @@ package de.dhbw.ravensburg.zuul.creature;
 
 /**
  * Class Snake - a snake in an adventure game.
- *
- * This class is part of the "World of Zuul" application. 
- * "World of Zuul" is a very simple, text based adventure game.  
- *
+ * 
  * A "Snake" is an animal in the game and has the ability to attack the player and drop an Item.  
  * A dead snake will drop "Meat" as an Item.  
  * "Snake" is a subclass from "Animal"
@@ -18,12 +15,12 @@ public class Snake extends Animal {
 
 	
 	/**
-	 * Create a snake the number of lifepoints the snake has.
-	 * It calls the constructor from the superclass "Animal".
-	 * @param lifepoints  The number of lifepoints the snake has. 
+	 * Create a snake.
+	 * It calls the constructor from the superclass "Animal". 
 	 */
-	public Snake(int lifepoints) {
-		super(lifepoints);
+	public Snake() {
+		super();
+		setLifepoints(30);
 		setName("Snake");
 		setPeaceful(false);
 		setDamage(15);

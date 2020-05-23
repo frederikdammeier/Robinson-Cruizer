@@ -17,7 +17,7 @@ import java.util.ArrayList;
  * 
  * @author Michael Kölling and David J. Barnes - further developed by Frederik
  *         Dammeier - Philipp Schneider
- * @version 17.05.2020
+ * @version 23.05.2020
  */
 
 public class Game {
@@ -48,6 +48,9 @@ public class Game {
 		currentRoom = map.getCurrentRoom();
 		timeLimit = difficulty.getTimeLimit();
 		enemyDamageRate = difficulty.getEnemyDamageRate();
+		
+		player.getInventory().addItem(new Key());
+		player.getInventory().addItem(new Meat());
 
 	}
 
@@ -137,6 +140,9 @@ public class Game {
         	boatBuilder.buildBoat(player.getInventory());
         	System.out.println("A boat has been built and added to your inventory.");
         }
+		else if(commandWord.equals("talk")) {
+			currentRoom.getCreature().talk(player.getInventory(), parser);
+		}
 		// else command not recognised.
 		return wantToQuit;
 	}

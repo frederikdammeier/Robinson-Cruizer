@@ -126,19 +126,19 @@ public class Room
 			//Generate chosen Creature
 			switch(helperArray[r]){
 			case "Ape": 
-				creatureInRoom = new Ape(50);
+				creatureInRoom = new Ape();
 				break;
 			case "Mage": 
-				creatureInRoom = new Mage(50);
+				creatureInRoom = new Mage();
 				break;
 			case "Native": 
-				creatureInRoom = new Native(50);
+				creatureInRoom = new Native();
 				break;
 			case "Snake": 
-				creatureInRoom = new Snake(50);
+				creatureInRoom = new Snake();
 				break;
 			case "Waterpig": 
-				creatureInRoom = new WaterPig(50);
+				creatureInRoom = new WaterPig();
 				break;
 			}
 		}

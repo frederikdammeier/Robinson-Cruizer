@@ -32,7 +32,7 @@ public class Map {
 		map = new ArrayList<>();
 		
 		//Initialize: Beaches
-		westBeach = new Beach("on the Beach", new WaterPig(50), RoomType.BEACH_WEST, new Stick(), new Sword(), new Apple(), new Apple(), new Banana());
+		westBeach = new Beach("on the Beach", new WaterPig(), RoomType.BEACH_WEST, new Stick(), new Sword(), new Apple(), new Apple(), new Banana());
 		map.add(westBeach);
 		eastBeach = new Beach("on the Beach", null, RoomType.BEACH_EAST);
 		map.add(eastBeach);
@@ -42,7 +42,7 @@ public class Map {
 		map.add(southBeach);
 		
 		//Initialize: Forest
-		westForest = new Forest("in the Forest", null, RoomType.FOREST);
+		westForest = new Forest("in the Forest", new Native(), RoomType.FOREST);
 		map.add(westForest);
 		eastForest = new Forest("in the Forest", null, RoomType.FOREST);
 		map.add(eastForest);
@@ -78,7 +78,7 @@ public class Map {
 		map.add(ruinLibrary);
 		ruinPraying = new Ruin("in the ruins: Holy Artefact", null);
 		map.add(ruinPraying);
-		ruinMage = new Ruin("in the ruins: Mage", new Mage(60));
+		ruinMage = new Ruin("in the ruins: Mage", new Mage());
 		map.add(ruinMage);
 		ruinDungeon = new Ruin("in the ruins: Dungeon", null);
 		ruinLaboratory = new Ruin("in the ruins: Abandoned Laboratory", null);
