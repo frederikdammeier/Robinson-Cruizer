@@ -1,8 +1,10 @@
 package de.dhbw.ravensburg.zuul.creature;
+import de.dhbw.ravensburg.zuul.Command;
 import de.dhbw.ravensburg.zuul.Inventory;
+import de.dhbw.ravensburg.zuul.Parser;
 import de.dhbw.ravensburg.zuul.item.*;
 
-import java.util.Scanner;
+
 /**
  * Class Prisoner - a prisoner in an adventure game.
  *
@@ -14,7 +16,7 @@ import java.util.Scanner;
  * @version 21.05.2020
  */
 public class Prisoner extends Human{
-	private Inventory inventory;
+	private Key tradeItem;
 	
 	/**
 	 * Create the prisoner and set the abilities the prisoner has.
@@ -24,9 +26,8 @@ public class Prisoner extends Human{
 		super();
 		setLifepoints(50);
 		setPeaceful(true);
-		setTrade(new Key());
 		setName("Guy Fawkes");
-		
+		tradeItem = new Key();
 		}
 	
 	/**
@@ -34,37 +35,37 @@ public class Prisoner extends Human{
 	 * Here the player gets in exchange for the Key the information where the mage is. 
 	 */
 	@Override
-	public void talk() {
-		Scanner scanner = new Scanner(System.in);
-		Item key = new Key();
-		System.out.println("Ah please help me. I am in this Prison since two weeks. ");
+	public void talk(Inventory inventory, Parser parser) {
+		
+		
+		
+		
+		System.out.println("Ah please help me. I am in this Dungeon since two weeks. ");
 		System.out.println("Can you open it? When you will free me i can give you information about the island. ");
 		System.out.println("Do you have the key for me? ");
 		
-		inventory = new Inventory(); //darf ich nicht machen 
-		String answer = scanner.next();
-		answer= answer.toLowerCase();
+		 
+		Command command = parser.getCommand();
 		
-		scanner.close();
-		if(answer.equals("no")) {
-			System.out.println("Then came back if you found it but i won't tell you information without the key. ");
-			System.out.println("Bye. ");
-			return;
-		}
 		
-		if(answer.equals("yes")) {
+		
+		
+		if(command.getCommandWord().equals("yes")) {
 			 
 			// ab hier geht es nicht mehr
 			//bei nein
-			if(inventory.containsItem(key) == false) {
+			
+			if(inventory.containsItem(tradeItem) == false) {
 				System.out.println("Don't try to betray me fuck of. ");
 				return;
 			}
 			
 			//bei ja:
-			if(inventory.containsItem(key) == true) {							
+			if(inventory.containsItem(tradeItem) == true) {							
 				// dann aus dm Inventar entfernen 
-				getInventory().removeItem(getTrade());	
+				
+				
+				inventory.removeItem(tradeItem);	
 			
 				//Info ausgeben			
 				System.out.println("Thank you now i am free. ");
@@ -73,12 +74,13 @@ public class Prisoner extends Human{
 				System.out.println("He waits on the second floor int the Room named ruinMage. "); // Stimmt die Bezwichnung? 
 				System.out.println("I hope you can find him.");
 			}
-			
-			
-		}
-		
-		
-		
+
+	}
+	else {
+		System.out.println("Then came back if you found it but i won't tell you information without the key. ");
+		System.out.println("Bye. ");
+		return;
+	}
 		
 	}
 }

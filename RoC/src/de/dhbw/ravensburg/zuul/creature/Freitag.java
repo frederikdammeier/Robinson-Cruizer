@@ -1,5 +1,7 @@
 package de.dhbw.ravensburg.zuul.creature;
 
+import de.dhbw.ravensburg.zuul.Inventory;
+import de.dhbw.ravensburg.zuul.Parser;
 
 /**
  * Class Freitag
@@ -19,7 +21,7 @@ public class Freitag extends Human{
 	 */	
 	public Freitag() {
 		super();
-		setInvincible(true);
+//		setInvincible(true);
 		setLifepoints(50);
 		setPeaceful(true);		
 		setDropItem(null);
@@ -33,7 +35,7 @@ public class Freitag extends Human{
 	 * Here the player gets information about where he is and what he should do. 
 	 */
 	@Override
-	public void talk() {
+	public void talk(Inventory inventory, Parser parser) {
 		System.out.println("Nice to meet you foreign. My name is Freitag and i see you are in trouble. ");
 		System.out.println("I saw how you ship sunk and you almost died in the water but thanks to god you are alive. ");
 		System.out.println("You are on a island and i believe you want to escape from here. ");

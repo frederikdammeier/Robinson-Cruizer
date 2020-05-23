@@ -1,6 +1,7 @@
 package de.dhbw.ravensburg.zuul.creature;
 import de.dhbw.ravensburg.zuul.Inventory;
-import de.dhbw.ravensburg.zuul.item.Item;
+import de.dhbw.ravensburg.zuul.Parser;
+
 
 /**
  * Class Human - an human in an adventure game.
@@ -14,77 +15,24 @@ import de.dhbw.ravensburg.zuul.item.Item;
  */
 public class Human extends Creature{
 	
-	private Item trade;
-	private Inventory inventory;
+
 	/**
      * Create a human. 
      * It calls the constructor from the superclass "Creature".
      * This constructor is used for "Native", "Freitag", "prisoner", "Hunter" and "Mage".  
      */	
 	public Human() {
-		super();	
-		
+		super();
+			
 	}
-	
+
 	/**
 	 * Defines the Dialog between the player and the other Human.
 	 * Defines what happens when the player wants to talk with the Human. 
 	 * The effect depends on the different Human.
 	 */
-	public void talk() {
-				
-		if(getPeaceful() == true) {
-			System.out.println("Hello nice to meet you my friend. My name is " + getName());
-			System.out.println("I can help you if you want.");
-		}
-		else if(getPeaceful() == false) {
-			System.out.println(getName() + " I want to kill you." );
-		
-		}	
-	}
-
-	public void setInventory(Inventory inventory) {
-		inventory = new Inventory();
-	}
+	public void talk(Inventory inventory, Parser parser) {  }
 	
-
-	public Inventory getInventory() {
-		return inventory;
-	}
-	
-//	public boolean checkTradeItem() {
-//		boolean trade  = false;
-//		
-//		if(inventory.containsItem(key)== true) {
-//			trade = true;
-//			return trade;
-//		}
-		
-//		if(inventory.containsItem(getTrade())== false) {
-//			return false;
-//		}
-		
-		
-//		return trade;
-//	}
-	/** 
-	 * Return the Item the Human wants in exchange for information.
-	 * @return drop The Item the Human wants in exchange for information. 
-	 */
-	public Item getTrade() {
-		return trade;
-	}
-
-
-	/**
-	 * Defines which Item the Human wants in exchange for information. 
-	 * @param drop  The Item the CHuman wants in exchange for information.
-	 */
-	public void setTrade(Item trade) {
-		this.trade= trade;
-		
-		
-	}
 
 	
 }

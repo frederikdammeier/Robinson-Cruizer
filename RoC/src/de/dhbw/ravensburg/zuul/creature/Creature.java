@@ -2,6 +2,10 @@ package de.dhbw.ravensburg.zuul.creature;
 
 
 
+import de.dhbw.ravensburg.zuul.Parser;
+
+import de.dhbw.ravensburg.zuul.Inventory;
+import de.dhbw.ravensburg.zuul.Player;
 import de.dhbw.ravensburg.zuul.item.*;
 
 
@@ -56,7 +60,7 @@ public class Creature {
 		System.out.println(name + " has " + lifepoints + " livepoints left.");
 
 	}
-	
+	public void talk(Inventory inventory, Parser parser) {  }
 	/** 
 	 * Return if the Creature is innocent.
 	 * @return innocent If the Creature is innocent.

@@ -38,6 +38,7 @@ public class Game
         createRooms();
         parser = new Parser();
         player = new Player("Players Name", 20f, 100); 
+       
     }
 
     /**
@@ -56,7 +57,7 @@ public class Game
 		
 		
 		//Initialize: Beaches
-		westBeach = new Beach("on the Beach", new Creature("Pig", true, 0, new Meat(), 10), RoomType.BEACH_WEST);
+		westBeach = new Beach("on the Beach", new Creature(), RoomType.BEACH_WEST);
 		eastBeach = new Beach("on the Beach", null, RoomType.BEACH_EAST);
 		northBeach = new Beach("on the Beach", null, RoomType.BEACH_NORTH);
 		southBeach = new Beach("on the Beach", null, RoomType.BEACH_SOUTH);
@@ -82,7 +83,7 @@ public class Game
 		ruinWatchTower = new Ruin("on the top of the Watchtower", null, RoomType.RUIN_TOP);
 		ruinLibrary = new Ruin("in the ruins: Aincient Library", null);
 		ruinPraying = new Ruin("in the ruins: Holy Artefact", null);
-		ruinMage = new Ruin("in the ruins: Mage", new Mage(60));
+		ruinMage = new Ruin("in the ruins: Mage", new Mage());
 		ruinDungeon = new Ruin("in the ruins: Dungeon", null);
 		ruinLaboratory = new Ruin("in the ruins: Abandoned Laboratory", null);
 		
@@ -221,6 +222,9 @@ public class Game
         }
         else if (commandWord.equals("attack")) {
             playerAttack();
+        }
+        else if (commandWord.equals("talk")) {
+        	currentRoom.getCreature().talk(player.getInventory(), parser);
         }
         // else command not recognised.
         return wantToQuit;

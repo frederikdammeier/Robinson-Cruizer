@@ -1,5 +1,7 @@
 package de.dhbw.ravensburg.zuul.item;
 
+import java.util.Objects;
+
 /**
  * Class Item - an item in the game.
  * 
@@ -9,7 +11,7 @@ package de.dhbw.ravensburg.zuul.item;
  * All items can be taken into the "Player"s inventory.
  * 
  * @author Philipp Schneider
- * @version 02.05.2020
+ * @version 17.05.2020
  */
 
 public class Item {
@@ -18,6 +20,8 @@ public class Item {
 	private String name;
 	/** The weight of an item*/
 	private float weight;
+	/** The weight of an item*/
+	private boolean portable;
 	
 	/**
 	 * Create an item that is described with "name" and has a specific weight.
@@ -45,5 +49,30 @@ public class Item {
 	public float getWeight() {
 		return weight;
 	}
-		
+
+	public boolean isPortable() {
+		return portable;
+	}
+	public void setPortable(boolean value) {
+		portable= value;
+	}
+	
+	/**
+	 * To check if 2 items are internally identical.
+	 */
+	@Override
+	public boolean equals(Object o) {
+		if(o != null && o instanceof Item) {
+			Item item = (Item) o;
+			return item.getWeight() == weight && item.getName().equals(name);
+		} else {
+			return false;
+		}
+	}	
+	
+	@Override
+	public int hashCode() {
+		return Objects.hash(name, weight);
+	}
 }
+

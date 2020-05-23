@@ -1,8 +1,11 @@
 package de.dhbw.ravensburg.zuul.creature;
+import de.dhbw.ravensburg.zuul.Command;
+import de.dhbw.ravensburg.zuul.Inventory;
+import de.dhbw.ravensburg.zuul.Parser;
 import de.dhbw.ravensburg.zuul.item.*;
 import java.util.HashMap;
 import java.util.Random;
-import java.util.Scanner;
+
 
 
 /**
@@ -16,7 +19,7 @@ import java.util.Scanner;
  * @version 21.05.2020
  */
 public class Native extends Human{
-
+	private Meat tradeItem;
 	
 	
 	/**
@@ -30,7 +33,7 @@ public class Native extends Human{
 		setDropItem(new Stick());
 		setDamage(new Stick().getDamage());
 		setName("Native");
-		setTrade(new Meat());
+		tradeItem = new Meat();
 		
 	}
 	
@@ -43,6 +46,7 @@ public class Native extends Human{
 		
 		setPeaceful(false); 
 		
+		// hier müsste dann die Abfrage kommen, ob Native gut oder böse ist--> angreifen
 		
 	}
 
@@ -52,9 +56,11 @@ public class Native extends Human{
 	 * Not any native know something, some of them only try to get meat. 
 	 */
 	@Override
-	public void talk() {
+	public void talk(Inventory inventory, Parser parser) {
 		Random random = new Random();
-		Scanner scanner = new Scanner(System.in);
+		
+		
+		
 		HashMap<Integer, String> trade = new HashMap<Integer, String>();
 		
 		trade.put(1, "The prisoner knows where the mage is. ");
@@ -72,36 +78,42 @@ public class Native extends Human{
 		// Abfrage ob man meat hat im Inventar
 		// Abfrage ob man handeln möchte
 		
-		String answer = scanner.next();
-		answer = answer.toLowerCase();
-		scanner.close();
+		Command command = parser.getCommand();
+	
 		
-		if(answer.equals("no")) {
-			System.out.println("Then go away.");
-			return;
-		}
 		
-		if(answer.equals("yes")) {
+		
+		
+		if(command.getCommandWord().equals("yes")) {
 			System.out.println("That's nice. ");
 			// Abfrage ob man meat hat im Inventar
 			// bei nein abbruch und man wird böse
 			
-//			if(getInventory().containsItem(getTrade()) == false) {
-//				System.out.println("Oh i see you tried to betray me! ");
+			if(inventory.containsItem(tradeItem) == false) {
+				System.out.println("Oh i see you tried to betray me! ");
 				changePeaceful();
-//				
-//			}
+				
+			}
 			
-//			if(getInventory().containsItem(getTrade()) == true) {
-//				getInventory().removeItem(getTrade());	
+			if(inventory.containsItem(tradeItem) == true) {
+			
+			inventory.removeItem(tradeItem);	
+			
 
 				int info = random.nextInt(6)+1;
 				String information = trade.get(info);
 				
 				System.out.println("Ok then i will tell you something: ");
 				System.out.println(information);
-//			}				
-		}		
+			}				
+		
+		}
+		
+		else {
+			System.out.println("Then go away.");
+			return;
+		}
+	
 	}
 	
 	

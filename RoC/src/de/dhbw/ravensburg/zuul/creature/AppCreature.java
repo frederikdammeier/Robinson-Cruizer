@@ -1,5 +1,6 @@
 package de.dhbw.ravensburg.zuul.creature;
 import de.dhbw.ravensburg.zuul.Inventory;
+import de.dhbw.ravensburg.zuul.Player;
 import de.dhbw.ravensburg.zuul.item.*;
 public class AppCreature {
 
@@ -31,7 +32,7 @@ public class AppCreature {
 //		System.out.println();
 		
 //		Meat m = new Meat();
-		Inventory inventory = new Inventory();
+		
 //		inventory.addItem();
 		
 		
@@ -58,19 +59,30 @@ public class AppCreature {
 //	System.out.println(p.getTrade().getName());
 //	inventory.addItem(new Key());
 //	p.talk();
+//	Player player = new Player("test", 100, 40);
+//	
+//	
+//	Human h = new Human();
+//	Prisoner p = new Prisoner();
+//	
+//	player.getInventory().addItem(new Key());
+//	player.getInventory().printContents();
+//	
+//	
+//	
+//	System.out.println(p.getTrade());
+//	
+//	System.out.println(player.getInventory().containsItem(p.getTrade()));
+//	p.talk(); 
 	
-	Human h = new Human();
-	Key key = new Key();
-	System.out.println(inventory.addItem(key));
-	inventory.printContents();
-	
-	
-	Prisoner p = new Prisoner();
-	System.out.println(p.getTrade());
-	
-	System.out.println(inventory.containsItem(key));
-	p.talk(); 
-	
+		
+		Inventory invenotry = new Inventory();
+		invenotry.addItem(new Meat());
+		System.out.println(invenotry.containsItem(new Meat()));
+		
+		
+		
 	}
 
+	
 }
