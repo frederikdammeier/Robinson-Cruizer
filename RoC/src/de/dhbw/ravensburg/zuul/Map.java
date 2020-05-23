@@ -18,21 +18,18 @@ import de.dhbw.ravensburg.zuul.room.*;
 public class Map {
 	private Room currentRoom;
 	private ArrayList<Room> map; //List that only holds references to the rooms in which the player can be teleported randomly.
+
+	Room westBeach, eastBeach, northBeach, southBeach;
+	Room westForest, eastForest, northForest, southForest;
+	Room redWoodTree, deepForest;
+	Room ruinWestEntrance, ruinEastEntrance, ruinNorthEntrance, ruinSouthEntrance;
+	Room ruinStairCase0, ruinStairCase1;
+	Room ruinWatchTower, ruinLibrary, ruinPraying, ruinMage, ruinDungeon, ruinLaboratory;
 	
-	public Map()
-    {
-    	map = new ArrayList<>();
-    	
-		Room westBeach, eastBeach, northBeach, southBeach;
-		Room westForest, eastForest, northForest, southForest;
-		Room redWoodTree, deepForest;
-		Room ruinWestEntrance, ruinEastEntrance, ruinNorthEntrance, ruinSouthEntrance;
-		Room ruinStairCase0, ruinStairCase1;
-		Room ruinWatchTower, ruinLibrary, ruinPraying, ruinMage, ruinDungeon, ruinLaboratory;
-		
-		Room finalRoom;
-		
-		
+	Room finalRoom;
+	
+	public Map() {
+		map = new ArrayList<>();
 		
 		//Initialize: Beaches
 		westBeach = new Beach("on the Beach", new WaterPig(50), RoomType.BEACH_WEST, new Stick(), new Sword(), new Apple(), new Apple(), new Banana());
@@ -172,5 +169,15 @@ public class Map {
     	currentRoom = map.get(r);
     	return currentRoom;
     	
+    }
+    
+    /**
+     * Sets exits for the beaches so the player is able to leave with the boat
+     */
+    public void activateFinish() {
+    	westBeach.setExit("west", finalRoom);
+    	eastBeach.setExit("east", finalRoom);
+    	northBeach.setExit("east", finalRoom);
+    	southBeach.setExit("south", finalRoom);
     }
 }

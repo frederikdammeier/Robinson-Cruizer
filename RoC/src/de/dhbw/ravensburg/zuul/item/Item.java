@@ -1,5 +1,7 @@
 package de.dhbw.ravensburg.zuul.item;
 
+import java.util.Objects;
+
 /**
  * Class Item - an item in the game.
  * 
@@ -47,25 +49,29 @@ public class Item {
 	public float getWeight() {
 		return weight;
 	}
-	
-	/**
-	 * To check if 2 items are internally identical.
-	 * 
-	 * @param Item the Item to compare to.
-	 * @return 
-	 */
-	public boolean equals(Item item) {
-		if(item != null) {
-			return item.getWeight() == weight && item.getName().equals(name);
-		} else {
-			return false;
-		}
-	}
 
 	public boolean isPortable() {
 		return portable;
 	}
 	public void setPortable(boolean value) {
 		portable= value;
+	}
+	
+	/**
+	 * To check if 2 items are internally identical.
+	 */
+	@Override
+	public boolean equals(Object o) {
+		if(o != null && o instanceof Item) {
+			Item item = (Item) o;
+			return item.getWeight() == weight && item.getName().equals(name);
+		} else {
+			return false;
+		}
+	}	
+	
+	@Override
+	public int hashCode() {
+		return Objects.hash(name, weight);
 	}
 }

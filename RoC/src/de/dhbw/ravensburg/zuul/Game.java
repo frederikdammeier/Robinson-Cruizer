@@ -30,6 +30,7 @@ public class Game {
 	private Map map;
 	private long timeLimit;
 	private float enemyDamageRate;
+	private BoatBuilding boatBuilder;
 	private Predator predator;
 	private Thread predatorThread;
 
@@ -42,6 +43,8 @@ public class Game {
 		parser = new Parser();
 		predator = new Predator(this);
 		player = new Player("Players Name", difficulty.getInventoryCapacity(), 10);
+		player.getInventory().addMultipleItems(new Resin(), new Sail(), new Resin(), new Rope(), new Rope(), new Timber(), new Timber(), new Timber(), new Timber());  //Activate this line to test the boatBuilding
+		boatBuilder = new BoatBuilding();
 		currentRoom = map.getCurrentRoom();
 		timeLimit = difficulty.getTimeLimit();
 		enemyDamageRate = difficulty.getEnemyDamageRate();
@@ -59,7 +62,7 @@ public class Game {
 		Thread timeThread = new Thread(timer, "timer");
 		timeThread.start();
 
-		// Starts the preditor class for the first time.
+		// Starts the predator class for the first time.
 		predatorThread = new Thread(predator, "predator");
 		predatorThread.start();
 
@@ -76,6 +79,7 @@ public class Game {
 		}
 		System.out.println("Thank you for playing.  Good bye!");
 		timer.stopTimer();
+		predatorThread.interrupt();
 	}
 
 	/*
@@ -129,7 +133,10 @@ public class Game {
 			dropItem(command);
 		} else if (commandWord.equals("showInv")) {
 			player.getInventory().printContents();
-		}
+		} else if (commandWord.equals("buildBoat")) {
+        	boatBuilder.buildBoat(player.getInventory());
+        	System.out.println("A boat has been built and added to your inventory.");
+        }
 		// else command not recognised.
 		return wantToQuit;
 	}
@@ -237,7 +244,7 @@ public class Game {
 
 			// Check whether the room is locked.
 		} else if (nextRoom.isLocked()) {
-			if (player.getInventory().containsItem(nextRoom.getKey().getName())) {
+			if (player.getInventory().containsItem(nextRoom.getKey())) {
 
 				// Ask the player if he wants to unlock the room.
 				System.out.println("The room is locked. Do you want to unlock it now? (yes/no)");
@@ -254,7 +261,7 @@ public class Game {
 			}
 
 			// Check whether the exit is through a trapdoor.
-		} else if (!nextRoom.hasExitToRoom(currentRoom)) {
+		} else if (!nextRoom.hasExitToRoom(currentRoom) && !nextRoom.getType().equals(RoomType.FINISH)) {
 
 			// Asks the player if he would like to enter anyways.
 			System.out.println("You are trying to enter a trapdoor. Proceed? (yes/no)");
@@ -276,6 +283,12 @@ public class Game {
 			predatorThread = new Thread(predator, "predator");
 			predatorThread.start();
 		}
+		
+	    //Message the player if he is ready to leave the island()
+	    if(currentRoom instanceof Beach && player.getInventory().containsItem(new Boat())) {
+	    	System.out.println("You are now ready to leave the island.");
+	    	map.activateFinish();
+	    }
 	}
 
 	/**
@@ -291,6 +304,11 @@ public class Game {
 			noticeSpecialItem(command, "add");
 			transferItem(currentRoom.getInventory(), player.getInventory(), command.getSecondWord());
 		}
+		
+    	//Check if the player is now able to build the boat
+    	if(boatBuilder.checkIfBoatCanBeBuilt(player.getInventory())){
+    		System.out.println("You are now ready to build a Boat!\nUse command buildBoat to build it now.");
+    	}
 	}
 
 	/**

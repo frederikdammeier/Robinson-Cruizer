@@ -380,6 +380,5 @@ public class Room
 	public boolean hasExitToRoom(Room room) {
 		return exits.containsValue(room);
 	}
-	
 }
 
