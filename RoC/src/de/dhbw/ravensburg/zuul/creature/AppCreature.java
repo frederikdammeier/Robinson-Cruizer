@@ -1,4 +1,5 @@
 package de.dhbw.ravensburg.zuul.creature;
+import de.dhbw.ravensburg.zuul.Inventory;
 import de.dhbw.ravensburg.zuul.item.*;
 public class AppCreature {
 
@@ -22,14 +23,22 @@ public class AppCreature {
 //		System.out.println(wp.getName());
 //		System.out.println();
 //		
-		Mage magier = new Mage();
+//		Mage magier = new Mage();
 //		System.out.println(magier.getName());		
 //		magier.teleport();
 //		magier.attack();
 //		magier.talk();
 //		System.out.println();
 		
+//		Meat m = new Meat();
+		Inventory inventory = new Inventory();
+//		inventory.addItem();
+		
+		
+		
+		
 //		Native n = new Native();
+//		inventory.addItem(n.getTrade());
 //		System.out.println(n.getDamage());
 //		System.out.println(n.getPeaceful());
 //		n.changePeaceful();
@@ -42,10 +51,25 @@ public class AppCreature {
 		
 //		Hunter h = new Hunter() ;
 //		System.out.println(h.getDamage());
-		Freitag f = new Freitag();
-		f.talk();
+//		Freitag f = new Freitag();
+//		f.talk();
 				
 	
+//	System.out.println(p.getTrade().getName());
+//	inventory.addItem(new Key());
+//	p.talk();
+	
+	Human h = new Human();
+	Key key = new Key();
+	System.out.println(inventory.addItem(key));
+	inventory.printContents();
+	
+	
+	Prisoner p = new Prisoner();
+	System.out.println(p.getTrade());
+	
+	System.out.println(inventory.containsItem(key));
+	p.talk(); 
 	
 	}
 

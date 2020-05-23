@@ -1,6 +1,5 @@
 package de.dhbw.ravensburg.zuul.creature;
-import java.util.Scanner;
-
+import de.dhbw.ravensburg.zuul.Inventory;
 import de.dhbw.ravensburg.zuul.item.Item;
 
 /**
@@ -16,6 +15,7 @@ import de.dhbw.ravensburg.zuul.item.Item;
 public class Human extends Creature{
 	
 	private Item trade;
+	private Inventory inventory;
 	/**
      * Create a human. 
      * It calls the constructor from the superclass "Creature".
@@ -32,7 +32,7 @@ public class Human extends Creature{
 	 * The effect depends on the different Human.
 	 */
 	public void talk() {
-		// Scanner scanner = new Scanner(System.in);		
+				
 		if(getPeaceful() == true) {
 			System.out.println("Hello nice to meet you my friend. My name is " + getName());
 			System.out.println("I can help you if you want.");
@@ -43,6 +43,30 @@ public class Human extends Creature{
 		}	
 	}
 
+	public void setInventory(Inventory inventory) {
+		inventory = new Inventory();
+	}
+	
+
+	public Inventory getInventory() {
+		return inventory;
+	}
+	
+//	public boolean checkTradeItem() {
+//		boolean trade  = false;
+//		
+//		if(inventory.containsItem(key)== true) {
+//			trade = true;
+//			return trade;
+//		}
+		
+//		if(inventory.containsItem(getTrade())== false) {
+//			return false;
+//		}
+		
+		
+//		return trade;
+//	}
 	/** 
 	 * Return the Item the Human wants in exchange for information.
 	 * @return drop The Item the Human wants in exchange for information. 
@@ -57,7 +81,9 @@ public class Human extends Creature{
 	 * @param drop  The Item the CHuman wants in exchange for information.
 	 */
 	public void setTrade(Item trade) {
-		this.trade = trade;
+		this.trade= trade;
+		
+		
 	}
 
 	

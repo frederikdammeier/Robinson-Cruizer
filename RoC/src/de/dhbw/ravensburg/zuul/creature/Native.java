@@ -39,9 +39,11 @@ public class Native extends Human{
 	 * This can happen when you attack the Native. 
 	 */
 	
-	public void changePeaceful() {
+	public void changePeaceful() { // nur wenn man ihnen nicht gibt was sie wollen betrügt
+		
 		setPeaceful(false); 
-		attack(); // fhelt bis jz noch oder? 
+		
+		
 	}
 
 	/**
@@ -56,11 +58,11 @@ public class Native extends Human{
 		HashMap<Integer, String> trade = new HashMap<Integer, String>();
 		
 		trade.put(1, "The prisoner knows where the mage is. ");
-		trade.put(2, ""); // wissen wo das material ist
-		trade.put(3, ""); // "-"
+		trade.put(2, " s2"); // wissen wo das material ist
+		trade.put(3, "s3"); // "-"
 		trade.put(4, "somewhere on this island is a magic mushroom which can give you unlimited power. ");
 		trade.put(5, "i have nothing for you you fool ");
-		trade.put(6, ""); // noch etwas neues
+		trade.put(6, "s6"); // noch etwas neues
 		
 		
 		System.out.println("Hello do you have any meat for me? ");
@@ -72,7 +74,7 @@ public class Native extends Human{
 		
 		String answer = scanner.next();
 		answer = answer.toLowerCase();
-		
+		scanner.close();
 		
 		if(answer.equals("no")) {
 			System.out.println("Then go away.");
@@ -83,21 +85,22 @@ public class Native extends Human{
 			System.out.println("That's nice. ");
 			// Abfrage ob man meat hat im Inventar
 			// bei nein abbruch und man wird böse
-			if(containsItem(getTrade()) == false) {
-				System.out.println("Oh i see you tried to betray me! ");
-				changePeaceful();
-				
-			}
 			
-			if(containsItem(getTrade()) == true) {
-				removeItem(getTrade());	
+//			if(getInventory().containsItem(getTrade()) == false) {
+//				System.out.println("Oh i see you tried to betray me! ");
+				changePeaceful();
+//				
+//			}
+			
+//			if(getInventory().containsItem(getTrade()) == true) {
+//				getInventory().removeItem(getTrade());	
 
 				int info = random.nextInt(6)+1;
 				String information = trade.get(info);
 				
 				System.out.println("Ok then i will tell you something: ");
 				System.out.println(information);
-			}				
+//			}				
 		}		
 	}
 	

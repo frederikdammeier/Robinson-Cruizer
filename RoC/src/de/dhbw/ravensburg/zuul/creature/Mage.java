@@ -10,7 +10,7 @@ import java.util.Scanner;
  * @version 04.05.2020
  */
 public class Mage extends Human{
-	
+	private Map map;
 	
 	/**
 	 * Create a mage.
@@ -23,6 +23,20 @@ public class Mage extends Human{
 		setPeaceful(true);
 
 		
+	}
+	/**
+	 * Defines the map the mage can use.
+	 * @param map The map the mage uses to teleport the player. 
+	 */
+	public void setMap(Map map) {
+		this.map = map;
+	}
+	/**
+	 * Return the map the mage uses. 
+	 * @return map The map the mage uses to teleport the player to a random room.
+	 */
+	public Map getMap() {
+		return map;
 	}
 	/**
 	 * Defines the Dialog between the player and the Mage.
@@ -46,7 +60,7 @@ public class Mage extends Human{
 		if(answer.equals("yes")) {
 			System.out.println("OK i hope you will escape from this island. ");
 			System.out.println("Good bye. ");
-			Map.teleport(); // müssen erst schauen ob es funktioniert
+			map.teleport(); // müssen erst schauen ob es funktioniert
 			// zu teleportiert Spieler
 		}
 		

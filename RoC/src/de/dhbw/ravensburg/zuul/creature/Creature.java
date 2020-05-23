@@ -186,23 +186,6 @@ public class Creature {
 		return invincible;
 	}
 	
-	/**
-	 * The Creature can attack the player with this method and cause different amount of damage. 
-	 * @return lifepoints  The number of lifepoints the player has left after the attack. 
-	 */
-	public int attack() { 
-		
-		if(getPeaceful() == false) {
-			System.out.println("Hier greifen die Creaturen an " + getName());
-			System.out.println(lifepoints);
-		}
-		else{
-			System.out.println("Diese Creature kann nicht angreifen");
-		}
-		
-		return lifepoints;
-	}
-
 
 
 }

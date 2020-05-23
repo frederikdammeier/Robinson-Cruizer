@@ -1,6 +1,7 @@
 package de.dhbw.ravensburg.zuul.creature;
+import de.dhbw.ravensburg.zuul.Inventory;
 import de.dhbw.ravensburg.zuul.item.*;
-import de.dhbw.ravensburg.zuul.*;
+
 import java.util.Scanner;
 /**
  * Class Prisoner - a prisoner in an adventure game.
@@ -13,6 +14,8 @@ import java.util.Scanner;
  * @version 21.05.2020
  */
 public class Prisoner extends Human{
+	private Inventory inventory;
+	
 	/**
 	 * Create the prisoner and set the abilities the prisoner has.
 	 * It calls the constructor from the superclass "Human".
@@ -33,16 +36,16 @@ public class Prisoner extends Human{
 	@Override
 	public void talk() {
 		Scanner scanner = new Scanner(System.in);
-		
+		Item key = new Key();
 		System.out.println("Ah please help me. I am in this Prison since two weeks. ");
 		System.out.println("Can you open it? When you will free me i can give you information about the island. ");
 		System.out.println("Do you have the key for me? ");
 		
-		
+		inventory = new Inventory(); //darf ich nicht machen 
 		String answer = scanner.next();
 		answer= answer.toLowerCase();
 		
-		
+		scanner.close();
 		if(answer.equals("no")) {
 			System.out.println("Then came back if you found it but i won't tell you information without the key. ");
 			System.out.println("Bye. ");
@@ -51,17 +54,17 @@ public class Prisoner extends Human{
 		
 		if(answer.equals("yes")) {
 			 
-			
+			// ab hier geht es nicht mehr
 			//bei nein
-			if(containsItem(getTrade()) == false) {
+			if(inventory.containsItem(key) == false) {
 				System.out.println("Don't try to betray me fuck of. ");
 				return;
 			}
 			
 			//bei ja:
-			if(containsItem(getTrade()) == true) {							
+			if(inventory.containsItem(key) == true) {							
 				// dann aus dm Inventar entfernen 
-				removeItem(getTrade());	
+				getInventory().removeItem(getTrade());	
 			
 				//Info ausgeben			
 				System.out.println("Thank you now i am free. ");

@@ -19,7 +19,7 @@ public class Freitag extends Human{
 	 */	
 	public Freitag() {
 		super();
-		
+		setInvincible(true);
 		setLifepoints(50);
 		setPeaceful(true);		
 		setDropItem(null);
@@ -36,7 +36,7 @@ public class Freitag extends Human{
 	public void talk() {
 		System.out.println("Nice to meet you foreign. My name is Freitag and i see you are in trouble. ");
 		System.out.println("I saw how you ship sunk and you almost died in the water but thanks to god you are alive. ");
-		System.out.println("You are on a island and i beliee you want to escape from here. ");
+		System.out.println("You are on a island and i believe you want to escape from here. ");
 		System.out.println("Hmmm.... To escape you need a new boat. ");
 		System.out.println("I think you can find on this island everything what you need to build a new one. ");
 		System.out.println("You can ask the Natives on the island, they will know where you can find your equipment. ");
