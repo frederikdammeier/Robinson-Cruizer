@@ -17,7 +17,7 @@ import java.util.ArrayList;
  * 
  * @author Michael Kölling and David J. Barnes - further developed by Frederik
  *         Dammeier - Philipp Schneider
- * @version 17.05.2020
+ * @version 27.05.2020
  */
 
 public class Game {
@@ -33,6 +33,8 @@ public class Game {
 	private BoatBuilding boatBuilder;
 	private Predator predator;
 	private Thread predatorThread;
+	private RegenerationHandler regenHandler;
+	private HungerHandler hungerHandler;
 
 	/**
 	 * Create the game and initialize its internal map.
@@ -42,12 +44,14 @@ public class Game {
 		map = new Map();
 		parser = new Parser();
 		predator = new Predator(this);
-		player = new Player("Players Name", difficulty.getInventoryCapacity(), 10);
+		player = new Player("Players Name", difficulty.getInventoryCapacity(), 100);
 		player.getInventory().addMultipleItems(new Resin(), new Sail(), new Resin(), new Rope(), new Rope(), new Timber(), new Timber(), new Timber(), new Timber());  //Activate this line to test the boatBuilding
 		boatBuilder = new BoatBuilding();
 		currentRoom = map.getCurrentRoom();
 		timeLimit = difficulty.getTimeLimit();
 		enemyDamageRate = difficulty.getEnemyDamageRate();
+		regenHandler = new RegenerationHandler(player);
+		hungerHandler = new HungerHandler(player);
 
 	}
 
@@ -61,7 +65,15 @@ public class Game {
 		// Add a new Timer to measure passed game Time.
 		Thread timeThread = new Thread(timer, "timer");
 		timeThread.start();
-
+		
+		//Regeneration Thread
+		Thread regenThread = new Thread(regenHandler, "regenerate");
+		regenThread.start();
+		
+		//Hunger Thread
+		Thread hungerThread = new Thread(hungerHandler, "hunger");
+		hungerThread.start();
+		
 		// Starts the predator class for the first time.
 		predatorThread = new Thread(predator, "predator");
 		predatorThread.start();
@@ -80,6 +92,8 @@ public class Game {
 		System.out.println("Thank you for playing.  Good bye!");
 		timer.stopTimer();
 		predatorThread.interrupt();
+		regenHandler.finish();
+		hungerHandler.finish();
 	}
 
 	/*
@@ -430,6 +444,8 @@ public class Game {
 	 */
 	private void lookAround() {
 		System.out.println(currentRoom.getLongDescription());
+		System.out.println("Current Health: " + player.getHealth());
+		System.out.println("Current Hunger: " + player.getHunger());
 	}
 
 	public void setFinished(boolean finished) {

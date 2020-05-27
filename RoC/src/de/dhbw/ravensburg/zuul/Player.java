@@ -72,8 +72,9 @@ public class Player {
 	 * @param amount
 	 */
 	public void regenerate(int amount) {
-		health += amount;
-		if(health > maxLife) health = maxLife; //a player cannot have more than maxLife health.
+		int tmp = health + amount;
+		if(tmp > maxLife) health = maxLife; //a player cannot have more than maxLife health.
+		else health = tmp;
 	}
 	
 	/**
