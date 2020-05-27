@@ -19,14 +19,14 @@ public class Map {
 	private Room currentRoom;
 	private ArrayList<Room> map; //List that only holds references to the rooms in which the player can be teleported randomly.
 
-	Room westBeach, eastBeach, northBeach, southBeach;
-	Room westForest, eastForest, northForest, southForest;
-	Room redWoodTree, deepForest;
-	Room ruinWestEntrance, ruinEastEntrance, ruinNorthEntrance, ruinSouthEntrance;
-	Room ruinStairCase0, ruinStairCase1;
-	Room ruinWatchTower, ruinLibrary, ruinPraying, ruinMage, ruinDungeon, ruinLaboratory;
+	private Room westBeach, eastBeach, northBeach, southBeach;
+	private Room westForest, eastForest, northForest, southForest;
+	private Room redWoodTree, deepForest;
+	private Room ruinWestEntrance, ruinEastEntrance, ruinNorthEntrance, ruinSouthEntrance;
+	private Room ruinStairCase0, ruinStairCase1;
+	private Room ruinWatchTower, ruinLibrary, ruinPraying, ruinMage, ruinDungeon, ruinLaboratory;
 	
-	Room finalRoom;
+	private Room finalRoom;
 	
 	public Map() {
 		map = new ArrayList<>();
@@ -83,6 +83,9 @@ public class Map {
 		ruinDungeon = new Ruin("in the ruins: Dungeon", null);
 		ruinLaboratory = new Ruin("in the ruins: Abandoned Laboratory", null);
 		map.add(ruinLaboratory);
+		
+		//Initialize: finalRoom
+		finalRoom = new Room("at the finish");
 		
 		//Set connections: Axis West-East
 		westBeach.setExit("east", westForest);
@@ -179,5 +182,7 @@ public class Map {
     	eastBeach.setExit("east", finalRoom);
     	northBeach.setExit("east", finalRoom);
     	southBeach.setExit("south", finalRoom);
+    	
+    	System.out.println("You can finish the game at any beach now.");
     }
 }

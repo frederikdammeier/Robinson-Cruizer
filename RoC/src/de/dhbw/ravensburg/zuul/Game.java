@@ -17,7 +17,7 @@ import java.util.ArrayList;
  * 
  * @author Michael Kölling and David J. Barnes - further developed by Frederik
  *         Dammeier - Philipp Schneider
- * @version 17.05.2020
+ * @version 23.05.2020
  */
 
 public class Game {
@@ -36,6 +36,8 @@ public class Game {
 
 	/**
 	 * Create the game and initialize its internal map.
+	 * 
+	 * @param difficulty The difficulty of the game.
 	 */
 	public Game(Difficulty difficulty) {
 		timer = new Timer();
@@ -53,6 +55,12 @@ public class Game {
 
 	/**
 	 * Main play routine. Loops until end of play.
+	 * 
+	 * The game currently has three end conditions:
+	 * 
+	 * 	1. The time is up.
+	 *  2. The player gets killed by a creature and dies.
+	 *  3. The player crafts a boat and leaves the island.
 	 */
 	public void play() {
 
@@ -62,7 +70,7 @@ public class Game {
 		Thread timeThread = new Thread(timer, "timer");
 		timeThread.start();
 
-		// Starts the predator class for the first time.
+		// Starts the predator thread for the first time.
 		predatorThread = new Thread(predator, "predator");
 		predatorThread.start();
 
@@ -83,7 +91,7 @@ public class Game {
 	}
 
 	/*
-	 * Print the Seconds that have passed since starting the game to the console.
+	 * Print the seconds that have passed since starting the game to the console.
 	 */
 	private void printTimePassed() {
 		System.out.println(timer.getTimePassedSeconds() + " seconds have passed since starting the game.");
@@ -134,8 +142,7 @@ public class Game {
 		} else if (commandWord.equals("showInv")) {
 			player.getInventory().printContents();
 		} else if (commandWord.equals("buildBoat")) {
-        	boatBuilder.buildBoat(player.getInventory());
-        	System.out.println("A boat has been built and added to your inventory.");
+        	if(boatBuilder.buildBoat(player.getInventory(), map)) System.out.println("A boat has been built and added to your inventory.");
         }
 		// else command not recognised.
 		return wantToQuit;
@@ -225,6 +232,8 @@ public class Game {
 	 * 
 	 * If a room can only be entered through a trap door, the player gets a warning.
 	 * He gets asked whether he would like to proceed anyways.
+	 * 
+	 * @param command The current command object to determine in which direction to go.
 	 */
 	private void goRoom(Command command) {
 		if (!command.hasSecondWord()) {
@@ -232,7 +241,7 @@ public class Game {
 			System.out.println("Go where?");
 			return;
 		}
-
+		
 		String direction = command.getSecondWord();
 
 		// Try to leave current room.
@@ -272,9 +281,16 @@ public class Game {
 			} else {
 				System.out.println("Allright, have a nice day.");
 			}
-			// Default
+			
+		} else if(nextRoom.getType().equals(RoomType.FINISH)) {
+			if (player.getInventory().containsItem(new Boat())) {
+				currentRoom = nextRoom;
+			} else {
+				System.out.println("You need your boat to leave the island.");
+			}
+		// Default
 		} else {
-			// interrupt preditorThread when leaving a room
+		// interrupt preditorThread when leaving a room
 			predatorThread.interrupt();
 			currentRoom = nextRoom;
 			System.out.println(currentRoom.getLongDescription());
@@ -287,7 +303,6 @@ public class Game {
 	    //Message the player if he is ready to leave the island()
 	    if(currentRoom instanceof Beach && player.getInventory().containsItem(new Boat())) {
 	    	System.out.println("You are now ready to leave the island.");
-	    	map.activateFinish();
 	    }
 	}
 
@@ -419,6 +434,8 @@ public class Game {
 
 	/**
 	 * Teleports the player into a randomly chosen room on the map.
+	 * 
+	 * There might be rooms which aren't randomly accessible such as the final room and the dungeon.
 	 */
 	private void teleport() {
 		currentRoom = map.teleport();
@@ -426,28 +443,46 @@ public class Game {
 	}
 
 	/**
-	 * Prints all available exits to the console.
+	 * Prints all available exits of the current room to the console.
 	 */
 	private void lookAround() {
 		System.out.println(currentRoom.getLongDescription());
 	}
-
+	
+	/**
+	 * If true, the game gets finished after the next command is entered.
+	 * To be accessed by parallel threads.
+	 * 
+	 * @param finished
+	 */
 	public void setFinished(boolean finished) {
 		this.finished = finished;
 	}
-
+	
+	/**
+	 * @return A reference to this instances Player-object.
+	 */
 	public Player getPlayer() {
 		return player;
 	}
 
+	/**
+	 * @return A reference to this instances Room-object.
+	 */
 	public Room getCurrentRoom() {
 		return currentRoom;
 	}
 
+	/**
+	 * @return The time in seconds since the game has started.
+	 */
 	public long getGameTime() {
 		return timer.getTimePassedSeconds();
 	}
 
+	/**
+	 * When this method is callen, the player is dead and the game gets ended after the next command iteration.
+	 */
 	public void setDead() {
 		dead = true;
 	}

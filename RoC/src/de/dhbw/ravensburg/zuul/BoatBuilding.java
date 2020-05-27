@@ -8,7 +8,7 @@ import de.dhbw.ravensburg.zuul.item.*;
  * and therefore be able to leave the island and finish the game.
  * 
  * @author Frederik Dammeier
- * @version 17.05.2020
+ * @version 23.05.2020
  */
 public class BoatBuilding {
 	private HashMap<Item, Integer> recipe; 	//The items required to build the boat. <Item, Amount>
@@ -40,7 +40,7 @@ public class BoatBuilding {
 	 * @param inventory
 	 * @return
 	 */
-	public boolean buildBoat(Inventory inventory) {
+	public boolean buildBoat(Inventory inventory, Map map) {
 		if(checkIfBoatCanBeBuilt(inventory)) {
 			//remove the required items from the players inventory.
 			int i, l;
@@ -52,6 +52,8 @@ public class BoatBuilding {
 			}
 			//add a boat to the players inventory.
 			inventory.addItem(new Boat());
+			//add constraints to the final room.
+			map.activateFinish();
 			return true;
 			
 			
