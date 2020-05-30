@@ -16,7 +16,7 @@ import de.dhbw.ravensburg.zuul.Parser;
 public class Freitag extends Human{
 
 	/**
-	 * Create a freitag and set the abilities Freitag has.
+	 * Creates a "Freitag" and set the abilities fFreitag has.
 	 * It calls the constructor from the superclass "Human".
 	 */	
 	public Freitag() {
@@ -33,6 +33,9 @@ public class Freitag extends Human{
 	/**
 	 * Defines the Dialog between the player and Freitag.
 	 * Here the player gets information about where he is and what he should do. 
+	 * 
+	 * @param inventory The players inventory.
+	 * @param parser	The parser to check yes and no answers
 	 */
 	@Override
 	public void talk(Inventory inventory, Parser parser) {

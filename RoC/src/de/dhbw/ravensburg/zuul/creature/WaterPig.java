@@ -16,7 +16,7 @@ public class WaterPig extends Animal{
 
 	
 	/**
-	 * Create a water-pig.
+	 * Creates a water-pig.
 	 * It calls the constructor from the superclass "Animal".
 	 */
 	public WaterPig() {

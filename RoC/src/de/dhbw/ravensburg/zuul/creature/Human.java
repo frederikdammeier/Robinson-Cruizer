@@ -16,7 +16,7 @@ public class Human extends Creature{
 	
 	
 	/**
-     * Create a human. 
+     * Creates a human. 
      * It calls the constructor from the superclass "Creature". 
      */	
 	public Human() {
@@ -28,6 +28,8 @@ public class Human extends Creature{
 	/* * Defines the Dialog between the player and the other Human.
 	 * Defines what happens when the player wants to talk with the Human. 
 	 * The effect depends on the different Human.
+	 * @param inventory The players inventory.
+	 * @param parser	The parser to check yes and no answers
 	 */
 	public void talk(Inventory inventory, Parser parser) {  }
 

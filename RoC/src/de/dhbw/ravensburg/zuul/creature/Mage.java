@@ -13,7 +13,7 @@ public class Mage extends Human{
 //	private Map map;
 	
 	/**
-	 * Create a mage.
+	 * Creates a mage.
 	 * It calls the constructor from the superclass "Human". 
 	 */	
 	public Mage() {

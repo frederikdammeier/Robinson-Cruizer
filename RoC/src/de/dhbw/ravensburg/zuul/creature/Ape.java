@@ -15,7 +15,7 @@ public class Ape extends Animal {
 	
 	
 	/**
-	 * Create an ape.
+	 * Creates an ape.
 	 * It calls the constructor from the superclass "Animal". 
 	 */	
 	public Ape() {

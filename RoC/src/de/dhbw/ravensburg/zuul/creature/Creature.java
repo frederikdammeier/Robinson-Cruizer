@@ -10,8 +10,8 @@ import de.dhbw.ravensburg.zuul.item.*;
 /**
  * Class Creature - a creature in an adventure game.
 
- * A "Creature" can be an "Animal" or an "Human". Creatures have different abilities
- * and can help or attack you. 
+ * A "Creature" can be an "Animal" or an "Human". Creatures have different abilities. 
+ * They can help or attack the player. 
  * "Creature" is the superclasse from "Animal" and "Human".
  * 
 
@@ -34,13 +34,19 @@ public class Creature {
 
 	/**
      * Create a "Creature".
+     * Creature can be a human or an animal. 
      * This constructor is used for "Human" and "Animal".   
      */
 	public Creature() {  
 			
 	}
-	
+	/**
+	 * * Defines the Dialog between the player and the Creature
+	 * @param inventory The players inventory.
+	 * @param parser	The parser to check yes and no answers. 
+	 */
 	public void talk(Inventory inventory, Parser parser) {  }
+	
 	/**
 	 * Decreases the creatures livepoints by the amount of damage the player can transfer.
 	 * If the livescore is negativ, it's set to 0. A messeage is printed about the health status of the creature.
@@ -59,16 +65,16 @@ public class Creature {
 	}
 	
 	/** 
-	 * Return if the Creature is innocent.
-	 * @return innocent If the Creature is innocent.
+	 * Returns if the creature is innocent.
+	 * @return innocent If the creature is innocent.
 	 */
 	public boolean getPeaceful() {
 		return peaceful;
 	}
 
 	/** 
-	 * Define if the Creature is innocent
-	 * @param innocent If the Creature is innocent.
+	 * Defines if the creature is innocent
+	 * @param innocent If the creature is innocent.
 	 */
 	public void setPeaceful(boolean peaceful) {
 		this.peaceful = peaceful;
@@ -76,18 +82,17 @@ public class Creature {
 	
 	
 	/**
-	 * Defines which Item the Creature will drop when the Creature dies. 
-	 * @param drop  The Item the Creature drop when it dies.
+	 * Defines which item the creature will drop when the creature dies. 
+	 * @param drop  The item the creature drop when it dies.
 	 */
 	public void setDropItem(Item drop ) {
 
-//		drop = new Item("Test", 8); // Bei aufruf immer null
-		this.drop = drop;			// Bei Aufruf immer link
+		this.drop = drop;			
 	}
 	
 	/** 
-	 * Return the Item the Creature drops.
-	 * @return drop The Item the Creature can drop when it dies. 
+	 * Returns the item the creature drops.
+	 * @return drop The item the creature can drop when it dies. 
 	 */
 	public Item getDropItem() {
 		return drop;
@@ -95,16 +100,16 @@ public class Creature {
 	}
 	
 	/** 
-	 * Return the damage the Creature can cause.
-	 * @return damage The damage the Creature can cause. 
+	 * Returns the damage the creature can cause.
+	 * @return damage The damage the creature causes the player. 
 	 */
 	public int getDamage() {
 		return damage;
 	}
 
 	/** 
-	 * Define the damage the Creature can cause.
-	 * @param damage The damage the Creature can cause.* @return
+	 * Defines the damage the creature can cause.
+	 * @param damage The damage the creature causes the player.
 	 */
 	public void setDamage(int damage) {
 		this.damage = damage;
@@ -113,16 +118,16 @@ public class Creature {
 
 	
 	/** 
-	 * Define how much lifepoints the Creature has.
-	 * @param lifepoints How much lifepoints the Creature has.
+	 * Defines how much lifepoints the creature has.
+	 * @param lifepoints How much lifepoints the creature has.
 	 */
 	public void setLifepoints(int lifepoints) {
 		this.lifepoints = lifepoints; 	
 	}
 	
 	/** 
-	 * Return the number of lifepoints from the Creature.
-	 * @return lifepoints the number of lifepoints from the Creature.
+	 * Returns the number of lifepoints from the creature.
+	 * @return lifepoints the number of lifepoints from the creature.
 	 */
 	public int getLifepoints() {
 	return lifepoints;
@@ -130,8 +135,8 @@ public class Creature {
 
 	
 	/** 
-	 * Return the name of the Creature.
-	 * @return name the name of the Creature.
+	 * Returns the name of the creature.
+	 * @return name the name of the creature.
 	 */
 	public String getName() {
 		return name;
@@ -139,8 +144,8 @@ public class Creature {
 
 
 	/** 
-	 * Define the name of the Creature.
-	 * @param name The name of the Creature.
+	 * Defines the name of the creature.
+	 * @param name The name of the creature.
 	 */
 	public void setName(String name) {
 		this.name = name;
@@ -163,16 +168,17 @@ public class Creature {
 //		}
 //		return alive;
 //	}
-	
-
+	/**
+	 * Returns if the creature is dead.
+	 * @return isDead the status if the creature is dead or alive.
+	 */
 	public boolean isDead() {
 		return isDead;
 	}
 	
 	/** 
-	 * @return drop Drop the Item that is stored in the creatures inventory.
+	 * @return drop Drops the Item which is stored in the creatures inventory.
 	 */
-
 	// Platzhalter
 	public Item dropItem() { 
 		System.out.println("The " + name + " dropped " + drop.getName());
@@ -188,7 +194,7 @@ public class Creature {
 	}
 	
 	/**
-	 * The Creature can attack the player with this method and cause different amount of damage. 
+	 * The creature can attack the player with this method and cause different amount of damage. 
 	 * @return lifepoints  The number of lifepoints the player has left after the attack. 
 	 */
 	public int attack() { 

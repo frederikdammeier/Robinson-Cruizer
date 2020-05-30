@@ -11,10 +11,8 @@ import de.dhbw.ravensburg.zuul.item.*;
  */
 public class Hunter extends Human{
 
-
-
 	/**
-	 * Create a hunter and set the abilities the hunter has.
+	 * Creates a hunter and set the abilities the hunter has.
 	 * It calls the constructor from the superclass "Human".
 	 */	
 	public Hunter() {
