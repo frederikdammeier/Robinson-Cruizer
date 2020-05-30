@@ -15,8 +15,9 @@ import de.dhbw.ravensburg.zuul.item.*;
 public class Animal extends Creature {
 	
 	/**
-	 * Create an animal.
-	 * It calls the constructor from the superclass "Creature".
+	 * Creates an animal in the game.
+	 * Animals can be an ape, a snake or a water pig.  
+	 * Animal calls the constructor from the superclass "Creature".
 	 */	
 	public Animal() {
 		super();

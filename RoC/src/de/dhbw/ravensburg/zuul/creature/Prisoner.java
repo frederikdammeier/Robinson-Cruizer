@@ -19,7 +19,7 @@ public class Prisoner extends Human{
 	private Key tradeItem;
 
 	/**
-	 * Create the prisoner and set the abilities the prisoner has.
+	 * Creates the prisoner and set the abilities the prisoner has.
 	 * It calls the constructor from the superclass "Human".
 	 */	
 	public Prisoner() {
@@ -33,41 +33,36 @@ public class Prisoner extends Human{
 	/**
 	 * Defines the Dialog between the player and the Prisoner.
 	 * Here the player gets in exchange for the Key the information where the mage is. 
+	 * 
+	 * @param inventory The players inventory.
+	 * @param parser	The parser to check yes and no answers
 	 */
 	@Override
 	public void talk(Inventory inventory, Parser parser) {
-
-
-
 
 		System.out.println("Ah please help me. I am in this Dungeon since two weeks. ");
 		System.out.println("Can you open it? When you will free me i can give you information about the island. ");
 		System.out.println("Do you have the key for me? ");
 
-
+		// gets yes or no answer from the player
 		Command command = parser.getCommand();
 
-
-
-
+		// checks the answer
 		if(command.getCommandWord().equals("yes")) {
 
-			// ab hier geht es nicht mehr
-			//bei nein
-
+		//checks the players inventory
 			if(inventory.containsItem(tradeItem) == false) {
 				System.out.println("Don't try to betray me fuck of. ");
 				return;
 			}
 
-			//bei ja:
+			
 			if(inventory.containsItem(tradeItem) == true) {							
-				// dann aus dm Inventar entfernen 
-
-
+				
+				// removes the key from the players inventory
 				inventory.removeItem(tradeItem);	
 
-				//Info ausgeben			
+				//returns information			
 				System.out.println("Thank you now i am free. ");
 				System.out.println("So i will tell you my secret information about the Mage. ");
 				System.out.println("On this island is a mage and he can help you. ");
@@ -76,6 +71,7 @@ public class Prisoner extends Human{
 			}
 
 	}
+	// if answer is "no" the method ends. 
 	else {
 		System.out.println("Then came back if you found it but i won't tell you information without the key. ");
 		System.out.println("Bye. ");
