@@ -29,6 +29,7 @@ public class Player {
 		health = this.maxLife = maxLife;
 		inventory = new Inventory(inventorySize);
 		damage = 0;
+		
 	}
 	
 	
@@ -41,6 +42,10 @@ public class Player {
 		hunger += amount;
 		if(hunger < 0) hunger = 0;
 		else if(hunger > 100) hunger = 100;
+		
+//		if"Magic-Mushroom":
+//		System.out.println("unlimited inventory");
+//		player.getInventory().setUnlimited();
 		
 	}
 	

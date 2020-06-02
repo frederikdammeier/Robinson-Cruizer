@@ -22,7 +22,7 @@ public class Item {
 	private float weight;
 	/** The weight of an item*/
 	private boolean portable;
-	
+		
 	/**
 	 * Create an item that is described with "name" and has a specific weight.
 	 * The name and weight of an item can not be changed later anymore.
@@ -30,7 +30,7 @@ public class Item {
 	 * @param name		The item's name.
 	 * @param weight	The item's weight.
 	 */
-		public Item(String name, float weight) {
+	public Item(String name, float weight) {
 		this.name = name;
 		this.weight = weight;	
 	}

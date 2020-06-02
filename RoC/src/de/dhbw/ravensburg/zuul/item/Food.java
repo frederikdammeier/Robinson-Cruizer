@@ -1,5 +1,7 @@
 package de.dhbw.ravensburg.zuul.item;
 
+import java.util.ArrayList;
+
 /**
  * Class Food - an Item with a nutritional value.
  * 
@@ -14,7 +16,9 @@ public class Food extends Item {
 	/**The nutritional-value of the food.*/
 	private int nutrition;	
 	// private boolean edible;
-	
+
+
+
 	/**
 	 * Create a Food-Item, that is decribed by "name", has a 
 	 * "weight" and a "nutrition[al]" value.
@@ -27,7 +31,7 @@ public class Food extends Item {
 		super(name, weight);
 		this.nutrition = nutrition;
 		setPortable(true);
-	}
+		}
 
 	/**
 	 * @return The nutritional value of the food.
@@ -35,4 +39,5 @@ public class Food extends Item {
 	public int getNutrition() {
 		return nutrition;
 	}
+
 }

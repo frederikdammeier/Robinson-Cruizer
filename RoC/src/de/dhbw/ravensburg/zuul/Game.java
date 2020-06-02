@@ -68,7 +68,7 @@ public class Game {
 		// Starts the predator class for the first time.
 		predatorThread = new Thread(predator, "predator");
 		predatorThread.start();
-
+		
 		// Enter the main command loop. Here we repeatedly read commands and
 		// execute them until the game is over.
 
@@ -134,6 +134,8 @@ public class Game {
 			takeItem(command);
 		} else if (commandWord.equals("drop")) {
 			dropItem(command);
+		} else if (commandWord.equals("eat")) {
+			eatFood(command);
 		} else if (commandWord.equals("showInv")) {
 			player.getInventory().printContents();
 		} else if (commandWord.equals("buildBoat")) {
@@ -148,9 +150,37 @@ public class Game {
 	}
 
 	/**
+	 * Player tries to eat something.
+	 * @param command Information about what the player tries to eat.
+	 */
+	private void eatFood(Command command) {
+		if (!command.hasSecondWord()) {
+			// if there is no second word, we don't know what to eat...
+			System.out.println("Eat what?");
+			return;
+		}
+		
+		Item toEat = player.getInventory().getItemByName(command.getSecondWord());
+		
+		if (toEat instanceof Food) {
+			if(toEat.equals(new MagicMushroom())) {
+				player.getInventory().setUnlimited();
+				System.out.println("inventory unlimited");
+			}
+			player.eat(((Food) toEat).getNutrition());							
+			player.getInventory().removeItem(toEat);
+			System.out.println("tasty!");
+		}	
+		else {
+			System.out.println("not edible");
+		}
+		
+	}
+
+	/**
 	 * Processes an attack request by the player. Valid request cause damage to be
 	 * transfered to a creature, therefore reducing its health. Dead creatures are
-	 * removed from the rooms inventory and might drop an item.
+	 * removed from a rooms inventory. Dead creautures also might drop an item.
 	 */
 	private void playerAttack() {
 
@@ -352,7 +382,7 @@ public class Game {
 	}
 
 	/**
-	 * Checks if the item has a special effect. If true the effect is implemented.  
+	 * Checks if the item has a special effect. If thats the case, the effect is implemented. 
 	 * @param command The command that contains the item.
 	 * @param action	Determines the impact of an effect
 	 */
@@ -365,17 +395,14 @@ public class Game {
 			case "Stick":
 				if (!player.getInventory().containsItem("Stick")
 						&& !player.getInventory().containsItem("Sword")) {
-					player.setDamage(10); // Weapon List?
+					player.setDamage(new Stick().getDamage()); // Weapon List?
 					System.out.println("your damage now: " + player.getDamage());
 				}
 				break;
 			case "Sword":
-				player.setDamage(20); 							//  statische Methode verwenden?
+				player.setDamage(new Sword().getDamage()); 					
 				System.out.println("your damage now: " + player.getDamage());
 				break;
-			case "Magic-Mushroom":
-				System.out.println("unlimited inventory");
-				player.getInventory().setUnlimited();
 			default:
 			}
 			
@@ -386,7 +413,7 @@ public class Game {
 				//check if there are any other weapons in the inventory
 				if (!player.getInventory().containsItem("Stick")
 						&& !player.getInventory().containsItem("Sword")) {
-					player.setDamage(0); 											//  <--
+					player.setDamage(0); 										
 					System.out.println("your damage now: " + player.getDamage());
 				}
 				break;
@@ -399,7 +426,7 @@ public class Game {
 					System.out.println("your damage now: " + player.getDamage());
 
 				}else if (player.getInventory().containsItem("Stick")) {
-					player.setDamage(10);    										//  <----
+					player.setDamage(new Stick().getDamage());    										//  <----
 					System.out.println("your damage now: " + player.getDamage());
 				}
 				break;
@@ -438,23 +465,42 @@ public class Game {
 		System.out.println(currentRoom.getLongDescription());
 	}
 
+	/**
+	 * Set this variable true to end the game
+	 * @param finished
+	 * @return finished
+	 */
 	public void setFinished(boolean finished) {
 		this.finished = finished;
 	}
 
+	/**
+	 * @return player
+	 */
 	public Player getPlayer() {
 		return player;
 	}
 
+	/**
+	 * @return currentRoom 
+	 */
 	public Room getCurrentRoom() {
 		return currentRoom;
 	}
 
+	/**
+	 * @return Seconds since the game started.
+	 */
 	public long getGameTime() {
 		return timer.getTimePassedSeconds();
 	}
 
 	public void setDead() {
 		dead = true;
+	}
+
+
+	public float getEnemyDamageRate() {
+		return enemyDamageRate;
 	}
 }

@@ -28,6 +28,16 @@ public class Predator implements Runnable {
 		player = game.getPlayer();		
 		timeOfLastAttack = 0;
 	}
+	
+
+	/**
+	 * Creates a random  integer number between a maximum and a minimum.
+	 * @param max Maximum random number
+	 * @param min Minimum random number
+	 */
+	public int getRandomInt(int max, int min){
+	    return (int) (Math.random()*((max-min)+1))+min;
+	}
 
 	@Override
 	public void run() {
@@ -48,13 +58,13 @@ public class Predator implements Runnable {
 				// check if the player is still alive
 				if (game.getPlayer().getHealth() > 0) {
 
-					// attack just every 3 seconds and check if creature is peaceful
+					// if the creature isn't peaceful, it attacks radomly between max and min seconds.
 					if (!creatureInRoom.getPeaceful()) {
-						if ((game.getGameTime() - timeOfLastAttack) > 3) {
+						if ((game.getGameTime() - timeOfLastAttack) > getRandomInt(4, 2)) {
 							// transfer the creatures damage to
 							System.out.println("\n				" + creatureInRoom.getName() + " attacks you");
 							//System.out.println("				your health: " + 100 + "FIX" );
-							game.getPlayer().takeDamage(creatureInRoom.getDamage());
+							game.getPlayer().takeDamage(Math.round(creatureInRoom.getDamage()*game.getEnemyDamageRate()));
 							timeOfLastAttack = game.getGameTime();
 						} else {
 							System.out.println(" preparing to attack...");
