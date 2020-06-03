@@ -33,6 +33,7 @@ public class Beach extends Room {
 		}
 		setItemProbabilites();
 		populateInventory();
+		generateItemSprites();
 	}
 	
 	/**

@@ -1,6 +1,7 @@
 package de.dhbw.ravensburg.zuul;
 
 import de.dhbw.ravensburg.zuul.room.*;
+import de.dhbw.ravensburg.zuul.ui.ItemSprite;
 import de.dhbw.ravensburg.zuul.creature.*;
 import de.dhbw.ravensburg.zuul.item.*;
 import java.util.ArrayList;
@@ -20,7 +21,7 @@ import java.util.ArrayList;
  * @version 27.05.2020
  */
 
-public class Game {
+public class Game implements Runnable{
 	private Parser parser;
 	private Room currentRoom;
 	private Timer timer;
@@ -62,7 +63,8 @@ public class Game {
 	/**
 	 * Main play routine. Loops until end of play.
 	 */
-	public void play() {
+	@Override
+	public void run() {
 
 		printWelcome();
 
@@ -98,6 +100,16 @@ public class Game {
 		predatorThread.interrupt();
 		regenHandler.finish();
 		hungerHandler.finish();
+	}
+	
+	public void endGame() {
+		System.out.println("Thank you for playing.  Good bye!");
+		timer.stopTimer();
+		predatorThread.interrupt();
+		regenHandler.finish();
+		hungerHandler.finish();
+		finished = true;
+		
 	}
 
 	/*
@@ -361,6 +373,22 @@ public class Game {
     		System.out.println("You are now ready to build a Boat!\nUse command buildBoat to build it now.");
     	}
 	}
+	
+	/**
+	 * Takes an item from the rooms inventory and places it into the players
+	 * inventory.
+	 * 
+	 * @param item
+	 */
+	public void takeItemSprite(ItemSprite item) {
+		currentRoom.removeItem(item);
+		player.getInventory().addItem(item.getItem());
+		
+    	//Check if the player is now able to build the boat
+    	if(boatBuilder.checkIfBoatCanBeBuilt(player.getInventory())){
+    		System.out.println("You are now ready to build a Boat!\nUse command buildBoat to build it now.");
+    	}
+	}
 
 	/**
 	 * Takes an item from the players inventory and places it into the rooms
@@ -511,11 +539,23 @@ public class Game {
 	public long getGameTime() {
 		return timer.getTimePassedSeconds();
 	}
+	
+	/**
+	 * 
+	 * @return Seconds left until the time runs out.
+	 */
+	public long getTimeLeft() {
+		return timeLimit-timer.getTimePassedSeconds();
+	}
 
 	public float getEnemyDamageRate() {
 		return enemyDamageRate;
 	}
 	public void setDead() {
 		dead = true;
+	}
+
+	public long getTimeLimit() {
+		return timeLimit;
 	}
 }

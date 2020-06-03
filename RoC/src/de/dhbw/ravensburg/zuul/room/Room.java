@@ -1,10 +1,15 @@
 package de.dhbw.ravensburg.zuul.room;
 import java.util.Set;
-
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.ListIterator;
 
 import de.dhbw.ravensburg.zuul.creature.*;
 import de.dhbw.ravensburg.zuul.item.*;
+import de.dhbw.ravensburg.zuul.ui.GameApplication;
+import de.dhbw.ravensburg.zuul.ui.ItemSprite;
+import de.dhbw.ravensburg.zuul.ui.Sprite;
+import javafx.scene.image.Image;
 import de.dhbw.ravensburg.zuul.Inventory;
 
 /**
@@ -32,6 +37,7 @@ public class Room
     protected HashMap<String, Integer> itemSpawnProbability; 		//Stores a mapping of items in percentages
     private boolean locked;
     private RoomKey key;
+    private ArrayList<ItemSprite> spriteInventory;
     
 	/**
      * Create a room described "description". Initially, it has
@@ -49,6 +55,7 @@ public class Room
         setInventory();
         creatureInRoom = null;
         type = RoomType.EMPTY_ROOM;
+        spriteInventory = new ArrayList<>();
         
         inventory.addMultipleItems(specialItems);  
     }
@@ -70,6 +77,7 @@ public class Room
         setInventory();
         creatureInRoom = creature;
         type = RoomType.EMPTY_ROOM;
+        spriteInventory = new ArrayList<>();
 		
         inventory.addMultipleItems(specialItems);
 	}
@@ -93,6 +101,7 @@ public class Room
         setInventory();
         creatureInRoom = creature;
         this.type = type;
+        spriteInventory = new ArrayList<>();
 		
         inventory.addMultipleItems(specialItems);
 	}
@@ -199,6 +208,42 @@ public class Room
 				}
 			}
 		}
+	}
+	
+	protected void generateItemSprites() {
+		ListIterator<Item> it = inventory.getFullInventory().listIterator();
+		double x, y;
+		
+		while(it.hasNext()) {
+			x = Math.random()*(GameApplication.w*0.8) + GameApplication.w*0.1;
+			y = Math.random()*(GameApplication.h*0.8) + GameApplication.h*0.1;
+			
+			spriteInventory.add(new ItemSprite(x, y, 0.0, 0.0, new Image("Banana.png", 50.0, 50.0, true, true), it.next()));
+		}
+	}
+	
+	public ArrayList<ItemSprite> getItemSprites() {
+		return spriteInventory;
+	}
+	
+	public void addItem(Item item) {
+		inventory.addItem(item);
+		
+		double x, y;
+		x = Math.random()*(GameApplication.w*0.8) + GameApplication.w*0.1;
+		y = Math.random()*(GameApplication.h*0.8) + GameApplication.h*0.1;
+		
+		spriteInventory.add(new ItemSprite(x, y, 0.0, 0.0, new Image("Banana.png", 50.0, 50.0, true, true), item));
+	}
+	
+	public void addItem(Item item, double xPos, double yPos) {
+		inventory.addItem(item);
+		spriteInventory.add(new ItemSprite(xPos, yPos, 0.0, 0.0, new Image("Banana.png", 50.0, 50.0, true, true), item));
+	}
+	
+	public synchronized void removeItem(ItemSprite item) {
+		spriteInventory.remove(item);
+		inventory.removeItem(item.getItem());	
 	}
 
     /**

@@ -244,5 +244,9 @@ public class Inventory {
 		}
 		return tmp.isEmpty();
 	}
+	
+	public ArrayList<Item> getFullInventory(){
+		return inventory;
+	}
 } 
 
