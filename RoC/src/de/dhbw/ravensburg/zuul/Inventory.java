@@ -244,5 +244,13 @@ public class Inventory {
 		}
 		return tmp.isEmpty();
 	}
+	
+	public String getNamefromList(int i) {
+		String name;
+		name= inventory.get(i).getName();
+		
+		
+		return name;
+	}
 } 
 

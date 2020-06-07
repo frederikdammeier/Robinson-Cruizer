@@ -20,7 +20,7 @@ import java.util.ArrayList;
  * @version 27.05.2020
  */
 
-public class Game {
+public class Game  implements Runnable{
 	private Parser parser;
 	private Room currentRoom;
 	private Timer timer;
@@ -39,6 +39,7 @@ public class Game {
 	/**
 	 * Create the game and initialize its internal map.
 	 */
+	
 	public Game(Difficulty difficulty) {
 		timer = new Timer();
 		map = new Map();
@@ -62,7 +63,8 @@ public class Game {
 	/**
 	 * Main play routine. Loops until end of play.
 	 */
-	public void play() {
+	@Override
+	public void run() {
 
 		printWelcome();
 
@@ -100,6 +102,15 @@ public class Game {
 		hungerHandler.finish();
 	}
 
+	public void endGame() {
+        System.out.println("Thank you for playing.  Good bye!");
+        timer.stopTimer();
+        predatorThread.interrupt();
+        regenHandler.finish();
+        hungerHandler.finish();
+        finished = true;
+
+    }
 	/*
 	 * Print the Seconds that have passed since starting the game to the console.
 	 */
@@ -338,7 +349,7 @@ public class Game {
 	 * 
 	 * @param command The command that contains the item to transfer.
 	 */
-	private void dropItem(Command command) {
+	public void dropItem(Command command) {
 		if (!command.hasSecondWord()) {
 			System.out.println("Drop what?");
 		} else {
@@ -474,4 +485,6 @@ public class Game {
 	public void setDead() {
 		dead = true;
 	}
+
+	
 }
