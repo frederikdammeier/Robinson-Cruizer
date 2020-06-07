@@ -59,6 +59,10 @@ public class Sprite
         return s.getBoundary().intersects( this.getBoundary() );
     }
     
+    public boolean intersects(double mouseX, double mouseY) {
+    	return this.getBoundary().intersects(mouseX, mouseY, 1, 1);
+    }
+    
     public Image getImage() {
 		return image;
 	}

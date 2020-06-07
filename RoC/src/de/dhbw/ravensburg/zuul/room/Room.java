@@ -38,6 +38,7 @@ public class Room
     private boolean locked;
     private RoomKey key;
     private ArrayList<ItemSprite> spriteInventory;
+//    private CreatureSprite creatureSprite;
     
 	/**
      * Create a room described "description". Initially, it has
@@ -218,8 +219,13 @@ public class Room
 			x = Math.random()*(GameApplication.w*0.8) + GameApplication.w*0.1;
 			y = Math.random()*(GameApplication.h*0.8) + GameApplication.h*0.1;
 			
-			spriteInventory.add(new ItemSprite(x, y, 0.0, 0.0, new Image("Banana.png", 50.0, 50.0, true, true), it.next()));
-		}
+			Item item = it.next();
+			
+			if(item instanceof RoomKey) {
+				spriteInventory.add(new ItemSprite(x, y, 0.0, 0.0, new Image("Key.PNG", 50.0, 50.0, true, true), item));
+			} else {
+				spriteInventory.add(new ItemSprite(x, y, 0.0, 0.0, new Image(item.getName() + ".PNG", 50.0, 50.0, true, true), item));
+			}		}
 	}
 	
 	public ArrayList<ItemSprite> getItemSprites() {
@@ -238,7 +244,11 @@ public class Room
 	
 	public void addItem(Item item, double xPos, double yPos) {
 		inventory.addItem(item);
-		spriteInventory.add(new ItemSprite(xPos, yPos, 0.0, 0.0, new Image("Banana.png", 50.0, 50.0, true, true), item));
+		if(item instanceof RoomKey) {
+			spriteInventory.add(new ItemSprite(xPos, yPos, 0.0, 0.0, new Image("Key.PNG", 50.0, 50.0, true, true), item));
+		} else {
+			spriteInventory.add(new ItemSprite(xPos, yPos, 0.0, 0.0, new Image(item.getName() + ".PNG", 50.0, 50.0, true, true), item));
+		}
 	}
 	
 	public synchronized void removeItem(ItemSprite item) {

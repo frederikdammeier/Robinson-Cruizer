@@ -29,6 +29,7 @@ public class Forest extends Room {
 		}
 		setItemProbabilites();
 		populateInventory();
+		generateItemSprites();
 	}
 	
 	/**
@@ -48,6 +49,7 @@ public class Forest extends Room {
 		}
 		setItemProbabilites();
 		populateInventory();
+		generateItemSprites();
 	}
 	
 	/**

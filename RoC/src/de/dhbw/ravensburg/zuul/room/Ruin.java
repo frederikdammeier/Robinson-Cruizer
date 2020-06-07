@@ -35,6 +35,7 @@ public class Ruin extends Room {
 		}
 		setItemProbabilites();
 		populateInventory();
+		generateItemSprites();
 	}
 	
 	/**
@@ -54,6 +55,7 @@ public class Ruin extends Room {
 		}
 		setItemProbabilites();
 		populateInventory();
+		generateItemSprites();
 	}
 	/**
 	 * Define spawn probabilities here (in %). Try not to exceed 100% in total. That would lead to unexpected results.
