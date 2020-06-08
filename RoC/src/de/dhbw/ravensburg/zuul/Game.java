@@ -46,7 +46,7 @@ public class Game implements Runnable{
 		parser = new Parser();
 		predator = new Predator(this);
 		player = new Player("Players Name", difficulty.getInventoryCapacity(), 100);
-		player.getInventory().addMultipleItems(new Resin(), new Sail(), new Resin(), new Rope(), new Rope(), new Timber(), new Timber(), new Timber(), new Timber());  //Activate this line to test the boatBuilding
+		player.getInventory().addMultipleItems(new RoomKey("Key to the Library"), new Resin(), new Sail(), new Resin(), new Rope(), new Rope(), new Timber(), new Timber(), new Timber(), new Timber());  //Activate this line to test the boatBuilding
 		boatBuilder = new BoatBuilding();
 		currentRoom = map.getCurrentRoom();
 		timeLimit = difficulty.getTimeLimit();
@@ -606,6 +606,13 @@ public class Game implements Runnable{
 	 */
 	public Room getCurrentRoom() {
 		return currentRoom;
+	}
+	
+	/**
+	 * @param The next room.
+	 */
+	public void setCurrentRoom(Room nextRoom) {
+		this.currentRoom = nextRoom;
 	}
 
 	/**

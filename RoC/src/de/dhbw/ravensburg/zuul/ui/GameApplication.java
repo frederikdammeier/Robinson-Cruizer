@@ -1,14 +1,18 @@
 package de.dhbw.ravensburg.zuul.ui;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.ListIterator;
 
 import de.dhbw.ravensburg.zuul.Command;
 import de.dhbw.ravensburg.zuul.Difficulty;
 import de.dhbw.ravensburg.zuul.Game;
+import de.dhbw.ravensburg.zuul.room.Room;
+import de.dhbw.ravensburg.zuul.room.RoomType;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
@@ -47,12 +51,14 @@ public class GameApplication extends Application {
 	private Game game;
 	private Thread gameThread;
 	private Canvas canvas;
-	private Text yesNoQuestion;
-	private Button yesButton, noButton;
-	private GridPane yesNoContainer;
+	private Text dialogText;
+	private Button okButton, cancelButton;
+	private GridPane dialogContainer;
 	private StackPane sPane;
-	private Group yesNoGroup, goRoomGroup;
+	private Group dialogGroup, goRoomGroup;
 	private Rectangle yesNoBackground, goEastRectangle, goWestRectangle, goSouthRectangle, goNorthRectangle, goUpRectangle, goDownRectangle;
+	private HashMap<String, String> messages;
+	private HashMap<String, EventHandler<ActionEvent>> dialogHandlers;
 	
 	
 	public static void main(String... args) {
@@ -61,6 +67,11 @@ public class GameApplication extends Application {
 	
 	@Override
 	public void start(Stage stage) throws Exception {
+		messages = new HashMap<>();
+		populateMessageHashMap();
+		dialogHandlers = new HashMap<>();
+		createDialogHandlers();
+		
 		lastNanoTime = new DoubleValue();
 		lastKeyPressed = new StringValue();
 		lastNanoTime.value = 0.0;
@@ -94,42 +105,38 @@ public class GameApplication extends Application {
 		
 		//Yes/No Answer
 		yesNoBackground = new Rectangle(220, 110, Color.BEIGE);
-		yesNoGroup = new Group();
-		yesNoQuestion = new Text("YesNoQuestionfects of the prefWidth() method in class Group.");
-		yesButton = new Button("Yes");
-		noButton = new Button("No");
-		yesNoQuestion.setWrappingWidth(200);
-		yesNoContainer = new GridPane();
-		yesNoContainer.add(yesNoQuestion, 0, 0, 2, 1);
-		yesNoContainer.add(yesButton,  0, 1);
-		yesNoContainer.add(noButton, 1, 1);
+		dialogGroup = new Group();
+		dialogText = new Text("YesNoQuestionfects of the prefWidth() method in class Group.");
+		okButton = new Button("Ok");
+		cancelButton = new Button("Cancel");
+		dialogText.setWrappingWidth(200);
+		dialogContainer = new GridPane();
+		dialogContainer.add(dialogText, 0, 0, 2, 1);
+		dialogContainer.add(okButton,  0, 1);
+		dialogContainer.add(cancelButton, 1, 1);
 
-		yesNoGroup.setAutoSizeChildren(true);
-		yesNoGroup.getChildren().add(yesNoBackground);
-		yesNoGroup.getChildren().add(yesNoContainer);
+		dialogGroup.setAutoSizeChildren(true);
+		dialogGroup.getChildren().add(yesNoBackground);
+		dialogGroup.getChildren().add(dialogContainer);
 		
-		yesButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
-			@Override
-			public void handle(MouseEvent arg0) {
-				game.goRoom(goNext.value);
-				setExitVisibility();
-				yesNoGroup.setVisible(false);
-				
-			}			
-		});
 		
-		noButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
-			@Override
-			public void handle(MouseEvent arg0) {
-				yesNoGroup.setVisible(false);			
-			}			
-		});
+//		yesButton.setOnAction(new EventHandler<ActionEvent>() {
+//			@Override
+//			public void handle(ActionEvent arg0) {
+//				game.goRoom(goNext.value);
+//				setExitVisibility();
+//				yesNoGroup.setVisible(false);
+//				
+//			}			
+//		});
+		
+		cancelButton.setOnAction(dialogHandlers.get("acknowledgeEvent"));
 		
 		
 //		sPane.getChildren().add(yesNoBackground);
-		yesNoGroup.setVisible(false);
-		sPane.getChildren().add(yesNoGroup);
-		root. getChildren().add(yesNoGroup);
+		dialogGroup.setVisible(false);
+		sPane.getChildren().add(dialogGroup);
+		root. getChildren().add(dialogGroup);
 		
 		
 		scene.setOnKeyPressed(
@@ -255,6 +262,64 @@ public class GameApplication extends Application {
 		stage.show();
 	}
 	
+	private void createDialogHandlers() {
+		dialogHandlers.put("acknowledgeEvent", new EventHandler<ActionEvent>() {
+			@Override 
+			public void handle(ActionEvent e) {
+				dialogGroup.setVisible(false);
+			}
+		});
+		
+		dialogHandlers.put("roomChangeEvent", new EventHandler<ActionEvent>(){
+			@Override
+			public void handle(ActionEvent e) {
+				Room nextRoom = game.getCurrentRoom().getExit(goNext.value);
+	
+				if (nextRoom.isLocked()) {
+					if (game.getPlayer().getInventory().containsItem(nextRoom.getKey())) {
+						dialogText.setText(messages.get("unlockRoom"));
+						okButton.setOnAction(dialogHandlers.get("unlockRoomEvent"));
+					} else {
+						dialogText.setText(messages.get("roomLocked"));
+						okButton.setOnAction(dialogHandlers.get("acknowledgeEvent"));
+					}
+				} else if(!nextRoom.hasExitToRoom(game.getCurrentRoom()) && !nextRoom.getType().equals(RoomType.FINISH)) {
+					dialogText.setText(messages.get("trapDoor"));
+					okButton.setOnAction(dialogHandlers.get("trapDoorEvent"));
+				} else {
+					game.setCurrentRoom(nextRoom);
+					setExitVisibility();
+					dialogGroup.setVisible(false);
+				}			
+			}
+		});
+		
+		dialogHandlers.put("unlockRoomEvent", new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent e) {
+				game.setCurrentRoom(game.getCurrentRoom().getExit(goNext.value));
+				game.getCurrentRoom().unLock();
+				setExitVisibility();
+			}
+		});
+		
+		dialogHandlers.put("trapDoorEvent", new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent e) {
+				game.setCurrentRoom(game.getCurrentRoom().getExit(goNext.value));				
+			}
+		});
+	}
+	
+	private void populateMessageHashMap() {
+		messages.put("roomLocked", "The room you're trying to access is locked! Try finding a key.");
+		messages.put("unlockRoom", "Would you like to unlock this room now?");
+		messages.put("inventoyFull", "You can't carry any more!");
+		messages.put("trapDoor", "You're trying to enter through a trapdoor. Continue?");
+		messages.put("boatReady", "You're ready to build a boat.");
+		messages.put("goDirection", "Would you like to go %s?");
+		}
+	
 	private void initializeRoomGoup() {
 		goRoomGroup = new Group();
 		
@@ -274,40 +339,44 @@ public class GameApplication extends Application {
 		goEastRectangle.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent e) {
-				if(!yesNoGroup.isVisible()) {
-					yesNoQuestion.setText("Would you like to go east?");
+				if(!dialogGroup.isVisible()) {
 					goNext.value = "east";
-	    			yesNoGroup.setVisible(true);
+					dialogText.setText(String.format(messages.get("goDirection"), goNext.value));
+					okButton.setOnAction(dialogHandlers.get("roomChangeEvent"));
+	    			dialogGroup.setVisible(true);
 				}
 			}
 		});
 		goWestRectangle.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent e) {
-				if(!yesNoGroup.isVisible()) {
-					yesNoQuestion.setText("Would you like to go west?");
+				if(!dialogGroup.isVisible()) {	
 					goNext.value = "west";
-	    			yesNoGroup.setVisible(true);
+					dialogText.setText(String.format(messages.get("goDirection"), goNext.value));
+					okButton.setOnAction(dialogHandlers.get("roomChangeEvent"));
+	    			dialogGroup.setVisible(true);
 				}
 			}
 		});
 		goNorthRectangle.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent e) {
-				if(!yesNoGroup.isVisible()) {
-					yesNoQuestion.setText("Would you like to go north?");
+				if(!dialogGroup.isVisible()) {
 					goNext.value = "north";
-	    			yesNoGroup.setVisible(true);
+					dialogText.setText(String.format(messages.get("goDirection"), goNext.value));
+					okButton.setOnAction(dialogHandlers.get("roomChangeEvent"));
+	    			dialogGroup.setVisible(true);
 				}
 			}
 		});
 		goSouthRectangle.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent e) {
-				if(!yesNoGroup.isVisible()) {
-					yesNoQuestion.setText("Would you like to go south?");
+				if(!dialogGroup.isVisible()) {
 					goNext.value = "south";
-	    			yesNoGroup.setVisible(true);
+					dialogText.setText(String.format(messages.get("goDirection"), goNext.value));
+					okButton.setOnAction(dialogHandlers.get("roomChangeEvent"));
+	    			dialogGroup.setVisible(true);
 				}
 			}
 		});
@@ -353,8 +422,14 @@ public class GameApplication extends Application {
         		gc.setFill(Color.ANTIQUEWHITE);
         		gc.setFont(Font.font("Algerian", 15));
         		gc.fillText("\"T\"", item.getPositionX(), item.getPositionY());	
-        		if(input.contains("T")) itemIterator.remove();	
-        		game.getPlayer().getInventory().addItem(item.getItem());
+        		if(input.contains("T")) {
+        			if(game.getPlayer().getInventory().addItem(item.getItem())) {
+        				itemIterator.remove();	
+        			} 	else	{
+        				dialogText.setText("Inventory Full");
+            			dialogGroup.setVisible(true);
+        			}	
+        		}
         	}
         }
 	}
