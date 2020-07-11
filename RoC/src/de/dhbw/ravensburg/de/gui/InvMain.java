@@ -1,6 +1,14 @@
 package de.dhbw.ravensburg.de.gui;
 
+import java.util.ArrayList;
+
+import de.dhbw.ravensburg.zuul.Difficulty;
+import de.dhbw.ravensburg.zuul.Game;
+import de.dhbw.ravensburg.zuul.Inventory;
+import de.dhbw.ravensburg.zuul.item.Item;
 import javafx.application.Application;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -13,42 +21,41 @@ import javafx.stage.Stage;
 
 public class InvMain  extends Application{
 
+	
+	private Difficulty difficulty;
+	private Game game;
+	private Thread gameThread;
+	
+	
 	@Override
 	public void start(Stage primaryStage) throws Exception {
+		game = new Game(Difficulty.EASY);
+		gameThread = new Thread(game, "game");
+        gameThread.start();
+		
 		BorderPane bPane = new BorderPane();
 		Label inv = new Label();
-		Button showinv = new Button("show");
-		Button doButton = new Button("select");
-		TextField function = new TextField("eat/drop");
-		TextField itemsfield= new TextField("name of the Item");
-		
-		
-		HBox hbox = new HBox();
-		hbox.getChildren().addAll(function, itemsfield, doButton);
 		
 		
 		
-		bPane.setTop(showinv);
-		bPane.setCenter(inv);
-		bPane.setBottom(hbox);
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		Scene scene  = new Scene(bPane);
-        primaryStage.setScene(scene);
-        primaryStage.show();
-        
+		 ObservableList<Inventory> inventory  = FXCollections.observableArrayList(game.getPlayer().getInventory());
+//		
+//		
+//		HBox hbox = new HBox();
+//		hbox.getChildren().addAll(function, itemsfield, doButton);
+//		
+//		
+//		
+//		bPane.setTop(showinv);
+//		bPane.setCenter(inv);
+//		bPane.setBottom(hbox);
+//		
+//
+//		
+//		Scene scene  = new Scene(bPane);
+//        primaryStage.setScene(scene);
+//        primaryStage.show();
+//        
 		
 	}
 	

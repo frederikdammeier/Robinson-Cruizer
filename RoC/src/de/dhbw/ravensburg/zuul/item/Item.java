@@ -37,6 +37,7 @@ public class Item {
 		this.weight = weight;	
 	}
 	
+		
 	/**
 	 * @return The name of an item as a string.
 	 * (the one thats was definied in the constructor).

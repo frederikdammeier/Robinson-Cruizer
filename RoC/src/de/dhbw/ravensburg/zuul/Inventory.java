@@ -252,5 +252,34 @@ public class Inventory {
 		
 		return name;
 	}
+	
+	public Item getItemfromList(int i) {
+		Item item;
+		item= inventory.get(i);
+		
+		
+		return item;
+	}
+	
+	/**
+	 * Returns an Item in the list by its name.
+	 * 
+	 * @param name The name to look for.
+	 * @return null if Item not in list
+	 */
+	public Item getItemByIndex(int name) {
+		boolean foundItem = false;
+		Item tmp;
+		
+		ListIterator<Item> it = inventory.listIterator();
+		
+		while(!foundItem && it.hasNext()) {
+			tmp = it.next();
+			
+			return tmp;
+		}
+		System.out.println("Item not found!");
+		return null;
+	}
 } 
 
