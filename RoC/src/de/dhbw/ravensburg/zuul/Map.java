@@ -32,7 +32,7 @@ public class Map {
 		map = new ArrayList<>();
 		
 		//Initialize: Beaches
-		westBeach = new Beach("on the Beach", new WaterPig(), RoomType.BEACH_WEST, new Stick(), new Sword(), new Apple(), new Apple(), new Banana());
+		westBeach = new Beach("on the Beach", null, RoomType.BEACH_WEST, new Stick(), new Sword(), new Apple(), new Apple(), new Banana());
 		map.add(westBeach);
 		eastBeach = new Beach("on the Beach", null, RoomType.BEACH_EAST);
 		map.add(eastBeach);
@@ -42,7 +42,7 @@ public class Map {
 		map.add(southBeach);
 		
 		//Initialize: Forest
-		westForest = new Forest("in the Forest", new Native(), RoomType.FOREST);
+		westForest = new Forest("in the Forest", new Snake(), RoomType.FOREST);
 		map.add(westForest);
 		eastForest = new Forest("in the Forest", null, RoomType.FOREST);
 		map.add(eastForest);

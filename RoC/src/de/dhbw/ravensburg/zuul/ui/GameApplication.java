@@ -8,6 +8,7 @@ import java.util.ListIterator;
 import de.dhbw.ravensburg.zuul.Command;
 import de.dhbw.ravensburg.zuul.Difficulty;
 import de.dhbw.ravensburg.zuul.Game;
+import de.dhbw.ravensburg.zuul.Predator2;
 import de.dhbw.ravensburg.zuul.room.Room;
 import de.dhbw.ravensburg.zuul.room.RoomType;
 import javafx.animation.AnimationTimer;
@@ -59,6 +60,7 @@ public class GameApplication extends Application {
 	private Rectangle yesNoBackground, goEastRectangle, goWestRectangle, goSouthRectangle, goNorthRectangle, goUpRectangle, goDownRectangle;
 	private HashMap<String, String> messages;
 	private HashMap<String, EventHandler<ActionEvent>> dialogHandlers;
+	private Predator2 predator;
 	
 	
 	public static void main(String... args) {
@@ -88,6 +90,10 @@ public class GameApplication extends Application {
 		game = new Game(Difficulty.EASY);
 		gameThread = new Thread(game, "game");
 		gameThread.start();
+		
+		predator = new Predator2(game);
+		Thread pThread = new Thread(predator, "predator");
+		pThread.start();
 		
 		Group root = new Group();
 		sPane = new StackPane();
@@ -175,10 +181,10 @@ public class GameApplication extends Application {
 		gc = canvas.getGraphicsContext2D();
 		
 		testForestBackground = new Image("forest_test.jpeg");
-		Image robinImage = new Image("Robinson.PNG", 125, 125, true, true);
+		
 		
 		//The players sprite
-		robin = new Sprite(400.0, 400.0, 50.0, 50.0, robinImage);
+		robin = game.getPlayer().getPlayerSprite();
 		
 		//Hitboxes around the Map
 		west = new Sprite(0.0, canvas.getHeight()*0.1, 0.0, 0.0, canvas.getWidth()*0.1, canvas.getHeight()*0.8);	
@@ -189,6 +195,7 @@ public class GameApplication extends Application {
 		
 		AnimationTimer at = new AnimationTimer() {
 			double speed = 200.0;
+			double enemySpeed = 150.0;
 			
 			@Override
 			public void handle(long currentNanoTime) {
@@ -199,10 +206,12 @@ public class GameApplication extends Application {
 		        //Calculate the the relative angle that robin needs to have to face the mouse pointer
 		        double mouseAngle = getMouseAngle();
 
-		        robin.setVelocity(0,0);
+		        
 		        
 		        //moveRobin according to mouseDirection
-		        if(input.contains("W")) {
+		        if(input.contains("W") && robin.distanceTo(mousePosition.x, mousePosition.y) > 20) {
+		        	robin.setVelocity(0,0);
+		        	
 		        	double newVelocityX = Math.cos(mouseAngle+Math.PI)*speed;
 		        	double newVelocityY = Math.sin(mouseAngle+Math.PI)*speed;
 		        	
@@ -215,8 +224,10 @@ public class GameApplication extends Application {
 		        	if(robin.intersects(south) && newVelocityY > 0)
 		        		newVelocityY = 0;
 		        	robin.addVelocity(newVelocityX, newVelocityY);
+		        	
+		        	robin.update(elapsedTime);
 		        }     
-		        robin.update(elapsedTime);
+		        
 	
 		        
 		        gc.drawImage(testForestBackground, 0, 0);		        
@@ -247,6 +258,37 @@ public class GameApplication extends Application {
 		        
 		        //Health Bar
 		        printVitalityBar(gc, game.getPlayer().getHealth(), Color.RED, canvas.getWidth()*0.95-200, canvas.getHeight()*0.95-30, 200.0, 20.0);
+		        
+		        if(game.getCurrentRoom().getCreatureSprite() != null) {
+		        	CreatureSprite creature = game.getCurrentRoom().getCreatureSprite();
+		        	double creatureAngle = getAngleBetweenSprites(creature, robin);
+		        	creature.render(gc, Math.toDegrees(creatureAngle+Math.PI/2));
+		        	
+	        
+			        //move hostile creatures towards robin
+			        if(!creature.getCreature().getPeaceful() && creature.distanceTo(robin.getCenterX(), robin.getCenterY()) > 70) {
+			        	creature.setVelocity(0,0);
+			        	
+			        	double newVelocityX = Math.cos(creatureAngle+Math.PI)*enemySpeed;
+			        	double newVelocityY = Math.sin(creatureAngle+Math.PI)*enemySpeed;
+			        	
+			        	if(creature.intersects(west) && newVelocityX < 0)
+			        		newVelocityX = 0;
+			        	if(creature.intersects(north) && newVelocityY < 0)
+			        		newVelocityY = 0;
+			        	if(creature.intersects(east) && newVelocityX > 0)
+			        		newVelocityX = 0;	        		
+			        	if(creature.intersects(south) && newVelocityY > 0)
+			        		newVelocityY = 0;
+			        	creature.addVelocity(newVelocityX, newVelocityY);
+			        	
+			        	creature.update(elapsedTime);
+			        }    
+			        
+			        //if the creature is hostile and near enough it deals damage to the player. or does it?
+			        
+			        
+		        }
 		        
 		        
 		        //Rotate Robin according to mouseDirection and Print him to the canvas.
@@ -300,13 +342,15 @@ public class GameApplication extends Application {
 				game.setCurrentRoom(game.getCurrentRoom().getExit(goNext.value));
 				game.getCurrentRoom().unLock();
 				setExitVisibility();
+				dialogGroup.setVisible(false);
 			}
 		});
 		
 		dialogHandlers.put("trapDoorEvent", new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent e) {
-				game.setCurrentRoom(game.getCurrentRoom().getExit(goNext.value));				
+				game.setCurrentRoom(game.getCurrentRoom().getExit(goNext.value));	
+				dialogGroup.setVisible(false);
 			}
 		});
 	}
@@ -438,6 +482,10 @@ public class GameApplication extends Application {
 		return Math.atan2(robin.getCenterY() - mousePosition.y, robin.getCenterX() - mousePosition.x);
 	}
 	
+	private double getAngleBetweenSprites(Sprite a, Sprite b) {
+		return Math.atan2(a.getCenterY() - b.getCenterY(), a.getCenterX() - b.getCenterX());
+	}
+	
 	private void printVitalityBar(GraphicsContext gc, float value, Color color, double posX, double posY, double width, double height) {
 		gc.setFill(Color.ANTIQUEWHITE);
 		gc.fillRect(posX, posY, width, height);
@@ -468,5 +516,6 @@ public class GameApplication extends Application {
 	@Override
 	public void stop() {
 		game.endGame();
+		predator.stopThread();
 	}
 }

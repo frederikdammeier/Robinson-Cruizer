@@ -176,4 +176,16 @@ public class Sprite
         Rotate r = new Rotate(angle, px, py);
         gc.setTransform(r.getMxx(), r.getMyx(), r.getMxy(), r.getMyy(), r.getTx(), r.getTy());
     }
+    
+    
+    /**
+     * Returns the euklidic distance from the sprites center to given coordinates
+     * 
+     * @param x
+     * @param y
+     * @return
+     */
+    public double distanceTo(double x, double y) {
+    	return Math.sqrt(Math.pow(x - getCenterX(), 2) + Math.pow(y - getCenterY(), 2));
+    }
 }

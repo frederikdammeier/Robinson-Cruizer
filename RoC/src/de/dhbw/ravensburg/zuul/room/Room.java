@@ -1,4 +1,6 @@
 package de.dhbw.ravensburg.zuul.room;
+
+
 import java.util.Set;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -9,6 +11,7 @@ import de.dhbw.ravensburg.zuul.item.*;
 import de.dhbw.ravensburg.zuul.ui.GameApplication;
 import de.dhbw.ravensburg.zuul.ui.ItemSprite;
 import de.dhbw.ravensburg.zuul.ui.Sprite;
+import de.dhbw.ravensburg.zuul.ui.CreatureSprite;
 import javafx.scene.image.Image;
 import de.dhbw.ravensburg.zuul.Inventory;
 
@@ -30,7 +33,8 @@ public class Room
 {
 	private String description;
     private HashMap<String, Room> exits;        					//Stores exits of this room.
-    private Creature creatureInRoom;			
+    private Creature creatureInRoom;								
+    private CreatureSprite creatureSprite;
     private Inventory inventory;									//Stores the Items that are currently present in the room.
     private RoomType type;											//To determine the graphical representation for the room.
     protected HashMap<String, Integer> creatureSpawnProbability;  	//Stores a mapping of creatures in percentages
@@ -77,6 +81,7 @@ public class Room
         exits = new HashMap<>();
         setInventory();
         creatureInRoom = creature;
+        if(creatureInRoom != null) creatureSprite = new CreatureSprite((GameApplication.w / 4) * 3, GameApplication.h / 4, 0, 0, new Image("Robinson.PNG", 125, 125, true, true), creature);
         type = RoomType.EMPTY_ROOM;
         spriteInventory = new ArrayList<>();
 		
@@ -101,6 +106,7 @@ public class Room
         exits = new HashMap<>();
         setInventory();
         creatureInRoom = creature;
+        if(creatureInRoom != null) creatureSprite = new CreatureSprite((GameApplication.w / 4) * 3, GameApplication.h / 4, 0, 0, new Image("Robinson.PNG", 125, 125, true, true), creature);
         this.type = type;
         spriteInventory = new ArrayList<>();
 		
@@ -333,7 +339,11 @@ public class Room
     	return creatureInRoom;
     }
     
-    /**
+    public CreatureSprite getCreatureSprite() {
+		return creatureSprite;
+	}
+
+	/**
      * Replaces creature in room with the given Creature. 
      * 
      * @param creature null to remove the rooms creature.

@@ -71,10 +71,12 @@ public class Game implements Runnable{
 		// Add a new Timer to measure passed game Time.
 		Thread timeThread = new Thread(timer, "timer");
 		timeThread.start();
-
+		
+		/**
 		// Starts the predator class for the first time.
 		predatorThread = new Thread(predator, "predator");
 		predatorThread.start();
+		*/
 		
 		//Regeneration Thread
 		Thread regenThread = new Thread(regenHandler, "regenerate");
@@ -105,7 +107,7 @@ public class Game implements Runnable{
 	public void endGame() {
 		System.out.println("Thank you for playing.  Good bye!");
 		timer.stopTimer();
-		predatorThread.interrupt();
+		//predatorThread.interrupt();
 		regenHandler.finish();
 		hungerHandler.finish();
 		finished = true;
