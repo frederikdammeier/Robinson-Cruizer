@@ -15,6 +15,7 @@ import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.Group;
@@ -23,7 +24,10 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.RadioButton;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
@@ -61,7 +65,7 @@ public class GameApplication extends Application {
 	private HashMap<String, String> messages;
 	private HashMap<String, EventHandler<ActionEvent>> dialogHandlers;
 	private Predator2 predator;
-	
+	private Difficulty difficulty;
 	
 	public static void main(String... args) {
 		launch(args);
@@ -69,6 +73,128 @@ public class GameApplication extends Application {
 	
 	@Override
 	public void start(Stage stage) throws Exception {
+		
+		
+		final Stage welcome = stage;
+		StackPane rootb= new StackPane(); 
+		
+		//image
+		Image image1 = new Image("/Key.PNG", true);
+		ImageView imgView = new ImageView();
+        imgView.setImage(image1);
+        imgView.setFitWidth(rootb.getWidth());
+        imgView.setFitHeight(rootb.getHeight());
+        
+        //labels 
+		Label welcomeLabel = new Label();
+		Label infoLabel = new Label();
+		Label label = new Label("by Frederik Dammeier, Philipp Schneider and Moritz Link");
+		//button
+		Button goSetting  = new Button("go to Setting");
+
+		welcomeLabel.setText("Welcome to the game:  Robinson Cruizer");
+		welcomeLabel.setFont(new Font("Arial",  20));
+		welcomeLabel.setTextFill(Color.BLACK);
+		welcomeLabel.setPadding(new Insets(20,0,0,0));
+		//infoLabel.setText("Robinson Cruizer is an adventure game, developed /br by Frederik Dammaier,/n Philipp Schneider /n and Moritz Link");
+		label.setPadding(new Insets(50,0,0,0));
+		 rootb.getChildren().addAll(imgView, welcomeLabel, goSetting, label); // , label
+		 /**
+		 * Defines the position from roots children
+		 */	
+		rootb.setAlignment(welcomeLabel, Pos.TOP_CENTER);
+		rootb.setAlignment(label, Pos.TOP_CENTER);		
+		rootb.setAlignment(goSetting, Pos.BOTTOM_RIGHT);
+		
+		final Scene welcomeScene = new Scene(rootb, 400, 400);
+		welcome.setScene(welcomeScene);
+		welcome.show();
+		
+		//###############################################################################
+		
+		
+				StackPane level = new StackPane();			
+				Image img = new Image("/Key.PNG", true);
+				ImageView imgView2 = new ImageView();
+				imgView2.setImage(img);
+			    imgView2.setFitWidth(level.getWidth());
+			    imgView2.setFitHeight(level.getHeight());
+				VBox box = new VBox();						
+				ToggleGroup group = new ToggleGroup();
+
+				final RadioButton beasy = new RadioButton("Easy");
+				final RadioButton bmedium = new RadioButton("Medium");
+				final RadioButton bhard = new RadioButton("Hard");
+				
+				Button goBack = new Button("go back");
+				Button goGame = new Button("start the Game");
+				Label description = new Label("please choose your level");		
+				
+				description.setFont(new Font("Serif",  24));
+				description.setTextFill(Color.WHITE);		
+				beasy.setFont(new Font("Serif",  24));
+				bmedium.setFont(new Font("Serif",  24));		
+				bhard.setFont(new Font("Serif",  24));		
+				beasy.setTextFill(Color.WHITE);
+				bmedium.setTextFill(Color.WHITE);
+				bhard.setTextFill(Color.WHITE);
+				beasy.setToggleGroup(group);
+				bmedium.setToggleGroup(group);
+				bhard.setToggleGroup(group);
+				
+				// if nothing is selected, system selects  button beasy
+				beasy.setSelected(true);
+			
+				box.getChildren().addAll(beasy, bmedium, bhard ); // description, goBack, goGame
+				box.setPadding(new Insets(120,20,20,135));
+				level.getChildren().addAll(imgView2,box, description, goBack, goGame);
+				level.setAlignment(description, Pos.TOP_CENTER);
+				level.setAlignment(goBack, Pos.BOTTOM_LEFT);
+				level.setAlignment(box, Pos.BOTTOM_CENTER);		
+				level.setAlignment(goGame, Pos.BOTTOM_RIGHT);
+				
+				final Scene levelScene = new Scene(level, 400, 400);
+				final Group root = new Group();
+				sPane = new StackPane();
+				final	Scene scene = new Scene(root);
+			
+				/**
+				 * Defines the action from the goBack button.
+				 * Here you will switch to another scene. 
+				 */
+				goBack.addEventHandler(ActionEvent.ACTION, new EventHandler<ActionEvent>(){
+							
+					@Override
+					public void handle(ActionEvent actionEvent) {
+						welcome.setScene(welcomeScene);
+						welcome.show();
+					}
+					
+				});
+				
+				/**
+				 * Defines the action from the goSetting button.
+				 * Here you will switch to another scene. 
+				 */
+				goSetting.addEventHandler(ActionEvent.ACTION, new EventHandler<ActionEvent>(){
+							
+					@Override
+					public void handle(ActionEvent actionEvent) {
+						
+						welcome.setScene(levelScene);
+						welcome.show();
+					}
+					
+				});
+				
+				
+			
+		
+		//############################################################################################
+		
+		
+		
+		
 		messages = new HashMap<>();
 		populateMessageHashMap();
 		dialogHandlers = new HashMap<>();
@@ -87,18 +213,18 @@ public class GameApplication extends Application {
 		//Difficulty selection screen
 		
 		//GameInstance
-		game = new Game(Difficulty.EASY);
-		gameThread = new Thread(game, "game");
-		gameThread.start();
+//		game = new Game(Difficulty.EASY);
+//		gameThread = new Thread(game, "game");
+//		gameThread.start();
 		
-		predator = new Predator2(game);
-		Thread pThread = new Thread(predator, "predator");
-		pThread.start();
+//		predator = new Predator2(game);
+//		Thread pThread = new Thread(predator, "predator");
+//		pThread.start();
 		
-		Group root = new Group();
-		sPane = new StackPane();
-		Scene scene = new Scene(root);
-		stage.setScene(scene);
+//		Group root = new Group();
+//		sPane = new StackPane();
+//		Scene scene = new Scene(root);
+//		stage.setScene(scene);
 		
 		canvas = new Canvas(w, h);
 		sPane.getChildren().add(canvas);
@@ -106,8 +232,8 @@ public class GameApplication extends Application {
 		
 		
 		// Group for GoRoom Elements
-		initializeRoomGoup();
-		root.getChildren().add(goRoomGroup);
+//		initializeRoomGoup();
+//		root.getChildren().add(goRoomGroup);
 		
 		//Yes/No Answer
 		yesNoBackground = new Rectangle(220, 110, Color.BEIGE);
@@ -184,7 +310,7 @@ public class GameApplication extends Application {
 		
 		
 		//The players sprite
-		robin = game.getPlayer().getPlayerSprite();
+//		robin = game.getPlayer().getPlayerSprite();
 		
 		//Hitboxes around the Map
 		west = new Sprite(0.0, canvas.getHeight()*0.1, 0.0, 0.0, canvas.getWidth()*0.1, canvas.getHeight()*0.8);	
@@ -193,7 +319,7 @@ public class GameApplication extends Application {
 		south = new Sprite(canvas.getWidth()*0.1, canvas.getHeight()*0.9, 0.0, 0.0, canvas.getWidth()*0.8, canvas.getHeight()*0.1);
 
 		
-		AnimationTimer at = new AnimationTimer() {
+	final	AnimationTimer at = new AnimationTimer() {
 			double speed = 200.0;
 			double enemySpeed = 150.0;
 			
@@ -296,12 +422,50 @@ public class GameApplication extends Application {
 			}				
 		};
 
-		at.start();
+//		at.start();
+		goGame.addEventHandler(ActionEvent.ACTION, new EventHandler<ActionEvent>(){
+			
+			@Override
+			public void handle(ActionEvent actionEvent) {
+				
+				if(beasy.isSelected()) {
+					difficulty =Difficulty.EASY;
+				}
+				else if(bmedium.isSelected()) {
+					difficulty =Difficulty.MEDIUM;
+				}
+				else if(bhard.isSelected()) {
+					difficulty =Difficulty.HARD;
+				}
+				else {
+					System.out.println("You level will be easy");
+				}
+				game = new Game(difficulty);
+//				System.out.println(difficulty.getInventoryCapacity()); // geht
+				
+				
+				
+				
+				gameThread = new Thread(game, "game");
+				gameThread.start();
+				predator = new Predator2(game);
+				Thread pThread = new Thread(predator, "predator");
+				pThread.start();
+				initializeRoomGoup();
+				robin = game.getPlayer().getPlayerSprite();
+				root.getChildren().add(goRoomGroup);
+				at.start();
+				welcome.setTitle("Robinson Cruizer");
+				welcome.getIcons().add(new Image("Icon.png"));
+				welcome.setScene(scene); // Freddis Scene muss hier rein
+				welcome.show();
+			}
+		});
 		
-		stage.setTitle("Robinson Cruizer");
-		stage.getIcons().add(new Image("Icon.png"));
-//		stage.setFullScreen(true);
-		stage.show();
+//		stage.setTitle("Robinson Cruizer");
+//		stage.getIcons().add(new Image("Icon.png"));
+////		stage.setFullScreen(true);
+//		stage.show();
 	}
 	
 	private void createDialogHandlers() {
