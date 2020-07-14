@@ -42,46 +42,46 @@ public class Map {
 		map.add(southBeach);
 		
 		//Initialize: Forest
-		westForest = new Forest("in the Forest", new Snake(), RoomType.FOREST);
+		westForest = new Forest("in the Forest", new Snake(), RoomType.FOREST_HORIZONTAL);
 		map.add(westForest);
-		eastForest = new Forest("in the Forest", null, RoomType.FOREST);
+		eastForest = new Forest("in the Forest", null, RoomType.FOREST_HORIZONTAL);
 		map.add(eastForest);
-		northForest = new Forest("in the Forest", null, RoomType.FOREST);
+		northForest = new Forest("in the Forest", null, RoomType.FOREST_NORTH);
 		map.add(northForest);
-		southForest = new Forest("in the Forest", null, RoomType.FOREST);
+		southForest = new Forest("in the Forest", null, RoomType.FOREST_VERTICAL);
 		map.add(southForest);
 		
-		redWoodTree = new Forest("at the large tree", null, RoomType.REDWOOD, new MagicMushroom());
-		map.add(redWoodTree);
-		deepForest = new Forest("in the dark forest", null, RoomType.DEEP_FOREST);
-		map.add(deepForest);
+//		redWoodTree = new Forest("at the large tree", null, RoomType.REDWOOD, new MagicMushroom());
+//		map.add(redWoodTree);
+//		deepForest = new Forest("in the dark forest", null, RoomType.DEEP_FOREST);
+//		map.add(deepForest);
 		
 		//Initialize: Ruin
-		ruinWestEntrance = new Ruin("in the ruins: West Entrance", null);
+		ruinWestEntrance = new Ruin("in the ruins: West Entrance", null, RoomType.RUIN);
 		map.add(ruinWestEntrance);
-		ruinEastEntrance = new Ruin("in the ruins: East Entrance", null);
+		ruinEastEntrance = new Ruin("in the ruins: East Entrance", null, RoomType.RUIN);
 		map.add(ruinEastEntrance);
-		ruinNorthEntrance = new Ruin("in the ruins: North Entrance", null);
+		ruinNorthEntrance = new Ruin("in the ruins: North Entrance", null, RoomType.RUIN);
 		map.add(ruinNorthEntrance);
-		ruinSouthEntrance = new Ruin("in the ruins: South Entrance", null);
+		ruinSouthEntrance = new Ruin("in the ruins: South Entrance", null, RoomType.RUIN);
 		map.add(ruinSouthEntrance);
 		
-		ruinStairCase0 = new Ruin("in the ruins: Staircase", null);
+		ruinStairCase0 = new Ruin("in the ruins: Staircase", null, RoomType.RUIN);
 		map.add(ruinStairCase0);
-		ruinStairCase1 = new Ruin("in the ruins: Staircase", null);
+		ruinStairCase1 = new Ruin("in the ruins: Staircase", null, RoomType.RUIN);
 		map.add(ruinStairCase1);
 		
 		ruinWatchTower = new Ruin("on the top of the Watchtower", null, RoomType.RUIN_TOP, new RoomKey("Key to the Library"));
 		map.add(ruinWatchTower);
-		ruinLibrary = new Ruin("in the ruins: Aincient Library", null);
+		ruinLibrary = new Ruin("in the ruins: Aincient Library", null, RoomType.RUIN_LIBRARY);
 		ruinLibrary.lockRoom(new RoomKey("Key to the Library"));
 		map.add(ruinLibrary);
-		ruinPraying = new Ruin("in the ruins: Holy Artefact", null);
+		ruinPraying = new Ruin("in the ruins: Holy Artefact", null, RoomType.RUIN);
 		map.add(ruinPraying);
-		ruinMage = new Ruin("in the ruins: Mage", new Mage());
+		ruinMage = new Ruin("in the ruins: Mage", new Mage(), RoomType.RUIN_MAGE);
 		map.add(ruinMage);
-		ruinDungeon = new Ruin("in the ruins: Dungeon", null);
-		ruinLaboratory = new Ruin("in the ruins: Abandoned Laboratory", null);
+		ruinDungeon = new Ruin("in the ruins: Dungeon", null, RoomType.RUIN_DUNGEON);
+		ruinLaboratory = new Ruin("in the ruins: Abandoned Laboratory", null, RoomType.RUIN_LABOTARY);
 		map.add(ruinLaboratory);
 		
 		//Set connections: Axis West-East
@@ -139,9 +139,9 @@ public class Map {
 		
 		//Set connections Outside
 		northForest.setExit("east", redWoodTree);
-		redWoodTree.setExit("west", northForest);
+//		redWoodTree.setExit("west", northForest);
 		northForest.setExit("west", deepForest);
-		deepForest.setExit("east", northForest);
+//		deepForest.setExit("east", northForest);
 		
 		currentRoom = westBeach; // start game outside
     }

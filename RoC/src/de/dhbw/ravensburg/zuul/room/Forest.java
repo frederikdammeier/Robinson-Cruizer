@@ -21,7 +21,7 @@ public class Forest extends Room {
 	 * @param specialItems Items to spawn in this specific instance.
 	 */
 	public Forest(String description, Creature creature, Item... specialItems) {
-		super(description, creature, RoomType.FOREST, specialItems);
+		super(description, creature, RoomType.FOREST_HORIZONTAL, specialItems);
 		
 		if(creature == null) {
 			setCreatureProbabilities();

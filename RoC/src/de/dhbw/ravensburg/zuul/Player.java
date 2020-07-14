@@ -1,5 +1,7 @@
 package de.dhbw.ravensburg.zuul;
 
+import de.dhbw.ravensburg.zuul.item.Item;
+import de.dhbw.ravensburg.zuul.item.Weapon;
 import de.dhbw.ravensburg.zuul.ui.Sprite;
 import javafx.scene.image.Image;
 
@@ -32,7 +34,7 @@ public class Player {
 		health = this.maxLife = maxLife;
 		inventory = new Inventory(inventorySize);
 		damage = 0;
-		Image robinImage = new Image("Robinson.PNG", 125, 125, true, true);
+		Image robinImage = new Image("Images/Misc/Robinson.PNG", 125, 125, true, true);
 		playerSprite = new Sprite(400.0, 400.0, 50.0, 50.0, robinImage);
 	}
 	
@@ -54,6 +56,13 @@ public class Player {
 	 */
 	public void setDamage(int amount) {
 		damage =  amount;
+	}
+	
+	
+	public void updatePlayerDamage(Item item) {
+		if(item instanceof Weapon) {
+			damage = ((Weapon) item).getDamage();
+		}
 	}
 	
 	/**

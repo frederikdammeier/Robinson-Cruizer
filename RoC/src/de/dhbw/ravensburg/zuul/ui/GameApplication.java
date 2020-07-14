@@ -39,14 +39,13 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
 public class GameApplication extends Application {
-	public static final Double w = 994.0;
-	public static final Double h = 1023.0;
+	public static final Double w = 1000.0;
+	public static final Double h = 1000.0;
 	
 	private ArrayList<String> input = new ArrayList<String>();
 	private DoubleValue lastNanoTime;
-	private Sprite robin, west, east, north, south;
+	private Sprite robin, west, east, north, south, up, down;
 	private GraphicsContext gc;
-	private Image testForestBackground;
 	private StringValue lastKeyPressed, goNext;
 	private Position mousePosition;
 	private Game game;
@@ -61,6 +60,7 @@ public class GameApplication extends Application {
 	private HashMap<String, String> messages;
 	private HashMap<String, EventHandler<ActionEvent>> dialogHandlers;
 	private Predator2 predator;
+	private Image sword, food;
 	
 	
 	public static void main(String... args) {
@@ -156,7 +156,7 @@ public class GameApplication extends Application {
 	                    if ( !input.contains(code) )
 	                        input.add( code );
 	                    
-	                    lastKeyPressed.value = code;
+	                    lastKeyPressed.value = code;                    
 	                }
 	            });
 	 
@@ -170,6 +170,14 @@ public class GameApplication extends Application {
 	                }
 	            });
 	    
+	    scene.setOnKeyTyped(new EventHandler<KeyEvent>() {
+	    	public void handle(KeyEvent e) {
+	    		if(e.getCharacter().equals("a")) {
+                	game.playerAttack();
+                }
+	    	}
+	    });
+	    
 	    scene.setOnMouseMoved(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent e) {
@@ -180,8 +188,6 @@ public class GameApplication extends Application {
 		
 		gc = canvas.getGraphicsContext2D();
 		
-		testForestBackground = new Image("forest_test.jpeg");
-		
 		
 		//The players sprite
 		robin = game.getPlayer().getPlayerSprite();
@@ -191,6 +197,8 @@ public class GameApplication extends Application {
 		east = new Sprite(canvas.getWidth()*0.9, canvas.getHeight()*0.1, 0.0, 0.0, canvas.getWidth()*0.1, canvas.getHeight()*0.8);
 		north = new Sprite(canvas.getWidth()*0.1, 0.0, 0.0, 0.0, canvas.getWidth()*0.8, canvas.getHeight()*0.1);
 		south = new Sprite(canvas.getWidth()*0.1, canvas.getHeight()*0.9, 0.0, 0.0, canvas.getWidth()*0.8, canvas.getHeight()*0.1);
+		
+		sword = new Image("Images/Item/Sword.PNG", w/15, w/15, false, false);
 
 		
 		AnimationTimer at = new AnimationTimer() {
@@ -204,9 +212,7 @@ public class GameApplication extends Application {
 		        lastNanoTime.value = currentNanoTime;
 				
 		        //Calculate the the relative angle that robin needs to have to face the mouse pointer
-		        double mouseAngle = getMouseAngle();
-
-		        
+		        double mouseAngle = getMouseAngle();	        
 		        
 		        //moveRobin according to mouseDirection
 		        if(input.contains("W") && robin.distanceTo(mousePosition.x, mousePosition.y) > 20) {
@@ -228,9 +234,7 @@ public class GameApplication extends Application {
 		        	robin.update(elapsedTime);
 		        }     
 		        
-	
-		        
-		        gc.drawImage(testForestBackground, 0, 0);		        
+		        gc.drawImage(game.getCurrentRoom().getBGImage(), 0, 0);		        
 		        
 		        //Items in the current room  		        
 		        renderRoomIcons();
@@ -238,17 +242,18 @@ public class GameApplication extends Application {
 		        
 		        //Mouse intersects one of the Boundaries
 		        if(east.intersects(mousePosition.x, mousePosition.y) && goEastRectangle.isVisible()) {
-		        	gc.drawImage(new Image("eastArrow.png", canvas.getWidth()*0.1, canvas.getHeight()*0.8, false, false), east.getPositionX(), east.getPositionY());
+		        	gc.drawImage(new Image("Images/Misc/eastArrow.png", canvas.getWidth()*0.1, canvas.getHeight()*0.8, false, false), east.getPositionX(), east.getPositionY());
 		        }
 		        if(west.intersects(mousePosition.x, mousePosition.y) && goWestRectangle.isVisible()) {
-		        	gc.drawImage(new Image("westArrow.png", canvas.getWidth()*0.1, canvas.getHeight()*0.8, false, false), west.getPositionX(), west.getPositionY());
+		        	gc.drawImage(new Image("Images/Misc/westArrow.png", canvas.getWidth()*0.1, canvas.getHeight()*0.8, false, false), west.getPositionX(), west.getPositionY());
 		        }
 		        if(north.intersects(mousePosition.x, mousePosition.y) && goNorthRectangle.isVisible()) {
-		        	gc.drawImage(new Image("northArrow.png", canvas.getWidth()*0.8, canvas.getHeight()*0.1, false, false), north.getPositionX(), north.getPositionY());
+		        	gc.drawImage(new Image("Images/Misc/northArrow.png", canvas.getWidth()*0.8, canvas.getHeight()*0.1, false, false), north.getPositionX(), north.getPositionY());
 		        }
 		        if(south.intersects(mousePosition.x, mousePosition.y) && goSouthRectangle.isVisible()) {
-		        	gc.drawImage(new Image("southArrow.png", canvas.getWidth()*0.8, canvas.getHeight()*0.1, false, false), south.getPositionX(), south.getPositionY());
+		        	gc.drawImage(new Image("Images/Misc/southArrow.png", canvas.getWidth()*0.8, canvas.getHeight()*0.1, false, false), south.getPositionX(), south.getPositionY());
 		        }
+		      
 		        	        
 		        //Text at the top of the Screen
 		        printRoomAndTimeInformation();
@@ -259,7 +264,11 @@ public class GameApplication extends Application {
 		        //Health Bar
 		        printVitalityBar(gc, game.getPlayer().getHealth(), Color.RED, canvas.getWidth()*0.95-200, canvas.getHeight()*0.95-30, 200.0, 20.0);
 		        
-		        if(game.getCurrentRoom().getCreatureSprite() != null) {
+		        //Sword
+		        gc.drawImage(sword, w/15, (13*w)/15);
+		        gc.fillText("\"A\" to attack", 2*w/15, (14*w)/15);
+		        
+		        if(game.getCurrentRoom().getCreature() != null) {
 		        	CreatureSprite creature = game.getCurrentRoom().getCreatureSprite();
 		        	double creatureAngle = getAngleBetweenSprites(creature, robin);
 		        	creature.render(gc, Math.toDegrees(creatureAngle+Math.PI/2));
@@ -283,14 +292,9 @@ public class GameApplication extends Application {
 			        	creature.addVelocity(newVelocityX, newVelocityY);
 			        	
 			        	creature.update(elapsedTime);
-			        }    
-			        
-			        //if the creature is hostile and near enough it deals damage to the player. or does it?
-			        
-			        
+			        }    	        
+			        //if the creature is hostile and near enough it deals damage to the player. or does it?         
 		        }
-		        
-		        
 		        //Rotate Robin according to mouseDirection and Print him to the canvas.
 		        robin.render(gc, Math.toDegrees(mouseAngle+Math.PI/2));
 			}				
@@ -299,7 +303,7 @@ public class GameApplication extends Application {
 		at.start();
 		
 		stage.setTitle("Robinson Cruizer");
-		stage.getIcons().add(new Image("Icon.png"));
+		stage.getIcons().add(new Image("Images/Item/Icon.png"));
 //		stage.setFullScreen(true);
 		stage.show();
 	}
@@ -371,8 +375,8 @@ public class GameApplication extends Application {
 		goWestRectangle = new Rectangle(0.0, canvas.getHeight()*0.1, canvas.getWidth()*0.1, canvas.getHeight()*0.8);
 		goNorthRectangle = new Rectangle(canvas.getWidth()*0.1, 0.0, canvas.getWidth()*0.8, canvas.getHeight()*0.1);
 		goSouthRectangle = new Rectangle(canvas.getWidth()*0.1, canvas.getHeight()*0.9, canvas.getWidth()*0.8, canvas.getHeight()*0.1);
-//		Rectangle goUpRectangle = new Rectangle(canvas.getWidth()*0.9, 0.0, canvas.getWidth()/10, canvas.getHeight());
-//		Rectangle goDownRectangle = new Rectangle(canvas.getWidth()*0.9, 0.0, canvas.getWidth()/10, canvas.getHeight());
+//		goUpRectangle = new Rectangle(canvas.getWidth()*0.9, 0.0, canvas.getWidth()/10, canvas.getHeight());
+//		goDownRectangle = new Rectangle(canvas.getWidth()*0.9, 0.0, canvas.getWidth()/10, canvas.getHeight());
 		
 		// make rectangles invisible
 		goEastRectangle.setFill(Color.TRANSPARENT);
@@ -468,9 +472,11 @@ public class GameApplication extends Application {
         		gc.fillText("\"T\"", item.getPositionX(), item.getPositionY());	
         		if(input.contains("T")) {
         			if(game.getPlayer().getInventory().addItem(item.getItem())) {
+        				game.getPlayer().updatePlayerDamage(item.getItem());
         				itemIterator.remove();	
         			} 	else	{
         				dialogText.setText("Inventory Full");
+        				okButton.setOnAction(dialogHandlers.get("acknowledgeEvent"));
             			dialogGroup.setVisible(true);
         			}	
         		}

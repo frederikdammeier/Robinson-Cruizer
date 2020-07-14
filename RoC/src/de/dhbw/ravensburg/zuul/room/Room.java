@@ -34,7 +34,6 @@ public class Room
 	private String description;
     private HashMap<String, Room> exits;        					//Stores exits of this room.
     private Creature creatureInRoom;								
-    private CreatureSprite creatureSprite;
     private Inventory inventory;									//Stores the Items that are currently present in the room.
     private RoomType type;											//To determine the graphical representation for the room.
     protected HashMap<String, Integer> creatureSpawnProbability;  	//Stores a mapping of creatures in percentages
@@ -42,6 +41,8 @@ public class Room
     private boolean locked;
     private RoomKey key;
     private ArrayList<ItemSprite> spriteInventory;
+    private Image background;
+    
 //    private CreatureSprite creatureSprite;
     
 	/**
@@ -81,7 +82,7 @@ public class Room
         exits = new HashMap<>();
         setInventory();
         creatureInRoom = creature;
-        if(creatureInRoom != null) creatureSprite = new CreatureSprite((GameApplication.w / 4) * 3, GameApplication.h / 4, 0, 0, new Image("Robinson.PNG", 125, 125, true, true), creature);
+        if(creatureInRoom != null) creatureInRoom.setSprite(new CreatureSprite((GameApplication.w / 4) * 3, GameApplication.h / 4, 0, 0, new Image("Images/Creature/" + creature.getClass().getSimpleName() + ".PNG", 125, 125, true, true), creature));
         type = RoomType.EMPTY_ROOM;
         spriteInventory = new ArrayList<>();
 		
@@ -106,7 +107,7 @@ public class Room
         exits = new HashMap<>();
         setInventory();
         creatureInRoom = creature;
-        if(creatureInRoom != null) creatureSprite = new CreatureSprite((GameApplication.w / 4) * 3, GameApplication.h / 4, 0, 0, new Image("Robinson.PNG", 125, 125, true, true), creature);
+        if(creatureInRoom != null) creatureInRoom.setSprite(new CreatureSprite((GameApplication.w / 4) * 3, GameApplication.h / 4, 0, 0, new Image("Images/Creature/" + creature.getClass().getSimpleName() + ".PNG", 125, 125, true, true), creature));
         this.type = type;
         spriteInventory = new ArrayList<>();
 		
@@ -143,18 +144,23 @@ public class Room
 			switch(helperArray[r]){
 			case "Ape": 
 				creatureInRoom = new Ape();
+				creatureInRoom.setSprite(new CreatureSprite((GameApplication.w / 4) * 3, GameApplication.h / 4, 0, 0, new Image("Images/Creature/Ape.PNG", 125, 125, true, true), creatureInRoom));
 				break;
 			case "Mage": 
 				creatureInRoom = new Mage();
+				creatureInRoom.setSprite(new CreatureSprite((GameApplication.w / 4) * 3, GameApplication.h / 4, 0, 0, new Image("Images/Creature/Mage.PNG", 125, 125, true, true), creatureInRoom));
 				break;
 			case "Native": 
 				creatureInRoom = new Native();
+				creatureInRoom.setSprite(new CreatureSprite((GameApplication.w / 4) * 3, GameApplication.h / 4, 0, 0, new Image("Images/Creature/Native.PNG", 125, 125, true, true), creatureInRoom));
 				break;
 			case "Snake": 
 				creatureInRoom = new Snake();
+				creatureInRoom.setSprite(new CreatureSprite((GameApplication.w / 4) * 3, GameApplication.h / 4, 0, 0, new Image("Images/Creature/Snake.PNG", 125, 125, true, true), creatureInRoom));
 				break;
 			case "Waterpig": 
 				creatureInRoom = new WaterPig();
+				creatureInRoom.setSprite(new CreatureSprite((GameApplication.w / 4) * 3, GameApplication.h / 4, 0, 0, new Image("Images/Creature/Waterpig.PNG", 125, 125, true, true), creatureInRoom));
 				break;
 			}
 		}
@@ -228,9 +234,9 @@ public class Room
 			Item item = it.next();
 			
 			if(item instanceof RoomKey) {
-				spriteInventory.add(new ItemSprite(x, y, 0.0, 0.0, new Image("Key.PNG", 50.0, 50.0, true, true), item));
+				spriteInventory.add(new ItemSprite(x, y, 0.0, 0.0, new Image("Images/Item/Key.PNG", 50.0, 50.0, true, true), item));
 			} else {
-				spriteInventory.add(new ItemSprite(x, y, 0.0, 0.0, new Image(item.getName() + ".PNG", 50.0, 50.0, true, true), item));
+				spriteInventory.add(new ItemSprite(x, y, 0.0, 0.0, new Image("Images/Item/" + item.getName() + ".PNG", 50.0, 50.0, true, true), item));
 			}		}
 	}
 	
@@ -245,21 +251,25 @@ public class Room
 		x = Math.random()*(GameApplication.w*0.8) + GameApplication.w*0.1;
 		y = Math.random()*(GameApplication.h*0.8) + GameApplication.h*0.1;
 		
-		spriteInventory.add(new ItemSprite(x, y, 0.0, 0.0, new Image("Banana.png", 50.0, 50.0, true, true), item));
+		if(item instanceof RoomKey) {
+			spriteInventory.add(new ItemSprite(x, y, 0.0, 0.0, new Image("Images/Item/Key.PNG", 50.0, 50.0, true, true), item));
+		} else {
+			spriteInventory.add(new ItemSprite(x, y, 0.0, 0.0, new Image("Images/Item/" + item.getName() + ".PNG", 50.0, 50.0, true, true), item));
+		}
 	}
 	
 	public void addItem(Item item, double xPos, double yPos) {
 		inventory.addItem(item);
 		if(item instanceof RoomKey) {
-			spriteInventory.add(new ItemSprite(xPos, yPos, 0.0, 0.0, new Image("Key.PNG", 50.0, 50.0, true, true), item));
+			spriteInventory.add(new ItemSprite(xPos, yPos, 0.0, 0.0, new Image("Images/Item/Key.PNG", 50.0, 50.0, true, true), item));
 		} else {
-			spriteInventory.add(new ItemSprite(xPos, yPos, 0.0, 0.0, new Image(item.getName() + ".PNG", 50.0, 50.0, true, true), item));
+			spriteInventory.add(new ItemSprite(xPos, yPos, 0.0, 0.0, new Image("Images/Item/" + item.getName() + ".PNG", 50.0, 50.0, true, true), item));
 		}
 	}
 	
 	public synchronized void removeItem(ItemSprite item) {
-		spriteInventory.remove(item);
 		inventory.removeItem(item.getItem());	
+		spriteInventory.remove(item);
 	}
 
     /**
@@ -340,7 +350,8 @@ public class Room
     }
     
     public CreatureSprite getCreatureSprite() {
-		return creatureSprite;
+    	if(creatureInRoom != null) return creatureInRoom.getSprite();
+    	return null;
 	}
 
 	/**
@@ -444,6 +455,13 @@ public class Room
 	 */
 	public boolean hasExitToRoom(Room room) {
 		return exits.containsValue(room);
+	}
+	
+	public Image getBGImage() {
+		if(background == null) {
+			background = new Image("Images/Room/" + type + ".PNG", 1000, 1000, false, false);
+		}
+		return background;
 	}
 }
 

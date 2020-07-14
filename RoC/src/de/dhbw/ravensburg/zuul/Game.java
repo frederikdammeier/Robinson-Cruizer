@@ -211,7 +211,7 @@ public class Game implements Runnable{
 	 * transfered to a creature, therefore reducing its health. Dead creatures are
 	 * removed from a rooms inventory. Dead creatures might drop an item.
 	 */
-	private void playerAttack() {
+	public void playerAttack() {
 
 		if (player.getDamage() == 0) {
 			System.out.println("You don't have a weapon to attack.");
@@ -228,26 +228,24 @@ public class Game implements Runnable{
 
 				// get the creature of this room.
 				Creature creatureInRoom = currentRoom.getCreature();
+				
+				if(player.getPlayerSprite().distanceTo(currentRoom.getCreatureSprite().getCenterX(), currentRoom.getCreatureSprite().getCenterY()) < 100){
+					// decrease the creatures health by the amount of damage the player can
+					// tranfered.
+					creatureInRoom.takeDamage(player.getDamage());
 
-				// decrease the creatures health by the amount of damage the player can
-				// tranfered.
-				creatureInRoom.takeDamage(player.getDamage());
+					if (creatureInRoom.isDead()) {
+						// Try to add the drop item of the creature into the rooms inventory.
+						try {
+							currentRoom.addItem(creatureInRoom.getDropItem(), currentRoom.getCreatureSprite().getCenterX(), currentRoom.getCreatureSprite().getCenterY());
+						} catch (Exception e) {
+							System.out.println("The " + creatureInRoom.getName() + " dropped nothing.");
+						}
 
-				if (creatureInRoom.isDead()) {
-					// Try to add the drop item of the creature into the players inventory.
-					try {
-						player.getInventory().addItem(creatureInRoom.dropItem());
-					} catch (Exception e) {
-						System.out.println("The " + creatureInRoom.getName() + " dropped nothing.");
+						// "deletes" the creature in the current room.
+						currentRoom.setCreature(null);
 					}
-
-					// "deletes" the creature in the current room.
-					currentRoom.setCreature(null);
-
-					// else put the updated creature in the room.
-				} else {
-					currentRoom.setCreature(creatureInRoom);
-				}
+				}	
 			}
 		}
 	}

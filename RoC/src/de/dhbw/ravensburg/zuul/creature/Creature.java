@@ -4,6 +4,7 @@ import de.dhbw.ravensburg.zuul.Parser;
 import de.dhbw.ravensburg.zuul.Inventory;
 import de.dhbw.ravensburg.zuul.Player;
 import de.dhbw.ravensburg.zuul.item.*;
+import de.dhbw.ravensburg.zuul.ui.CreatureSprite;
 
 
 
@@ -29,6 +30,8 @@ public class Creature {
 	private String name;
 	private boolean invincible;
 	private boolean isDead;
+	
+	private CreatureSprite sprite;
 	
 
 
@@ -208,6 +211,12 @@ public class Creature {
 		}
 		
 		return lifepoints;
+	}
+	public CreatureSprite getSprite() {
+		return sprite;
+	}
+	public void setSprite(CreatureSprite sprite) {
+		this.sprite = sprite;
 	}
 
 
