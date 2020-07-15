@@ -81,7 +81,7 @@ public class Map {
 		ruinMage = new Ruin("in the ruins: Mage", new Mage(), RoomType.RUIN_MAGE);
 		map.add(ruinMage);
 		ruinDungeon = new Ruin("in the ruins: Dungeon", null, RoomType.RUIN_DUNGEON);
-		ruinLaboratory = new Ruin("in the ruins: Abandoned Laboratory", null, RoomType.RUIN_LABOTARY);
+		ruinLaboratory = new Ruin("in the ruins: Abandoned Laboratory", null, RoomType.RUIN_LABORATORY);
 		map.add(ruinLaboratory);
 		
 		//Set connections: Axis West-East

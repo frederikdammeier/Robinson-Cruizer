@@ -144,23 +144,23 @@ public class Room
 			switch(helperArray[r]){
 			case "Ape": 
 				creatureInRoom = new Ape();
-				creatureInRoom.setSprite(new CreatureSprite((GameApplication.w / 4) * 3, GameApplication.h / 4, 0, 0, new Image("Images/Creature/Ape.PNG", 125, 125, true, true), creatureInRoom));
+				creatureInRoom.setSprite(new CreatureSprite(GameApplication.w*0.8, GameApplication.h*0.1, 0, 0, new Image("Images/Creature/Ape.PNG", 125, 125, true, true), creatureInRoom));
 				break;
 			case "Mage": 
 				creatureInRoom = new Mage();
-				creatureInRoom.setSprite(new CreatureSprite((GameApplication.w / 4) * 3, GameApplication.h / 4, 0, 0, new Image("Images/Creature/Mage.PNG", 125, 125, true, true), creatureInRoom));
+				creatureInRoom.setSprite(new CreatureSprite(GameApplication.w*0.8, GameApplication.h*0.1, 0, 0, new Image("Images/Creature/Mage.PNG", 125, 125, true, true), creatureInRoom));
 				break;
 			case "Native": 
 				creatureInRoom = new Native();
-				creatureInRoom.setSprite(new CreatureSprite((GameApplication.w / 4) * 3, GameApplication.h / 4, 0, 0, new Image("Images/Creature/Native.PNG", 125, 125, true, true), creatureInRoom));
+				creatureInRoom.setSprite(new CreatureSprite(GameApplication.w*0.8, GameApplication.h*0.1, 0, 0, new Image("Images/Creature/Native.PNG", 125, 125, true, true), creatureInRoom));
 				break;
 			case "Snake": 
 				creatureInRoom = new Snake();
-				creatureInRoom.setSprite(new CreatureSprite((GameApplication.w / 4) * 3, GameApplication.h / 4, 0, 0, new Image("Images/Creature/Snake.PNG", 125, 125, true, true), creatureInRoom));
+				creatureInRoom.setSprite(new CreatureSprite(GameApplication.w*0.8, GameApplication.h*0.1, 0, 0, new Image("Images/Creature/Snake.PNG", 125, 125, true, true), creatureInRoom));
 				break;
 			case "Waterpig": 
 				creatureInRoom = new WaterPig();
-				creatureInRoom.setSprite(new CreatureSprite((GameApplication.w / 4) * 3, GameApplication.h / 4, 0, 0, new Image("Images/Creature/Waterpig.PNG", 125, 125, true, true), creatureInRoom));
+				creatureInRoom.setSprite(new CreatureSprite(GameApplication.w*0.8, GameApplication.h*0.1, 0, 0, new Image("Images/Creature/Waterpig.PNG", 125, 125, true, true), creatureInRoom));
 				break;
 			}
 		}
