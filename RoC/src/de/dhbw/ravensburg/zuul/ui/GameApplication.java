@@ -44,6 +44,25 @@ import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
+/**
+ * Welcome to the Robinson Cruizer Adventure Game.
+ * 
+ * In this game, you're waking up on a beach on a lonely island somewhere in the
+ * middle of the ocean. It' no big deal to leave, you just need a boat.
+ * Too bad that the one you came with is hanging between those rocks.
+ * 
+ * 
+ * As you go into the nearby rainforest seeking for building materials, strange things
+ * start to happen...
+ * ---------------------------------------------------------------------------------------
+ * 
+ * This class starts the game and holds the most important methods 
+ * relevant for the GUI.
+ * 
+ * @author 
+ * 
+ */
+
 public class GameApplication extends Application {
 	public static final Double w = 1000.0;
 	public static final Double h = 1000.0;
@@ -63,7 +82,9 @@ public class GameApplication extends Application {
 	private StackPane sPane;
 	private Group dialogGroup, goRoomGroup;
 	private Rectangle yesNoBackground, goEastRectangle, goWestRectangle, goSouthRectangle, goNorthRectangle, goUpRectangle, goDownRectangle;
+	/** Holds messages as strings which are meant to be helpful for the player of the game */
 	private HashMap<String, String> messages;
+	/** Holds important events that can occure in form of ActionEvents. */
 	private HashMap<String, EventHandler<ActionEvent>> dialogHandlers;
 	private Predator2 predator;
 	private Image sword, food, wArrow, eArrow, sArrow, nArrow, uArrow, dArrow, uStairs, dStairs;
@@ -74,6 +95,9 @@ public class GameApplication extends Application {
 		launch(args);
 	}
 	
+	/**
+	 * This method enables the player to take control (mouse and keyboard commands) and renders informations visually (like the hunger bar).
+	 */
 	@Override
 	public void start(Stage stage) throws Exception {	
 		//Difficulty selection screen
@@ -491,6 +515,9 @@ public class GameApplication extends Application {
 		});
 	}
 	
+	/**
+	 * This method adds important Events to the dialogHandlers HashMap.
+	 */
 	private void createDialogHandlers() {
 		dialogHandlers.put("acknowledgeEvent", new EventHandler<ActionEvent>() {
 			@Override 
@@ -658,6 +685,9 @@ public class GameApplication extends Application {
 		});
 	}
 	
+	/**
+	 * This method adds important messages to the messages HashMap.
+	 */
 	private void populateMessageHashMap() {
 		messages.put("roomLocked", "The room you're trying to access is locked! Try finding a key.");
 		messages.put("unlockRoom", "Would you like to unlock this room now?");
@@ -667,7 +697,9 @@ public class GameApplication extends Application {
 		messages.put("goDirection", "Would you like to go %s?");
 		messages.put("talkAction", "Would you like to talk?");
 		}
-	
+	/**
+	 * Methods that enable and displays exits of a room visually.
+	 */
 	private void initializeRoomGoup() {
 		goRoomGroup = new Group();
 		
@@ -763,6 +795,9 @@ public class GameApplication extends Application {
 		setExitVisibility();
 	}
 	
+	/**
+	 * Sets the visibility of exits-markers in relation to the exits of a room.
+	 */
 	private void setExitVisibility() {
 		goWestRectangle.setVisible(false);
 		goEastRectangle.setVisible(false);
@@ -791,12 +826,18 @@ public class GameApplication extends Application {
 		}
 	}
 	
+	/**
+	 * Displays alls items held in the currentRoom inventory.
+	 */
 	private void renderRoomIcons() {
 		for(Sprite item : game.getCurrentRoom().getItemSprites()) {
         	item.render(gc);
         }
 	}
 	
+	/**
+	 * Enables the player to collect items nearby. 
+	 */
 	private void checkForItemCollision() {
 		ListIterator<ItemSprite> itemIterator = game.getCurrentRoom().getItemSprites().listIterator();
         while(itemIterator.hasNext()) {
@@ -819,6 +860,9 @@ public class GameApplication extends Application {
         }
 	}
 	
+	/**
+	 * @return Current mouse angle.
+	 */
 	private double getMouseAngle() {
 		return Math.atan2(robin.getCenterY() - mousePosition.y, robin.getCenterX() - mousePosition.x);
 	}
@@ -834,6 +878,9 @@ public class GameApplication extends Application {
 		gc.fillRect(posX+height*0.05, posY+height*0.05, (width-(2*height*0.05))*(value/100), height*0.9);
 	}
 	
+	/**
+	 * Displays the current room and the remaining playtime in minutes and seconds. 
+	 */
 	private void printRoomAndTimeInformation() {
 		int minutes = (int) game.getTimeLeft()/60;
         int seconds = (int) game.getTimeLeft()-(minutes*60);
@@ -928,6 +975,9 @@ public class GameApplication extends Application {
 		return information;
 	}
 	
+	/**
+	 * Ends the game
+	 */
 	@Override
 	public void stop() {
 		game.endGame();
