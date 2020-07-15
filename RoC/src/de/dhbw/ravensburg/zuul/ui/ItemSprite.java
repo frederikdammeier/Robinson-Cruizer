@@ -3,6 +3,10 @@ package de.dhbw.ravensburg.zuul.ui;
 import de.dhbw.ravensburg.zuul.item.Item;
 import javafx.scene.image.Image;
 
+/**
+* Handling of Sprites that are Items.
+*/
+
 public class ItemSprite extends Sprite {
 	private Item item;
 	
