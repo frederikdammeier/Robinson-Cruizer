@@ -5,6 +5,13 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.transform.Rotate;
 
+/**
+ * Rendering visual objects, like items, creatures and 
+ * of course the player.
+ * 
+ * @author Frederick Dammeier 
+ */
+
 public class Sprite
 {
     private Image image;
