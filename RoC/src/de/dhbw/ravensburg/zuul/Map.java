@@ -20,7 +20,7 @@ public class Map {
 	private ArrayList<Room> map; //List that only holds references to the rooms in which the player can be teleported randomly.
 
 	Room westBeach, eastBeach, northBeach, southBeach;
-	Room westForest, eastForest, northForest, southForest;
+	Room westForest, eastForest, northForest, southForest, northWestForest, southWestForest, centralForest;
 	Room redWoodTree, deepForest;
 	Room ruinWestEntrance, ruinEastEntrance, ruinNorthEntrance, ruinSouthEntrance;
 	Room ruinStairCase0, ruinStairCase1;
@@ -44,15 +44,21 @@ public class Map {
 		//Initialize: Forest
 		westForest = new Forest("in the Forest", new Snake(), RoomType.FOREST_HORIZONTAL);
 		map.add(westForest);
-		eastForest = new Forest("in the Forest", null, RoomType.FOREST_HORIZONTAL);
+		eastForest = new Forest("in the Forest", null, RoomType.FOREST_VERTICAL);
 		map.add(eastForest);
 		northForest = new Forest("in the Forest", null, RoomType.FOREST_NORTH);
 		map.add(northForest);
 		southForest = new Forest("in the Forest", null, RoomType.FOREST_VERTICAL);
 		map.add(southForest);
+		northWestForest = new Forest("in the Forest", new Snake(), RoomType.FOREST_HORIZONTAL);
+		map.add(northWestForest);
+		southWestForest = new Forest("in the Forest", new Snake(), RoomType.FOREST_HORIZONTAL);
+		map.add(southWestForest);
+		centralForest = new Forest("in the Forest", new Snake(), RoomType.FOREST_HORIZONTAL);
+		map.add(centralForest);
 		
-//		redWoodTree = new Forest("at the large tree", null, RoomType.REDWOOD, new MagicMushroom());
-//		map.add(redWoodTree);
+		redWoodTree = new Forest("at the large tree", null, RoomType.REDWOOD, new MagicMushroom());
+		map.add(redWoodTree);
 //		deepForest = new Forest("in the dark forest", null, RoomType.DEEP_FOREST);
 //		map.add(deepForest);
 		
@@ -87,8 +93,14 @@ public class Map {
 		//Set connections: Axis West-East
 		westBeach.setExit("east", westForest);
 		westForest.setExit("west", westBeach);
-		westForest.setExit("east", ruinWestEntrance);
-		ruinWestEntrance.setExit("west", westForest);
+		westForest.setExit("north", northWestForest);
+		westForest.setExit("south", southWestForest);
+		northWestForest.setExit("south", westForest);
+		northWestForest.setExit("east", centralForest);
+		southWestForest.setExit("north", westForest);
+		centralForest.setExit("west", northWestForest);
+		centralForest.setExit("east", ruinWestEntrance);
+		ruinWestEntrance.setExit("west", centralForest);
 		ruinWestEntrance.setExit("east", ruinStairCase0);
 		ruinStairCase0.setExit("west", ruinWestEntrance);
 		ruinStairCase0.setExit("east",  ruinEastEntrance);
@@ -139,9 +151,10 @@ public class Map {
 		
 		//Set connections Outside
 		northForest.setExit("east", redWoodTree);
-//		redWoodTree.setExit("west", northForest);
+		redWoodTree.setExit("west", northForest);
 		northForest.setExit("west", deepForest);
 //		deepForest.setExit("east", northForest);
+		
 		
 		currentRoom = westBeach; // start game outside
     }
