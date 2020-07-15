@@ -56,6 +56,7 @@ import javafx.stage.WindowEvent;
  * start to happen...
  * ---------------------------------------------------------------------------------------
  * 
+ * 
  * This class starts the game and holds the most important methods 
  * relevant for the GUI.
  * 
