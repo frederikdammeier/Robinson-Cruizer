@@ -1,6 +1,9 @@
 package de.dhbw.ravensburg.zuul;
 
 /**
+ * -----------------
+ * deprecated
+ *------------------
  * Welcome to the Robinson Cruizer Adventure Game.
  * 
  * In this game, you're waking up on a beach on a lonely island somewhere in the
