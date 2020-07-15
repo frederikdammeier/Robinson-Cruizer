@@ -1,5 +1,11 @@
 package de.dhbw.ravensburg.zuul.ui;
 
+/**
+ * Rendering visual objects, like items, creatures and 
+ * of course the player.
+ * 
+ * @author Frederick Dammeier 
+ */
 import javafx.geometry.Rectangle2D;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
@@ -14,6 +20,7 @@ public class Sprite
     private double velocityY;
     private double width;
     private double height;
+    
     
     public Sprite(double pX, double pY, double vX, double vY, Image image) {
     	positionX = pX;

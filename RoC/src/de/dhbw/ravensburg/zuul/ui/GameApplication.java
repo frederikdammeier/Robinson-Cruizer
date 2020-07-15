@@ -1,5 +1,24 @@
 package de.dhbw.ravensburg.zuul.ui;
 
+/**
+ * Welcome to the Robinson Cruizer Adventure Game.
+ * 
+ * In this game, you're waking up on a beach on a lonely island somewhere in the
+ * middle of the ocean. It' no big deal to leave, you just need a boat.
+ * Too bad that the one you came with is hanging between those rocks.
+ * 
+ * 
+ * As you go into the nearby rainforest seeking for building materials, strange things
+ * start to happen...
+ * ---------------------------------------------------------------------------------------
+ * 
+ * This class starts the game and holds the most important methods 
+ * relevant for the GUI.
+ * 
+ * @author 
+ * 
+ */
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -45,8 +64,10 @@ public class GameApplication extends Application {
 	private DoubleValue lastNanoTime;
 	private Sprite robin, west, east, north, south;
 	private GraphicsContext gc;
+	/** Background-Image */
 	private Image testForestBackground;
 	private StringValue lastKeyPressed, goNext;
+	/** Position of the mouse-pointer on the screen */
 	private Position mousePosition;
 	private Game game;
 	private Thread gameThread;
@@ -56,8 +77,11 @@ public class GameApplication extends Application {
 	private GridPane dialogContainer;
 	private StackPane sPane;
 	private Group dialogGroup, goRoomGroup;
+	/** Holds properties of a rectangles. */
 	private Rectangle yesNoBackground, goEastRectangle, goWestRectangle, goSouthRectangle, goNorthRectangle, goUpRectangle, goDownRectangle;
+	/** Holds messages as strings which are meant to be helpful for the player of the game */
 	private HashMap<String, String> messages;
+	/** Holds important events that can occure in form of ActionEvents. */
 	private HashMap<String, EventHandler<ActionEvent>> dialogHandlers;
 	
 	
@@ -65,6 +89,9 @@ public class GameApplication extends Application {
 		launch(args);
 	}
 	
+	/**
+	 * This method enables the player to take control (mouse and keyboard commands) and renders informations visually (like the hunger bar).
+	 */
 	@Override
 	public void start(Stage stage) throws Exception {
 		messages = new HashMap<>();
@@ -190,6 +217,7 @@ public class GameApplication extends Application {
 		AnimationTimer at = new AnimationTimer() {
 			double speed = 200.0;
 			
+			
 			@Override
 			public void handle(long currentNanoTime) {
 				// calculate time since last update.
@@ -201,7 +229,7 @@ public class GameApplication extends Application {
 
 		        robin.setVelocity(0,0);
 		        
-		        //moveRobin according to mouseDirection
+		        //move Robin according to mouseDirection
 		        if(input.contains("W")) {
 		        	double newVelocityX = Math.cos(mouseAngle+Math.PI)*speed;
 		        	double newVelocityY = Math.sin(mouseAngle+Math.PI)*speed;
@@ -262,6 +290,9 @@ public class GameApplication extends Application {
 		stage.show();
 	}
 	
+	/**
+	 * This method adds important Events to the dialogHandles HashMap.
+	 */
 	private void createDialogHandlers() {
 		dialogHandlers.put("acknowledgeEvent", new EventHandler<ActionEvent>() {
 			@Override 
@@ -311,6 +342,9 @@ public class GameApplication extends Application {
 		});
 	}
 	
+	/**
+	 * This method adds important messages to the messages HashMap.
+	 */
 	private void populateMessageHashMap() {
 		messages.put("roomLocked", "The room you're trying to access is locked! Try finding a key.");
 		messages.put("unlockRoom", "Would you like to unlock this room now?");
@@ -320,6 +354,9 @@ public class GameApplication extends Application {
 		messages.put("goDirection", "Would you like to go %s?");
 		}
 	
+	/**
+	 * Methods that enable and displays exits of a room visually.
+	 */
 	private void initializeRoomGoup() {
 		goRoomGroup = new Group();
 		
@@ -389,6 +426,9 @@ public class GameApplication extends Application {
 		setExitVisibility();
 	}
 	
+	/**
+	 * Sets the visibility of exits-markers in relation to the exits of a room.
+	 */
 	private void setExitVisibility() {
 		goWestRectangle.setVisible(false);
 		goEastRectangle.setVisible(false);
@@ -408,12 +448,18 @@ public class GameApplication extends Application {
 		}
 	}
 	
+	/**
+	 * Displays alls items held in the currentRoom inventory.
+	 */
 	private void renderRoomIcons() {
 		for(Sprite item : game.getCurrentRoom().getItemSprites()) {
         	item.render(gc);
         }
 	}
 	
+	/**
+	 * Enables the player to collect items nearby. 
+	 */
 	private void checkForItemCollision() {
 		ListIterator<ItemSprite> itemIterator = game.getCurrentRoom().getItemSprites().listIterator();
         while(itemIterator.hasNext()) {
@@ -434,10 +480,22 @@ public class GameApplication extends Application {
         }
 	}
 	
+	/**
+	 * @return Current mouse angle.
+	 */
 	private double getMouseAngle() {
 		return Math.atan2(robin.getCenterY() - mousePosition.y, robin.getCenterX() - mousePosition.x);
 	}
 	
+	/**
+	 * @param gc		
+	 * @param value		
+	 * @param color		
+	 * @param posX		
+	 * @param posY		
+	 * @param width		
+	 * @param height	
+	 */
 	private void printVitalityBar(GraphicsContext gc, float value, Color color, double posX, double posY, double width, double height) {
 		gc.setFill(Color.ANTIQUEWHITE);
 		gc.fillRect(posX, posY, width, height);
@@ -445,6 +503,9 @@ public class GameApplication extends Application {
 		gc.fillRect(posX+height*0.05, posY+height*0.05, (width-(2*height*0.05))*(value/100), height*0.9);
 	}
 	
+	/**
+	 * Displays the current room and the remaining playtime in minutes and seconds. 
+	 */
 	private void printRoomAndTimeInformation() {
 		int minutes = (int) game.getTimeLeft()/60;
         int seconds = (int) game.getTimeLeft()-(minutes*60);
@@ -465,6 +526,9 @@ public class GameApplication extends Application {
         gc.fillText(sb.toString(), canvas.getWidth()/2, 40);
 	}
 	
+	/**
+	 * Ends the game
+	 */
 	@Override
 	public void stop() {
 		game.endGame();

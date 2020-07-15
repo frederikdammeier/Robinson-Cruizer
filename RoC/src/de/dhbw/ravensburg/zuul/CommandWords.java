@@ -1,6 +1,8 @@
 package de.dhbw.ravensburg.zuul;
 /**
- * 
+ * -----------------------------------------
+ * alternative - only for playing in console
+ * -----------------------------------------
  * This class holds an enumeration of all command words known to the game.
  * It is used to recognise commands as they are typed in.
  *

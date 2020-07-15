@@ -20,7 +20,7 @@ public class Item {
 	private String name;
 	/** The weight of an item*/
 	private float weight;
-	/** The weight of an item*/
+	/** The portability of an item*/
 	private boolean portable;
 	
 	/**
