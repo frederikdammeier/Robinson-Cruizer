@@ -3,6 +3,9 @@ package de.dhbw.ravensburg.zuul;
 import de.dhbw.ravensburg.zuul.creature.*;
 
 /**
+ * -----------------------------------------
+ * alternative - only for playing in console
+ * -----------------------------------------
  * The predator thread handels peaceful and agressive actions by creatures.
  * 
  * 
