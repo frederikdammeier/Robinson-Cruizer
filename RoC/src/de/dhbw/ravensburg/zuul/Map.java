@@ -42,7 +42,7 @@ public class Map {
 		map.add(southBeach);
 		
 		//Initialize: Forest
-		westForest = new Forest("in the Forest", new Snake(), RoomType.FOREST);
+		westForest = new Forest("in the Forest", new Mage(), RoomType.FOREST);
 		map.add(westForest);
 		eastForest = new Forest("in the Forest", null, RoomType.FOREST);
 		map.add(eastForest);

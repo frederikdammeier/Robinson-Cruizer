@@ -573,7 +573,7 @@ public class Game implements Runnable{
 	/**
 	 * Teleports the player into a randomly chosen room on the map.
 	 */
-	private void teleport() {
+	public void teleport() {
 		currentRoom = map.teleport();
 		lookAround();
 	}

@@ -2,15 +2,17 @@ package de.dhbw.ravensburg.zuul.ui;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.ListIterator;
+import java.util.Random;
 
-import de.dhbw.ravensburg.zuul.Command;
 import de.dhbw.ravensburg.zuul.Difficulty;
 import de.dhbw.ravensburg.zuul.Game;
 import de.dhbw.ravensburg.zuul.Predator2;
+import de.dhbw.ravensburg.zuul.creature.Creature;
+import de.dhbw.ravensburg.zuul.item.Item;
 import de.dhbw.ravensburg.zuul.room.Room;
 import de.dhbw.ravensburg.zuul.room.RoomType;
+//import invtest.Item;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -30,7 +32,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -40,7 +41,6 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 
 public class GameApplication extends Application {
 	public static final Double w = 994.0;
@@ -389,7 +389,7 @@ public class GameApplication extends Application {
 		        	CreatureSprite creature = game.getCurrentRoom().getCreatureSprite();
 		        	double creatureAngle = getAngleBetweenSprites(creature, robin);
 		        	creature.render(gc, Math.toDegrees(creatureAngle+Math.PI/2));
-		        	
+		        	checkForCreatureCollision();
 	        
 			        //move hostile creatures towards robin
 			        if(!creature.getCreature().getPeaceful() && creature.distanceTo(robin.getCenterX(), robin.getCenterY()) > 70) {
@@ -517,6 +517,131 @@ public class GameApplication extends Application {
 				dialogGroup.setVisible(false);
 			}
 		});
+		
+//		dialogHandlers.put("talkEvent", new EventHandler<ActionEvent>(){
+//			@Override
+//			public void handle(ActionEvent e) {
+//				
+//				
+//				checkTradeHandlerMethode();
+//			}
+//		});
+		
+		dialogHandlers.put("freitagTalkEvent", new EventHandler<ActionEvent>(){
+			@Override
+			public void handle(ActionEvent e) {
+				
+				
+				
+//				dialogText.setText("Nice to meet you foreign. My name is Freitag and i see you are in trouble. "
+//						+ "I saw how you ship sunk and you almost died in the water but thanks to god you are alive. "
+//						+ "You are on a island and i believe you want to escape from here. "
+//						+ "Hmmm.... To escape you need a new boat. I think you can find on this island everything what you need to build a new one."
+//						+ " You can ask the Natives on the island, they will know where you can find your equipment. "
+//						+ "oh but you shouldn't make them angry because then they will try to kill you. "
+//						+ "But only when you make them angry so try to be polite to them, also you can try to find the Mage somewhere."
+//						+ " I don't know where he is but i am sure he can help you. "
+//						+ "Oh but you must be careful. "
+//						+ "On this island are many hunters who want to kill you because they think you are against their god. "
+//						+ "So try to avoid them. "
+//						+ "It was nice to meet you, i hope you will survive. Good bye. " );
+				dialogText.setText("Hello foreign. you have to find items to build a boat. ");
+				okButton.setOnAction(dialogHandlers.get("acknowledgeEvent"));
+				// funktioniert noch nicht so wirklich
+				
+//				dialogGroup.setVisible(true);
+//				dialogGroup.setVisible(false);
+//				String text = dialogText.getText();
+//				if(text == dialogText.getText() ) {
+//					okButton.setOnAction(dialogHandlers.get("acknowledgeEvent"));
+//				}
+			}
+		});
+		
+		
+		dialogHandlers.put("mageTalkEvent", new EventHandler<ActionEvent>(){
+			@Override
+			public void handle(ActionEvent e) {
+					dialogText.setText("Hello foreign, "
+//							+ "Nice to meet you. If you want I can help you. "
+//							+ "I am a powerful mage and can teleport you to different places on this island. "
+//							+ "Do you want to?
+							);
+					dialogText.setText("Hello, should i teleport you? ");
+					okButton.setOnAction(dialogHandlers.get("mageTeleportEvent"));
+			}
+		});
+		dialogHandlers.put("mageTeleportEvent", new EventHandler<ActionEvent>(){
+			@Override
+			public void handle(ActionEvent e) {
+					dialogText.setText("OK i hope you will escape from this island. Good bye");
+					game.teleport(); // public machen in Game
+					okButton.setOnAction(dialogHandlers.get("acknowledgeEvent"));
+			}
+		});
+		dialogHandlers.put("prisonerTalkEvent", new EventHandler<ActionEvent>(){
+			@Override
+			public void handle(ActionEvent e) {
+//				dialogText.setText("Ah please help me. I am in this Dungeon since two weeks. "
+//						+ "Can you open it? When you will free me i can give you information about the island. "
+//						+ "Do you have the key for me? ");	
+				dialogText.setText("Help me than i tell you something about this place.");
+				okButton.setOnAction(dialogHandlers.get("prisonerTradeEvent"));
+				
+			
+			}
+		});
+		dialogHandlers.put("prisonerTradeEvent", new EventHandler<ActionEvent>(){
+			@Override
+			public void handle(ActionEvent e) {
+				//neue metode für handeln?
+				Item key = game.getPlayer().getInventory().getItemByName("Key");
+				if(game.getPlayer().getInventory().containsItem("Key") == true) {
+//					dialogText.setText("Thank you now i am free."  + 
+//										"So i will tell you my secret information about the Mage. " + 
+//										"On this island is a mage and he can help you. " + 
+//										"He waits on the second floor in the Room named ruinMage. " + 
+//										"I hope you can find him.");
+					dialogText.setText("Thank you. The mage is on the second floor.");
+					game.getPlayer().getInventory().removeItem(key);
+					okButton.setOnAction(dialogHandlers.get("acknowledgeEvent"));
+				}
+				else {
+					dialogText.setText("You don't have the key. Then go and find him! ");
+					okButton.setOnAction(dialogHandlers.get("acknowledgeEvent"));
+				}				
+			}
+		});
+		dialogHandlers.put("nativeTalkEvent", new EventHandler<ActionEvent>(){
+			@Override
+			public void handle(ActionEvent e) {
+//				dialogText.setText("Hello do you have any meat for me? "
+//									+ "i can give you some inforamtion about the island in exchange for the meat. "
+//									+ "Do you want to change? ");
+				dialogText.setText("Give me meat and i tell you something. ");
+				okButton.setOnAction(dialogHandlers.get("nativeTradeEvent"));
+			}
+		});
+		dialogHandlers.put("nativeTradeEvent", new EventHandler<ActionEvent>(){
+			@Override
+			public void handle(ActionEvent e) {
+				dialogText.setText("That's nice. ");
+				Item meat = game.getPlayer().getInventory().getItemByName("Meat");
+				if(game.getPlayer().getInventory().containsItem(meat) == true) {
+					
+					dialogText.setText(getInfosFromNative());
+					game.getPlayer().getInventory().removeItem(meat);	
+
+				}
+				
+				else {
+					dialogText.setText("Oh i see you tried to betray me! ");
+					game.getCurrentRoom().getCreature().setPeaceful(false);// changePeaceful(); hier muss noch der Native böse werden.
+					
+				}
+				okButton.setOnAction(dialogHandlers.get("acknowledgeEvent"));
+			}
+		});
 	}
 	
 	private void populateMessageHashMap() {
@@ -526,7 +651,30 @@ public class GameApplication extends Application {
 		messages.put("trapDoor", "You're trying to enter through a trapdoor. Continue?");
 		messages.put("boatReady", "You're ready to build a boat.");
 		messages.put("goDirection", "Would you like to go %s?");
+		messages.put("talkAction", "Would you like to talk?");
 		}
+	/**
+	 * This methode returns a String. The Native chooses random a String from the HashMap and returns it.
+	 * @return information The String with the information.
+	 */
+	private String getInfosFromNative() {
+		Random random = new Random();
+
+		HashMap<Integer, String> trade = new HashMap<Integer, String>();
+
+		trade.put(1, "The prisoner knows where the mage is. ");
+		trade.put(2, "The prisoner is in the dungeon. "); // wissen wo das material ist
+		trade.put(3, "Don't try to betray the natives they will attack you. "); // "-"
+		trade.put(4, "Somewhere on this island is a magic-mushroom which can give you unlimited power. ");
+		trade.put(5, "i have nothing for you you fool ");
+		trade.put(6, "Go to the Library there is something important for you. "); // noch etwas neues
+		int info = random.nextInt(6)+1;
+		String information = trade.get(info);
+		return information;
+	}
+	
+	
+	
 	
 	private void initializeRoomGoup() {
 		goRoomGroup = new Group();
@@ -621,7 +769,59 @@ public class GameApplication extends Application {
         	item.render(gc);
         }
 	}
+	/**
+	 * This method checks if the Creature collide with the player.
+	 * When they collide the player can press "H" to trade or talk with special creatures.  
+	 */
+	private void checkForCreatureCollision() {
+	CreatureSprite creature= 	game.getCurrentRoom().getCreatureSprite();
+	String name = creature.getCreature().getName();
 	
+		if(robin.intersects(creature)) {
+			
+			if(name == "Native" || name == "Freitag" || name == "Guy Fawkes" || name == "Gandalf der Graue" ) {
+				gc.setFill(Color.ANTIQUEWHITE);
+				gc.setFont(Font.font("Algerian", 15));
+	    		gc.fillText("\"H\"", creature.getPositionX(), creature.getPositionY());	
+	    		
+		   		if(input.contains("H")) {
+
+		   			dialogText.setText(messages.get("talkAction"));
+		   			dialogGroup.setVisible(true);
+//		   			okButton.setOnAction(dialogHandlers.get("talkEvent"));
+		   			checkTradeHandlerMethode();
+
+		    		}
+			}
+    		
+		}
+	}
+	/**
+	 * This methode checks with which creature the player is able to talk or trade. 
+	 */
+	private void checkTradeHandlerMethode() {
+		
+		CreatureSprite creature= 	game.getCurrentRoom().getCreatureSprite();
+		String name = creature.getCreature().getName();
+		
+			if(name == "Native") {
+				okButton.setOnAction(dialogHandlers.get("nativeTalkEvent"));	
+				
+			} 
+			else if (name == "Freitag") {
+				okButton.setOnAction(dialogHandlers.get("freitagTalkEvent"));
+			
+			}
+			else if(name == "Guy Fawkes") {
+				okButton.setOnAction(dialogHandlers.get("prisonerTalkEvent"));
+				
+			}
+			else if(name == "Gandalf der Graue") {
+				okButton.setOnAction(dialogHandlers.get("mageTalkEvent"));
+				
+			}
+		
+	}
 	private void checkForItemCollision() {
 		ListIterator<ItemSprite> itemIterator = game.getCurrentRoom().getItemSprites().listIterator();
         while(itemIterator.hasNext()) {
