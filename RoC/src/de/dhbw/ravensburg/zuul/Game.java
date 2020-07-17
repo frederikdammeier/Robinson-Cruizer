@@ -21,7 +21,7 @@ import java.util.ArrayList;
  * @version 27.05.2020
  */
 
-public class Game implements Runnable{
+public class Game{
 	private Parser parser;
 	private Room currentRoom;
 	private Timer timer;
@@ -46,7 +46,7 @@ public class Game implements Runnable{
 		parser = new Parser();
 		predator = new Predator(this);
 		player = new Player("Players Name", difficulty.getInventoryCapacity(), 100);
-		player.getInventory().addMultipleItems(new RoomKey("Key to the Library"), new Resin(), new Sail(), new Resin(), new Rope(), new Rope(), new Timber(), new Timber(), new Timber(), new Timber());  //Activate this line to test the boatBuilding
+		player.getInventory().addMultipleItems(new RoomKey("Key to the Library"), new Resin(), new Sail(), new Resin(), new Rope(), new Rope(), new Timber(), new Timber(), new Timber());  //Activate this line to test the boatBuilding
 		boatBuilder = new BoatBuilding();
 		currentRoom = map.getCurrentRoom();
 		timeLimit = difficulty.getTimeLimit();
@@ -63,8 +63,7 @@ public class Game implements Runnable{
 	/**
 	 * Main play routine. Loops until end of play.
 	 */
-	@Override
-	public void run() {
+	public void start() {
 
 		printWelcome();
 
@@ -89,19 +88,19 @@ public class Game implements Runnable{
 		// Enter the main command loop. Here we repeatedly read commands and
 		// execute them until the game is over.
 
-		dead = false;
-		finished = false;
-		while (!finished && timer.getTimePassedSeconds() < timeLimit && !dead) {
-
-			Command command = parser.getCommand();
-			finished = processCommand(command);
-			printTimePassed();
-		}
-		System.out.println("Thank you for playing.  Good bye!");
-		timer.stopTimer();
-		predatorThread.interrupt();
-		regenHandler.finish();
-		hungerHandler.finish();
+//		dead = false;
+//		finished = false;
+//		while (!finished && timer.getTimePassedSeconds() < timeLimit && !dead) {
+//
+//			Command command = parser.getCommand();
+//			finished = processCommand(command);
+//			printTimePassed();
+//		}
+//		System.out.println("Thank you for playing.  Good bye!");
+//		timer.stopTimer();
+//		predatorThread.interrupt();
+//		regenHandler.finish();
+//		hungerHandler.finish();
 	}
 	
 	public void endGame() {
@@ -639,5 +638,29 @@ public class Game implements Runnable{
 
 	public long getTimeLimit() {
 		return timeLimit;
+	}
+	
+	/**
+	 * Let's the player eat the first occurance of food in his inventory.
+	 * 
+	 * @return True if successful, false if inventory doesn't contain food.
+	 */
+	public boolean eat() {
+		for(Item i : player.getInventory().getFullInventory()) {
+			if(i instanceof Food) {
+				player.eat(((Food) i).getNutrition());
+				player.getInventory().removeItem(i);
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public BoatBuilding getBoatBuilder() {
+		return boatBuilder;
+	}
+	
+	public Map getMap() {
+		return map;
 	}
 }

@@ -75,7 +75,6 @@ public class GameApplication extends Application {
 	private StringValue lastKeyPressed, goNext;
 	private Position mousePosition;
 	private Game game;
-	private Thread gameThread;
 	private Canvas canvas;
 	private Text dialogText;
 	private Button okButton, cancelButton;
@@ -90,6 +89,7 @@ public class GameApplication extends Application {
 	private Predator2 predator;
 	private Image sword, food, wArrow, eArrow, sArrow, nArrow, uArrow, dArrow, uStairs, dStairs;
 	private Difficulty difficulty;
+	private Thread pThread;
 	
 	
 	public static void main(String... args) {
@@ -225,29 +225,10 @@ public class GameApplication extends Application {
 		mousePosition = new Position();
 		mousePosition.x = 0.0;
 		mousePosition.y = 0.0;
-				
-		//GameInstance
-//		game = new Game(Difficulty.EASY);
-//		gameThread = new Thread(game, "game");
-//		gameThread.start();
-//		
-//		predator = new Predator2(game);
-//		Thread pThread = new Thread(predator, "predator");
-//		pThread.start();
-//		
-//		Group root = new Group();
-//		sPane = new StackPane();
-//		Scene scene = new Scene(root);
-//		stage.setScene(scene);
 		
 		canvas = new Canvas(w, h);
 		sPane.getChildren().add(canvas);
 		root.getChildren().add(canvas);
-		
-		
-		// Group for GoRoom Elements
-//		initializeRoomGoup();
-//		root.getChildren().add(goRoomGroup);
 		
 		//Yes/No Answer
 		yesNoBackground = new Rectangle(220, 110, Color.BEIGE);
@@ -264,17 +245,6 @@ public class GameApplication extends Application {
 		dialogGroup.setAutoSizeChildren(true);
 		dialogGroup.getChildren().add(yesNoBackground);
 		dialogGroup.getChildren().add(dialogContainer);
-		
-		
-//		yesButton.setOnAction(new EventHandler<ActionEvent>() {
-//			@Override
-//			public void handle(ActionEvent arg0) {
-//				game.goRoom(goNext.value);
-//				setExitVisibility();
-//				yesNoGroup.setVisible(false);
-//				
-//			}			
-//		});
 		
 		cancelButton.setOnAction(dialogHandlers.get("acknowledgeEvent"));
 		
@@ -312,9 +282,13 @@ public class GameApplication extends Application {
 	    
 	    scene.setOnKeyTyped(new EventHandler<KeyEvent>() {
 	    	public void handle(KeyEvent e) {
-	    		if(e.getCharacter().equals("a")) {
+	    		if(e.getCharacter().equals("a") || e.getCharacter().equals("A")) {
                 	game.playerAttack();
                 }
+	    		
+	    		if(e.getCharacter().equals("e") || e.getCharacter().equals("E")) {
+	    			if(!game.eat()) System.out.println("Collect some food to eat.");
+	    		}
 	    	}
 	    });
 	    
@@ -327,22 +301,6 @@ public class GameApplication extends Application {
 	    });
 		
 		gc = canvas.getGraphicsContext2D();
-		
-		
-		//The players sprite
-//		robin = game.getPlayer().getPlayerSprite();
-		
-		//Hitboxes around the Map
-//		west = new Sprite(0.0, h*0.1, 0.0, 0.0, w*0.1, h*0.8);	
-//		east = new Sprite(w*0.9, h*0.1, 0.0, 0.0, w*0.1, h*0.8);
-//		north = new Sprite(w*0.1, 0.0, 0.0, 0.0, w*0.8, h*0.1);
-//		south = new Sprite(w*0.1, h*0.9, 0.0, 0.0, w*0.8, h*0.1);
-//		up = new Sprite(goUpRectangle.getX(), goUpRectangle.getY(), 0.0, 0.0, goUpRectangle.getWidth(), goUpRectangle.getHeight());
-//		down = new Sprite(goDownRectangle.getX(), goDownRectangle.getY(), 0.0, 0.0, goDownRectangle.getWidth(), goDownRectangle.getHeight());
-//		
-//		sword = new Image("Images/Item/Sword.PNG", w/15, w/15, false, false);
-//		uStairs = new Image("Images/Misc/stairs_up.PNG", goUpRectangle.getWidth(), goUpRectangle.getHeight(), false, false);
-//		dStairs = new Image("Images/Misc/stairs_down.PNG", goDownRectangle.getWidth(), goDownRectangle.getHeight(), false, false);
 		
 		final AnimationTimer at = new AnimationTimer() {
 			double speed = 200.0;
@@ -377,6 +335,7 @@ public class GameApplication extends Application {
 		        	robin.update(elapsedTime);
 		        }     
 		        
+		        //Draw background image
 		        gc.drawImage(game.getCurrentRoom().getBGImage(), 0, 0);		        
 		        
 		        if(game.getCurrentRoom().hasExit("up")) {
@@ -390,26 +349,25 @@ public class GameApplication extends Application {
 		        renderRoomIcons();
 		        checkForItemCollision();
 		        
-		        //Mouse intersects one of the Boundaries
+		      //Mouse intersects one of the Boundaries
 		        if(east.intersects(mousePosition.x, mousePosition.y) && goEastRectangle.isVisible()) {
-		        	gc.drawImage(new Image("Images/Misc/eastArrow.png", w*0.1, h*0.8, false, false), east.getPositionX(), east.getPositionY());
+		        	gc.drawImage(eArrow, east.getPositionX(), east.getPositionY());
 		        }
 		        if(west.intersects(mousePosition.x, mousePosition.y) && goWestRectangle.isVisible()) {
-		        	gc.drawImage(new Image("Images/Misc/westArrow.png", w*0.1, h*0.8, false, false), west.getPositionX(), west.getPositionY());
+		        	gc.drawImage(wArrow, west.getPositionX(), west.getPositionY());
 		        }
 		        if(north.intersects(mousePosition.x, mousePosition.y) && goNorthRectangle.isVisible()) {
-		        	gc.drawImage(new Image("Images/Misc/northArrow.png", w*0.8, h*0.1, false, false), north.getPositionX(), north.getPositionY());
+		        	gc.drawImage(nArrow, north.getPositionX(), north.getPositionY());
 		        }
 		        if(south.intersects(mousePosition.x, mousePosition.y) && goSouthRectangle.isVisible()) {
-		        	gc.drawImage(new Image("Images/Misc/southArrow.png", w*0.8, h*0.1, false, false), south.getPositionX(), south.getPositionY());
+		        	gc.drawImage(sArrow, south.getPositionX(), south.getPositionY());
 		        }
 		        if(up.intersects(mousePosition.x, mousePosition.y) && goUpRectangle.isVisible()) {
-		        	gc.drawImage(new Image("Images/Misc/upDownArrow.png", w*0.1, h*0.2, false, false), w*0.45, h*0.3);
+		        	gc.drawImage(uArrow, w*0.45, h*0.3);
 		        }
 		        if(down.intersects(mousePosition.x, mousePosition.y) && goDownRectangle.isVisible()) {
-		        	gc.drawImage(new Image("Images/Misc/upDownArrow.png", w*0.1, h*0.2, false, false), w*0.45, h*0.5);
+		        	gc.drawImage(dArrow, w*0.45, h*0.5);
 		        }
-		      
 		        	        
 		        //Text at the top of the Screen
 		        printRoomAndTimeInformation();
@@ -420,9 +378,15 @@ public class GameApplication extends Application {
 		        //Health Bar
 		        printVitalityBar(gc, game.getPlayer().getHealth(), Color.RED, w*0.95-200, h*0.95-30, 200.0, 20.0);
 		        
-		        //Sword
-		        gc.drawImage(sword, w/15, (13*w)/15);
-		        gc.fillText("\"A\" to attack", 2*w/15, (14*w)/15);
+		        //Sword (Attack Icon)
+		        gc.drawImage(sword, w*0.07, h*0.87);
+		        gc.setFill(Color.BLACK);
+		        gc.fillText("\"A\" to attack", w*0.1, h*0.96);
+		        
+		        //Meat (Eat Icon)
+		        gc.drawImage(food, w*0.27, h*0.87);
+		        gc.fillText("\"E\" to eat", w*0.3, h*0.96);
+		        
 		        
 		        if(game.getCurrentRoom().getCreature() != null) {
 		        	CreatureSprite creature = game.getCurrentRoom().getCreatureSprite();
@@ -456,16 +420,9 @@ public class GameApplication extends Application {
 		        robin.render(gc, Math.toDegrees(mouseAngle+Math.PI/2));
 			}				
 		};
-
-//		at.start();
-//		
-//		stage.setTitle("Robinson Cruizer");
-//		stage.getIcons().add(new Image("Images/Item/Icon.png"));
-////		stage.setFullScreen(true);
-//		stage.show();
 		
 		goGame.addEventHandler(ActionEvent.ACTION, new EventHandler<ActionEvent>(){
-			
+
 			@Override
 			public void handle(ActionEvent actionEvent) {
 				
@@ -481,16 +438,11 @@ public class GameApplication extends Application {
 				else {
 					System.out.println("You level will be easy");
 				}
-				game = new Game(difficulty);
-//				System.out.println(difficulty.getInventoryCapacity()); // geht
+				game = new Game(difficulty);		
+				game.start();
 				
-				
-				
-				
-				gameThread = new Thread(game, "game");
-				gameThread.start();
 				predator = new Predator2(game);
-				Thread pThread = new Thread(predator, "predator");
+				pThread = new Thread(predator, "predator");
 				pThread.start();			
 				robin = game.getPlayer().getPlayerSprite();
 				
@@ -503,14 +455,21 @@ public class GameApplication extends Application {
 				down = new Sprite(goDownRectangle.getX(), goDownRectangle.getY(), 0.0, 0.0, goDownRectangle.getWidth(), goDownRectangle.getHeight());
 				
 				sword = new Image("Images/Item/Sword.PNG", w/15, w/15, false, false);
+				food = new Image("Images/Item/Meat.PNG", w/15, w/15, false, false);
 				uStairs = new Image("Images/Misc/stairs_up.PNG", goUpRectangle.getWidth(), goUpRectangle.getHeight(), false, false);
 				dStairs = new Image("Images/Misc/stairs_down.PNG", goDownRectangle.getWidth(), goDownRectangle.getHeight(), false, false);
+				eArrow = new Image("Images/Misc/eastArrow.png", w*0.1, h*0.8, false, false);
+				wArrow = new Image("Images/Misc/westArrow.png", w*0.1, h*0.8, false, false);
+				nArrow = new Image("Images/Misc/northArrow.png", w*0.8, h*0.1, false, false);
+				sArrow = new Image("Images/Misc/southArrow.png", w*0.8, h*0.1, false, false);
+				uArrow = new Image("Images/Misc/upDownArrow.png", w*0.1, h*0.2, false, false);
+				dArrow = new Image("Images/Misc/upDownArrow.png", w*0.1, h*0.2, false, false);
 				
 				root.getChildren().add(goRoomGroup);
 				at.start();
 				welcome.setTitle("Robinson Cruizer");
 				welcome.getIcons().add(new Image("Images/Item/Icon.png"));
-				welcome.setScene(scene); // Freddis Scene muss hier rein
+				welcome.setScene(scene);
 				welcome.show();
 			}
 		});
@@ -565,6 +524,7 @@ public class GameApplication extends Application {
 			@Override
 			public void handle(ActionEvent e) {
 				game.setCurrentRoom(game.getCurrentRoom().getExit(goNext.value));	
+				setExitVisibility();
 				dialogGroup.setVisible(false);
 			}
 		});
@@ -684,6 +644,16 @@ public class GameApplication extends Application {
 				okButton.setOnAction(dialogHandlers.get("acknowledgeEvent"));
 			}
 		});
+		dialogHandlers.put("buildBoatEvent", new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent e) {
+				game.getBoatBuilder().buildBoat(game.getPlayer().getInventory());
+				game.getMap().activateFinish();
+				
+				dialogText.setText(messages.get("boatBuilt"));
+				okButton.setOnAction(dialogHandlers.get("acknowledgeEvent"));
+			}
+		});
 	}
 	
 	/**
@@ -697,7 +667,11 @@ public class GameApplication extends Application {
 		messages.put("boatReady", "You're ready to build a boat.");
 		messages.put("goDirection", "Would you like to go %s?");
 		messages.put("talkAction", "Would you like to talk?");
+		messages.put("buildBoat", "You are ready to build a boat now. Proceed?");
+		messages.put("boatBuilt", "A boat has been added to your inventory. Go to any beach to leave the island.");
 		}
+	
+	
 	/**
 	 * Methods that enable and displays exits of a room visually.
 	 */
@@ -828,7 +802,7 @@ public class GameApplication extends Application {
 	}
 	
 	/**
-	 * Displays alls items held in the currentRoom inventory.
+	 * Displays all items held in the currentRoom inventory.
 	 */
 	private void renderRoomIcons() {
 		for(Sprite item : game.getCurrentRoom().getItemSprites()) {
@@ -851,6 +825,12 @@ public class GameApplication extends Application {
         			if(game.getPlayer().getInventory().addItem(item.getItem())) {
         				game.getPlayer().updatePlayerDamage(item.getItem());
         				itemIterator.remove();	
+        				
+        				if(game.getBoatBuilder().checkIfBoatCanBeBuilt(game.getPlayer().getInventory())) {
+        					dialogText.setText(messages.get("buildBoat"));
+        					okButton.setOnAction(dialogHandlers.get("buildBoatEvent"));
+        					dialogGroup.setVisible(true);
+        				}
         			} 	else	{
         				dialogText.setText("Inventory Full");
         				okButton.setOnAction(dialogHandlers.get("acknowledgeEvent"));
@@ -862,16 +842,33 @@ public class GameApplication extends Application {
 	}
 	
 	/**
-	 * @return Current mouse angle.
+	 * @return Current angle between the mouse pointer and Robin
 	 */
 	private double getMouseAngle() {
 		return Math.atan2(robin.getCenterY() - mousePosition.y, robin.getCenterX() - mousePosition.x);
 	}
 	
+	/** 
+	 * @param a Sprite A
+	 * @param b Sprite B
+	 * @return Angle between two sprites
+	 */
 	private double getAngleBetweenSprites(Sprite a, Sprite b) {
 		return Math.atan2(a.getCenterY() - b.getCenterY(), a.getCenterX() - b.getCenterX());
 	}
 	
+	/**
+	 * Prints a horizontal bar to indicate a variables status (value).
+	 * The variable needs to be in the range [0...100]
+	 * 
+	 * @param gc Where to print the bar.
+	 * @param value What value the bar should display at the given moment.
+	 * @param color The color of the bar.
+	 * @param posX 
+	 * @param posY
+	 * @param width
+	 * @param height
+	 */
 	private void printVitalityBar(GraphicsContext gc, float value, Color color, double posX, double posY, double width, double height) {
 		gc.setFill(Color.ANTIQUEWHITE);
 		gc.fillRect(posX, posY, width, height);
@@ -981,7 +978,12 @@ public class GameApplication extends Application {
 	 */
 	@Override
 	public void stop() {
-		game.endGame();
-		predator.stopThread();
+		if(predator != null) {
+			predator.stopThread();
+		}	
+		if(game != null) {
+			game.endGame();
+		}
 	}
+		
 }

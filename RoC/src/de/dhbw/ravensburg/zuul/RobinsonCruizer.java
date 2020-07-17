@@ -23,7 +23,7 @@ package de.dhbw.ravensburg.zuul;
 public class RobinsonCruizer {
 
 	public static void main(String[] args) {
-		Game game = new Game(Difficulty.EASY);
-		game.play();
+//		Game game = new Game(Difficulty.EASY);
+//		game.play();
 	}
 }
