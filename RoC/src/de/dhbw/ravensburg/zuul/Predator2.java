@@ -20,7 +20,7 @@ public class Predator2 implements Runnable {
 			if(currentCreatureSprite != null) {
 				if(!game.getCurrentRoom().getCreature().getPeaceful()) {
 					if(player.getPlayerSprite().distanceTo(currentCreatureSprite.getCenterX(), currentCreatureSprite.getCenterY()) < 100){
-						player.takeDamage(game.getCurrentRoom().getCreature().getDamage());
+						player.takeDamage((int) (game.getCurrentRoom().getCreature().getDamage()*game.getEnemyDamageRate()));
 					}
 				}		
 			}

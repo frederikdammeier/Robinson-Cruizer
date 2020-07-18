@@ -4,7 +4,7 @@ package de.dhbw.ravensburg.zuul;
  * This class provides a method to automatically decrease the players hunger counter as the game progresses.
  * 
  * @author Frederik Dammeier
- * @version 27.05.2020
+ * @version 17.07.2020
  *
  */
 public class HungerHandler implements Runnable {
@@ -37,13 +37,13 @@ public class HungerHandler implements Runnable {
 				player.eat(-1);
 
 			} else {
+				player.eat(-1);
 				try {
 					Thread.sleep((int) (1000/hungerRate));
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
-				}
-				player.eat(-1);
+				}		
 			}
 		}
 	}
