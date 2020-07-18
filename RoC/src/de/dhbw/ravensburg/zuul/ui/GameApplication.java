@@ -430,7 +430,7 @@ public class GameApplication extends Application {
 		        renderRoomIcons();
 		        checkForItemCollision();
 		        
-		      //Mouse intersects one of the Boundaries
+		        //Mouse intersects one of the Boundaries
 		        if(east.intersects(mousePosition.x, mousePosition.y) && goEastRectangle.isVisible()) {
 		        	gc.drawImage(eArrow, east.getPositionX(), east.getPositionY());
 		        }
@@ -478,14 +478,10 @@ public class GameApplication extends Application {
 			        	double newVelocityX = Math.cos(creatureAngle+Math.PI)*enemySpeed;
 			        	double newVelocityY = Math.sin(creatureAngle+Math.PI)*enemySpeed;
 			        	
-			        	if(creature.intersects(west) && newVelocityX < 0)
-			        		newVelocityX = 0;
-			        	if(creature.intersects(north) && newVelocityY < 0)
-			        		newVelocityY = 0;
-			        	if(creature.intersects(east) && newVelocityX > 0)
-			        		newVelocityX = 0;	        		
-			        	if(creature.intersects(south) && newVelocityY > 0)
-			        		newVelocityY = 0;
+			        	if(creature.intersects(west) && newVelocityX < 0) newVelocityX = 0;
+			        	if(creature.intersects(north) && newVelocityY < 0) newVelocityY = 0;
+			        	if(creature.intersects(east) && newVelocityX > 0) newVelocityX = 0;	        		
+			        	if(creature.intersects(south) && newVelocityY > 0) newVelocityY = 0;
 			        	creature.addVelocity(newVelocityX, newVelocityY);
 			        	
 			        	creature.update(elapsedTime);
@@ -494,7 +490,34 @@ public class GameApplication extends Application {
 		        }
 		        //Rotate Robin according to mouseDirection and Print him to the canvas.
 		        robin.render(gc, Math.toDegrees(mouseAngle+Math.PI/2));
-			}				
+		        
+		        
+		        if(game.getFinished()) {
+		        	gc.drawImage(game.getCurrentRoom().getBGImage(), 0, 0);	
+		        }
+		        
+		        if(game.getDead()) {
+		        	this.stop();
+		        	dialogText.setText(messages.get("death"));
+		        	okButton.setOnAction(dialogHandlers.get("finishEvent"));
+		        	cancelButton.setOnAction(dialogHandlers.get("finishEvent"));
+		        	dialogGroup.setVisible(true);
+		        }
+		     
+		        if(game.getTimeLeft() <= 0) {
+		        	this.stop();
+		        	dialogText.setText(messages.get("timeout"));
+		        	okButton.setOnAction(dialogHandlers.get("finishEvent"));
+		        	cancelButton.setOnAction(dialogHandlers.get("finishEvent"));
+		        	dialogGroup.setVisible(true);
+		        }
+			}	
+			
+			@Override
+			public void stop() {
+				gc.drawImage(new Image("Images/Misc/GAME_OVER.PNG"), 0, 0);
+				super.stop();
+			}
 		};
 		
 		goGame.addEventHandler(ActionEvent.ACTION, new EventHandler<ActionEvent>(){
@@ -609,6 +632,13 @@ public class GameApplication extends Application {
 				} else if(!nextRoom.hasExitToRoom(game.getCurrentRoom()) && !nextRoom.getType().equals(RoomType.FINISH)) {
 					dialogText.setText(messages.get("trapDoor"));
 					okButton.setOnAction(dialogHandlers.get("trapDoorEvent"));
+				} else if(nextRoom.getType().equals(RoomType.FINISH)){
+					game.setCurrentRoom(nextRoom);
+					setExitVisibility();
+					dialogText.setText(messages.get("gameFinished"));
+					okButton.setOnAction(dialogHandlers.get("finishEvent"));
+					cancelButton.setOnAction(dialogHandlers.get("finishEvent"));
+					game.setFinished(true);
 				} else {
 					game.setCurrentRoom(nextRoom);
 					setExitVisibility();
@@ -616,6 +646,16 @@ public class GameApplication extends Application {
 				}			
 			}
 		});
+		
+		dialogHandlers.put("finishEvent", new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent e) {
+				Stage stage = (Stage) okButton.getScene().getWindow();
+				stage.close();
+				stop();
+			}
+		});
+		
 		
 		dialogHandlers.put("unlockRoomEvent", new EventHandler<ActionEvent>() {
 			@Override
@@ -805,6 +845,9 @@ public class GameApplication extends Application {
 		messages.put("nativeSailEvent", "I will give you a Sail for a boat");
 		messages.put("nativeBetrayalTalk","Oh i see you tried to betray me! ");
 		messages.put("freitagSwordTalk", "Oh and i have something for you");
+		messages.put("gameFinished", "You win! Thank you for playing. \nPress a button to close the window.");
+		messages.put("timeout", "You ran out of time! Better luck next time. \nPress a button to close the window.");
+		messages.put("death", "You have been killed! Better luck next time. \nPress a button to close the window");
 		}
 	
 	
@@ -1200,7 +1243,7 @@ public class GameApplication extends Application {
 
 			@Override
 			public void onChanged(@SuppressWarnings("rawtypes") Change arg0) {
-				invSize.setText(game.getPlayer().getInventory().getCurrentInventoryWeight() + "Kg / " + difficulty.getInventoryCapacity() + "Kg ");
+				invSize.setText(game.getPlayer().getInventory().getCurrentInventoryWeight() + "kg / " + difficulty.getInventoryCapacity() + "kg ");
 			}
 
 		});
@@ -1210,7 +1253,7 @@ public class GameApplication extends Application {
 		inventoryTable.setMaxWidth(w*0.2);
 
 
-		invSize.setText(game.getPlayer().getInventory().getCurrentInventoryWeight() + "Kg / " + difficulty.getInventoryCapacity() + "Kg ");
+		invSize.setText(game.getPlayer().getInventory().getCurrentInventoryWeight() + "kg / " + difficulty.getInventoryCapacity() + "kg ");
 
 		VBox fp = new VBox();
 		HBox hb = new HBox();

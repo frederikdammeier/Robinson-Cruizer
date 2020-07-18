@@ -103,7 +103,7 @@ public class Inventory {
 		float amount = 0.0f;
 		
 		for(int i = 0; i < inventory.size(); i++) {
-			amount = inventory.get(i).getWeight();
+			amount += inventory.get(i).getWeight();
 		}
 		
 		return amount;

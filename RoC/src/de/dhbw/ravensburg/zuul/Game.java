@@ -706,4 +706,16 @@ public class Game{
 	public Map getMap() {
 		return map;
 	}
+	
+	public boolean getFinished() {
+		return finished;
+	}
+	
+	public void setDead(boolean d) {
+		dead = d;
+	}
+	
+	public boolean getDead() {
+		return dead;
+	}
 }
