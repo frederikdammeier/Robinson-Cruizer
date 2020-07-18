@@ -42,17 +42,17 @@ public class Map {
 		map.add(southBeach);
 		
 		//Initialize: Forest
-		westForest = new Forest("in the Forest", new Snake(), RoomType.FOREST_HORIZONTAL, new Timber());
+		westForest = new Forest("in the Forest", new Snake(), RoomType.FOREST_NORTHWESTSOUTH, new Timber());
 		map.add(westForest);
-		eastForest = new Forest("in the Forest", null, RoomType.FOREST_VERTICAL);
+		eastForest = new Forest("in the Forest", null, RoomType.FOREST_HORIZONTAL);
 		map.add(eastForest);
 		northForest = new Forest("in the Forest", null, RoomType.FOREST_NORTH);
 		map.add(northForest);
 		southForest = new Forest("in the Forest", null, RoomType.FOREST_VERTICAL);
 		map.add(southForest);
-		northWestForest = new Forest("in the Forest", new Snake(), RoomType.FOREST_HORIZONTAL);
+		northWestForest = new Forest("in the Forest", new Snake(), RoomType.FOREST_SOUTHWEST2);
 		map.add(northWestForest);
-		southWestForest = new Forest("in the Forest", new Snake(), RoomType.FOREST_HORIZONTAL);
+		southWestForest = new Forest("in the Forest", new Snake(), RoomType.FOREST_SOUTHWEST);
 		map.add(southWestForest);
 		centralForest = new Forest("in the Forest", new Snake(), RoomType.FOREST_HORIZONTAL);
 		map.add(centralForest);
@@ -63,13 +63,13 @@ public class Map {
 //		map.add(deepForest);
 		
 		//Initialize: Ruin
-		ruinWestEntrance = new Ruin("in the ruins: West Entrance", null, RoomType.RUIN);
+		ruinWestEntrance = new Ruin("in the ruins: West Entrance", null, RoomType.RUIN_ENTRANCE_WEST);
 		map.add(ruinWestEntrance);
-		ruinEastEntrance = new Ruin("in the ruins: East Entrance", null, RoomType.RUIN);
+		ruinEastEntrance = new Ruin("in the ruins: East Entrance", null, RoomType.RUIN_ENTRANCE_EAST);
 		map.add(ruinEastEntrance);
-		ruinNorthEntrance = new Ruin("in the ruins: North Entrance", null, RoomType.RUIN);
+		ruinNorthEntrance = new Ruin("in the ruins: North Entrance", null, RoomType.RUIN_ENTRANCE_NORTH);
 		map.add(ruinNorthEntrance);
-		ruinSouthEntrance = new Ruin("in the ruins: South Entrance", null, RoomType.RUIN);
+		ruinSouthEntrance = new Ruin("in the ruins: South Entrance", null, RoomType.RUIN_ENTRANCE_SOUTH);
 		map.add(ruinSouthEntrance);
 		
 		ruinStairCase0 = new Ruin("in the ruins: Staircase", null, RoomType.RUIN);
