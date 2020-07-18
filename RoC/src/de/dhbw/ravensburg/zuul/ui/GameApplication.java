@@ -14,6 +14,8 @@ import de.dhbw.ravensburg.zuul.item.Food;
 import de.dhbw.ravensburg.zuul.item.Item;
 import de.dhbw.ravensburg.zuul.item.MagicMushroom;
 import de.dhbw.ravensburg.zuul.item.RoomKey;
+import de.dhbw.ravensburg.zuul.item.Sail;
+import de.dhbw.ravensburg.zuul.item.Stick;
 import de.dhbw.ravensburg.zuul.room.Room;
 import de.dhbw.ravensburg.zuul.room.RoomType;
 import javafx.animation.AnimationTimer;
@@ -39,6 +41,7 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -120,6 +123,7 @@ public class GameApplication extends Application {
 	/**
 	 * This method enables the player to take control (mouse and keyboard commands) and renders informations visually (like the hunger bar).
 	 */
+	@SuppressWarnings("static-access")
 	@Override
 	public void start(Stage stage) throws Exception {	
 		//Difficulty selection screen
@@ -134,25 +138,25 @@ public class GameApplication extends Application {
         imgView.setFitHeight(rootb.getHeight());
         
         //labels 
-		Label welcomeLabel = new Label();
+//		Label welcomeLabel = new Label();
 		Label infoLabel = new Label();
 		Label label = new Label("by Frederik Dammeier, Philipp Schneider and Moritz Link");
 		//button
-		Button goSetting  = new Button("go to Setting");
+		Button goStory  = new Button("next");
 
-		welcomeLabel.setText("Welcome to the game:  Robinson Cruizer");
-		welcomeLabel.setFont(new Font("Arial",  20));
-		welcomeLabel.setTextFill(Color.BLACK);
-		welcomeLabel.setPadding(new Insets(20,0,0,0));
+//		welcomeLabel.setText("Welcome to the game:  Robinson Cruizer");
+//		welcomeLabel.setFont(new Font("Arial",  20));
+//		welcomeLabel.setTextFill(Color.BLACK);
+//		welcomeLabel.setPadding(new Insets(20,0,0,0));
 		//infoLabel.setText("Robinson Cruizer is an adventure game, developed /br by Frederik Dammaier,/n Philipp Schneider /n and Moritz Link");
-		label.setPadding(new Insets(50,0,0,0));
-		rootb.getChildren().addAll(imgView, welcomeLabel, goSetting, label); // , label
+//		label.setPadding(new Insets(50,0,0,0));
+		rootb.getChildren().addAll(imgView,  goStory, label); // , label
 		 /**
 		 * Defines the position from roots children
 		 */	
-		rootb.setAlignment(welcomeLabel, Pos.TOP_CENTER);
+//		rootb.setAlignment(welcomeLabel, Pos.TOP_CENTER);
 		rootb.setAlignment(label, Pos.TOP_CENTER);		
-		rootb.setAlignment(goSetting, Pos.BOTTOM_RIGHT);
+		rootb.setAlignment(goStory, Pos.BOTTOM_RIGHT);
 		
 		final Scene welcomeScene = new Scene(rootb, 400, 400);
 		welcome.setScene(welcomeScene);
@@ -180,9 +184,9 @@ public class GameApplication extends Application {
 		beasy.setFont(new Font("Serif",  24));
 		bmedium.setFont(new Font("Serif",  24));		
 		bhard.setFont(new Font("Serif",  24));		
-		beasy.setTextFill(Color.WHITE);
-		bmedium.setTextFill(Color.WHITE);
-		bhard.setTextFill(Color.WHITE);
+		beasy.setTextFill(Color.BLACK);
+		bmedium.setTextFill(Color.BLACK);
+		bhard.setTextFill(Color.BLACK);
 		beasy.setToggleGroup(group);
 		bmedium.setToggleGroup(group);
 		bhard.setToggleGroup(group);
@@ -191,14 +195,34 @@ public class GameApplication extends Application {
 		beasy.setSelected(true);
 	
 		box.getChildren().addAll(beasy, bmedium, bhard ); // description, goBack, goGame
-		box.setPadding(new Insets(120,20,20,135));
+		box.setPadding(new Insets(120,20,100,135));
 		level.getChildren().addAll(imgView2,box, description, goBack, goGame);
 		level.setAlignment(description, Pos.TOP_CENTER);
 		level.setAlignment(goBack, Pos.BOTTOM_LEFT);
 		level.setAlignment(box, Pos.BOTTOM_CENTER);		
 		level.setAlignment(goGame, Pos.BOTTOM_RIGHT);
 		
-		final Scene levelScene = new Scene(level, 400, 400);
+		
+		//Buttons and Textfield for the storyScene
+		Button goSetting  = new Button("go to Setting");
+		Button returnB = new Button("back");
+		TextField tf = new TextField();	
+		Label titel = new Label("Story");
+		titel.setFont(new Font("Serif",  28));
+
+		StackPane ap = new StackPane();
+		
+		ap.setAlignment(tf, Pos.CENTER);		
+		ap.setAlignment(goSetting, Pos.BOTTOM_RIGHT);
+		ap.setAlignment(returnB, Pos.BOTTOM_LEFT);
+		ap.setAlignment(titel, Pos.TOP_CENTER);
+		
+		ap.getChildren().addAll(goSetting, tf, returnB, titel);
+		
+		
+		final Scene storyScene = new Scene(ap, w*0.4, h*0.4);
+		
+		final Scene levelScene = new Scene(level, w*0.4, h*0.4);
 		final Group root = new Group();
 		sPane = new StackPane();
 		final	Scene scene = new Scene(root);
@@ -211,6 +235,33 @@ public class GameApplication extends Application {
 					
 			@Override
 			public void handle(ActionEvent actionEvent) {
+				welcome.setScene(storyScene);
+				welcome.show();
+			}
+			
+		});
+		
+		
+		/**
+		 * Defines the action from the goSetting button.
+		 * Here you will switch to another scene. 
+		 */
+		goStory.addEventHandler(ActionEvent.ACTION, new EventHandler<ActionEvent>(){
+					
+			@Override
+			public void handle(ActionEvent actionEvent) {
+				
+				welcome.setScene(storyScene);
+				welcome.show();
+			}
+			
+		});
+		
+		returnB.addEventHandler(ActionEvent.ACTION, new EventHandler<ActionEvent>(){
+			
+			@Override
+			public void handle(ActionEvent actionEvent) {
+				
 				welcome.setScene(welcomeScene);
 				welcome.show();
 			}
@@ -603,37 +654,38 @@ public class GameApplication extends Application {
 //						+ "On this island are many hunters who want to kill you because they think you are against their god. "
 //						+ "So try to avoid them. "
 //						+ "It was nice to meet you, i hope you will survive. Good bye. " );
-				dialogText.setText("Hello foreign. you have to find items to build a boat. ");
-				okButton.setOnAction(dialogHandlers.get("acknowledgeEvent"));
-				// funktioniert noch nicht so wirklich
+				dialogText.setText(messages.get("freitagTalk"));
+				okButton.setOnAction(dialogHandlers.get("freitagSwordEvent"));
 				
-//				dialogGroup.setVisible(true);
-//				dialogGroup.setVisible(false);
-//				String text = dialogText.getText();
-//				if(text == dialogText.getText() ) {
-//					okButton.setOnAction(dialogHandlers.get("acknowledgeEvent"));
-//				}
 			}
 		});
-		
-		
+		dialogHandlers.put("freitagSwordEvent", new EventHandler<ActionEvent>(){
+			@Override
+			public void handle(ActionEvent e) {
+				dialogText.setText(messages.get("freitagSwordTalk"));
+				CreatureSprite currentCreatureSprite = game.getCurrentRoom().getCreatureSprite();
+				Item stick = new Stick();
+				game.getCurrentRoom().addItem(stick, currentCreatureSprite.getCenterX() + 50, currentCreatureSprite.getCenterY() +50);
+				okButton.setOnAction(dialogHandlers.get("acknowledgeEvent"));
+			}
+		});	
 		dialogHandlers.put("mageTalkEvent", new EventHandler<ActionEvent>(){
 			@Override
 			public void handle(ActionEvent e) {
-					dialogText.setText("Hello foreign, "
+//					dialogText.setText("Hello foreign, "
 //							+ "Nice to meet you. If you want I can help you. "
 //							+ "I am a powerful mage and can teleport you to different places on this island. "
 //							+ "Do you want to?
-							);
-					dialogText.setText("Hello, should i teleport you? ");
+//							);
+					dialogText.setText(messages.get("mageTalk"));
 					okButton.setOnAction(dialogHandlers.get("mageTeleportEvent"));
 			}
 		});
 		dialogHandlers.put("mageTeleportEvent", new EventHandler<ActionEvent>(){
 			@Override
 			public void handle(ActionEvent e) {
-					dialogText.setText("OK i hope you will escape from this island. Good bye");
-					game.teleport(); // public machen in Game
+					dialogText.setText(messages.get("mageTeleportTalk"));
+					game.teleport(); 
 					okButton.setOnAction(dialogHandlers.get("acknowledgeEvent"));
 			}
 		});
@@ -643,7 +695,7 @@ public class GameApplication extends Application {
 //				dialogText.setText("Ah please help me. I am in this Dungeon since two weeks. "
 //						+ "Can you open it? When you will free me i can give you information about the island. "
 //						+ "Do you have the key for me? ");	
-				dialogText.setText("Help me than i tell you something about this place.");
+				dialogText.setText(messages.get("prisonerTalk"));
 				okButton.setOnAction(dialogHandlers.get("prisonerTradeEvent"));
 				
 			
@@ -660,12 +712,12 @@ public class GameApplication extends Application {
 //										"On this island is a mage and he can help you. " + 
 //										"He waits on the second floor in the Room named ruinMage. " + 
 //										"I hope you can find him.");
-					dialogText.setText("Thank you. The mage is on the second floor.");
+					dialogText.setText(messages.get("prisonerThankTalk"));
 					game.getPlayer().getInventory().removeItem(key);
 					okButton.setOnAction(dialogHandlers.get("acknowledgeEvent"));
 				}
 				else {
-					dialogText.setText("You don't have the key. Then go and find him! ");
+					dialogText.setText(messages.get("prisonerKeyTalk"));
 					okButton.setOnAction(dialogHandlers.get("acknowledgeEvent"));
 				}				
 			}
@@ -676,7 +728,8 @@ public class GameApplication extends Application {
 //				dialogText.setText("Hello do you have any meat for me? "
 //									+ "i can give you some inforamtion about the island in exchange for the meat. "
 //									+ "Do you want to change? ");
-				dialogText.setText("Give me meat and i tell you something. ");
+				dialogText.setText("Give me meat and i tell you or give you something. ");
+				
 				okButton.setOnAction(dialogHandlers.get("nativeTradeEvent"));
 			}
 		});
@@ -684,22 +737,35 @@ public class GameApplication extends Application {
 			@Override
 			public void handle(ActionEvent e) {
 				dialogText.setText("That's nice. ");
+				Random random = new Random();
+				int i = random.nextInt(3)+1;
 				Item meat = game.getPlayer().getInventory().getItemByName("Meat");
 				if(game.getPlayer().getInventory().containsItem(meat) == true) {
 					
-					dialogText.setText(getInfosFromNative());
-					game.getPlayer().getInventory().removeItem(meat);	
-
+					
+					if(i == 1 || i == 2) {
+						dialogText.setText(getInfosFromNative());
+						
+					}
+					else {
+						dialogText.setText(messages.get("nativeSailEvent"));
+						CreatureSprite currentCreatureSprite = game.getCurrentRoom().getCreatureSprite();
+						Item sail = new Sail();
+						game.getCurrentRoom().addItem(sail, currentCreatureSprite.getCenterX() + 50, currentCreatureSprite.getCenterY() +50);
+					}
+						
+					game.getPlayer().getInventory().removeItem(meat);
 				}
 				
 				else {
-					dialogText.setText("Oh i see you tried to betray me! ");
+					dialogText.setText(messages.get("nativeBetrayalTalk"));
 					game.getCurrentRoom().getCreature().setPeaceful(false);// changePeaceful(); hier muss noch der Native böse werden.
 					
 				}
 				okButton.setOnAction(dialogHandlers.get("acknowledgeEvent"));
 			}
 		});
+		
 		dialogHandlers.put("buildBoatEvent", new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent e) {
@@ -730,6 +796,15 @@ public class GameApplication extends Application {
 		messages.put("buildBoat", "You are ready to build a boat now. Proceed?");
 		messages.put("boatBuilt", "A boat has been added to your inventory. Go to any beach to leave the island.");
 		messages.put("couldntBuildBoat", "It seems like you dropped a required item.");
+		messages.put("freitagTalk", "Hello foreign. you have to find items to build a boat. ");
+		messages.put("prisonerTalk", "Help me than i tell you something about this place.");
+		messages.put("prisonerThankTalk", "Thank you. The mage is on the second floor.");
+		messages.put("prisonerKeyTalk","You don't have the key. Then go and find him! ");
+		messages.put("mageTalk", "Hello, should i teleport you? ");
+		messages.put("mageTeleportTalk", "OK i hope you will escape from this island. Good bye");
+		messages.put("nativeSailEvent", "I will give you a Sail for a boat");
+		messages.put("nativeBetrayalTalk","Oh i see you tried to betray me! ");
+		messages.put("freitagSwordTalk", "Oh and i have something for you");
 		}
 	
 	
@@ -979,7 +1054,6 @@ public class GameApplication extends Application {
 
 		   			dialogText.setText(messages.get("talkAction"));
 		   			dialogGroup.setVisible(true);
-//		   			okButton.setOnAction(dialogHandlers.get("talkEvent"));
 		   			checkTradeHandlerMethode();
 
 		    		}
