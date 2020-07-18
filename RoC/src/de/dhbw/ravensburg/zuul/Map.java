@@ -32,9 +32,9 @@ public class Map {
 		map = new ArrayList<>();
 		
 		//Initialize: Beaches
-		westBeach = new Beach("on the Beach", new Freitag(), RoomType.BEACH_WEST, new Stick(), new Sword(), new Apple(), new Apple(), new Banana());
+		westBeach = new Beach("on the Beach", new Freitag(), RoomType.BEACH_WEST, new Apple(),  new Banana());
 		map.add(westBeach);
-		eastBeach = new Beach("on the Beach", null, RoomType.BEACH_EAST);
+		eastBeach = new Beach("on the Beach",null, RoomType.BEACH_EAST);
 		map.add(eastBeach);
 		northBeach = new Beach("on the Beach", null, RoomType.BEACH_NORTH);
 		map.add(northBeach);
@@ -42,17 +42,17 @@ public class Map {
 		map.add(southBeach);
 		
 		//Initialize: Forest
-		westForest = new Forest("in the Forest", new Snake(), RoomType.FOREST_HORIZONTAL);
+		westForest = new Forest("in the Forest",  null, RoomType.FOREST_HORIZONTAL);
 		map.add(westForest);
-		eastForest = new Forest("in the Forest", null, RoomType.FOREST_VERTICAL);
+		eastForest = new Forest("in the Forest",null, RoomType.FOREST_VERTICAL);
 		map.add(eastForest);
 		northForest = new Forest("in the Forest", null, RoomType.FOREST_NORTH);
 		map.add(northForest);
 		southForest = new Forest("in the Forest", null, RoomType.FOREST_VERTICAL);
 		map.add(southForest);
-		northWestForest = new Forest("in the Forest", new Snake(), RoomType.FOREST_HORIZONTAL);
+		northWestForest = new Forest("in the Forest", new Ape(), RoomType.FOREST_HORIZONTAL);
 		map.add(northWestForest);
-		southWestForest = new Forest("in the Forest", new Snake(), RoomType.FOREST_HORIZONTAL);
+		southWestForest = new Forest("in the Forest", null, RoomType.FOREST_HORIZONTAL);
 		map.add(southWestForest);
 		centralForest = new Forest("in the Forest", new Snake(), RoomType.FOREST_HORIZONTAL);
 		map.add(centralForest);
@@ -67,7 +67,7 @@ public class Map {
 		map.add(ruinWestEntrance);
 		ruinEastEntrance = new Ruin("in the ruins: East Entrance", null, RoomType.RUIN);
 		map.add(ruinEastEntrance);
-		ruinNorthEntrance = new Ruin("in the ruins: North Entrance", null, RoomType.RUIN);
+		ruinNorthEntrance = new Ruin("in the ruins: North Entrance", new Native(), RoomType.RUIN);
 		map.add(ruinNorthEntrance);
 		ruinSouthEntrance = new Ruin("in the ruins: South Entrance", null, RoomType.RUIN);
 		map.add(ruinSouthEntrance);
@@ -77,7 +77,7 @@ public class Map {
 		ruinStairCase1 = new Ruin("in the ruins: Staircase", null, RoomType.RUIN);
 		map.add(ruinStairCase1);
 		
-		ruinWatchTower = new Ruin("on the top of the Watchtower", null, RoomType.RUIN_TOP, new RoomKey("Key to the Library"));
+		ruinWatchTower = new Ruin("on the top of the Watchtower", new Hunter(), RoomType.RUIN_TOP, new RoomKey("Key to the Library"));
 		map.add(ruinWatchTower);
 		ruinLibrary = new Ruin("in the ruins: Aincient Library", null, RoomType.RUIN_LIBRARY);
 		ruinLibrary.lockRoom(new RoomKey("Key to the Library"));
@@ -86,8 +86,8 @@ public class Map {
 		map.add(ruinPraying);
 		ruinMage = new Ruin("in the ruins: Mage", new Mage(), RoomType.RUIN_MAGE);
 		map.add(ruinMage);
-		ruinDungeon = new Ruin("in the ruins: Dungeon", null, RoomType.RUIN_DUNGEON);
-		ruinLaboratory = new Ruin("in the ruins: Abandoned Laboratory", null, RoomType.RUIN_LABORATORY);
+		ruinDungeon = new Ruin("in the ruins: Dungeon", new Prisoner(), RoomType.RUIN_DUNGEON);
+		ruinLaboratory = new Ruin("in the ruins: Abandoned Laboratory", null, RoomType.RUIN_LABORATORY, new Meat(), new Bread());
 		map.add(ruinLaboratory);
 		
 		//Set connections: Axis West-East

@@ -28,8 +28,9 @@ public class Ruin extends Room {
 		//Make sure the probabilities don't add up to over 100%
 		if(creature == null) {
 			creatureSpawnProbability = new HashMap<>();
-			creatureSpawnProbability.put("Native", 20);
+			creatureSpawnProbability.put("Native", 30);
 			creatureSpawnProbability.put("Snake", 20);
+//			creatureSpawnProbability.put("Hunter", 30);
 			
 			spawnCreature();
 		}
@@ -62,8 +63,9 @@ public class Ruin extends Room {
 	 */
 	private void setCreatureProbabilities() {
 		creatureSpawnProbability = new HashMap<>();
-		creatureSpawnProbability.put("Native", 20);			//Sets the probability to spawn a Native in a new object Ruin to 20%.
+		creatureSpawnProbability.put("Native", 40);			//Sets the probability to spawn a Native in a new object Ruin to 20%.
 		creatureSpawnProbability.put("Snake", 20);
+		creatureSpawnProbability.put("Hunter", 40);
 	}
 	
 	/**
@@ -72,6 +74,9 @@ public class Ruin extends Room {
 	private void setItemProbabilites() {
 		itemSpawnProbability = new HashMap<>();
 		itemSpawnProbability.put("Mushroom", 40);				//A Mushroom will spawn in 40% of all objects Ruin.
-		itemSpawnProbability.put("Rope", 10);
+		itemSpawnProbability.put("Rope", 30);
+		itemSpawnProbability.put("Key", 30);
+		itemSpawnProbability.put("RoomKey", 30);
+		
 	}	
 }

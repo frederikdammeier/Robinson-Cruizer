@@ -161,6 +161,18 @@ public class Room
 			case "Waterpig": 
 				creatureInRoom = new WaterPig();
 				creatureInRoom.setSprite(new CreatureSprite(GameApplication.w*0.8, GameApplication.h*0.1, 0, 0, new Image("Images/Creature/Waterpig.PNG", 125, 125, true, true), creatureInRoom));
+				break;		
+			case "Freitag": 
+				creatureInRoom = new Freitag();
+				creatureInRoom.setSprite(new CreatureSprite(GameApplication.w*0.8, GameApplication.h*0.1, 0, 0, new Image("Images/Creature/Freitag.PNG", 125, 125, true, true), creatureInRoom));
+				break;	
+			case "Hunter": 
+				creatureInRoom = new Hunter();
+				creatureInRoom.setSprite(new CreatureSprite(GameApplication.w*0.8, GameApplication.h*0.1, 0, 0, new Image("Images/Creature/Hunter.PNG", 125, 125, true, true), creatureInRoom));
+				break;
+			case "Prisoner": 
+				creatureInRoom = new Prisoner();
+				creatureInRoom.setSprite(new CreatureSprite(GameApplication.w*0.8, GameApplication.h*0.1, 0, 0, new Image("Images/Creature/Prisoner.PNG", 125, 125, true, true), creatureInRoom));
 				break;
 			}
 		}
