@@ -1,10 +1,17 @@
 package de.dhbw.ravensburg.zuul;
 import java.util.ArrayList;
+import java.util.Collection;
+//import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.ListIterator;
 
 import de.dhbw.ravensburg.zuul.item.Item;
+import javafx.beans.InvalidationListener;
+import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
+import javafx.collections.ObservableList;
 
 /**
  * A class that holds an ArrayList<Item> and provides Methods to manage it as an inventory.
@@ -16,7 +23,7 @@ import de.dhbw.ravensburg.zuul.item.Item;
  *
  */
 public class Inventory {
-	private ArrayList<Item>	inventory;
+	private ObservableList<Item> inventory;
 	private float size;
 	private boolean unlimited;
 	
@@ -24,7 +31,7 @@ public class Inventory {
 	 * A new inventory with unlimited capacity.
 	 */
 	public Inventory() {
-		inventory = new ArrayList<>();
+		inventory = FXCollections.observableArrayList();
 		unlimited = true;
 	}
 	
@@ -34,7 +41,7 @@ public class Inventory {
 	 * @param size
 	 */
 	public Inventory(float size) {
-		inventory = new ArrayList<>();
+		inventory = FXCollections.observableArrayList();
 		unlimited = false;
 		this.size = size;
 	}
@@ -101,7 +108,7 @@ public class Inventory {
 		float amount = 0.0f;
 		
 		for(int i = 0; i < inventory.size(); i++) {
-			amount = inventory.get(i).getWeight();
+			amount += inventory.get(i).getWeight();
 		}
 		
 		return amount;
@@ -245,7 +252,7 @@ public class Inventory {
 		return tmp.isEmpty();
 	}
 	
-	public ArrayList<Item> getFullInventory(){
+	public ObservableList<Item> getFullInventory(){
 		return inventory;
 	}
 } 

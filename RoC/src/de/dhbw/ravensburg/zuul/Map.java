@@ -32,7 +32,7 @@ public class Map {
 		map = new ArrayList<>();
 		
 		//Initialize: Beaches
-		westBeach = new Beach("on the Beach", null, RoomType.BEACH_WEST, new Stick(), new Sword(), new Apple(), new Apple(), new Banana());
+		westBeach = new Beach("on the Beach", new Freitag(), RoomType.BEACH_WEST, new Stick(), new Sword(), new Apple(), new Apple(), new Banana());
 		map.add(westBeach);
 		eastBeach = new Beach("on the Beach", null, RoomType.BEACH_EAST);
 		map.add(eastBeach);

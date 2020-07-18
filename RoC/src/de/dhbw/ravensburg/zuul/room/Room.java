@@ -237,7 +237,8 @@ public class Room
 				spriteInventory.add(new ItemSprite(x, y, 0.0, 0.0, new Image("Images/Item/Key.PNG", 50.0, 50.0, true, true), item));
 			} else {
 				spriteInventory.add(new ItemSprite(x, y, 0.0, 0.0, new Image("Images/Item/" + item.getName() + ".PNG", 50.0, 50.0, true, true), item));
-			}		}
+			}	
+		}
 	}
 	
 	public ArrayList<ItemSprite> getItemSprites() {

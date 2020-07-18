@@ -10,14 +10,23 @@ import de.dhbw.ravensburg.zuul.Command;
 import de.dhbw.ravensburg.zuul.Difficulty;
 import de.dhbw.ravensburg.zuul.Game;
 import de.dhbw.ravensburg.zuul.Predator2;
+import de.dhbw.ravensburg.zuul.item.Food;
 import de.dhbw.ravensburg.zuul.item.Item;
+import de.dhbw.ravensburg.zuul.item.MagicMushroom;
+import de.dhbw.ravensburg.zuul.item.RoomKey;
 import de.dhbw.ravensburg.zuul.room.Room;
 import de.dhbw.ravensburg.zuul.room.RoomType;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.ListChangeListener;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.Group;
@@ -27,13 +36,21 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableColumn.CellDataFeatures;
+import javafx.scene.control.TableView;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.CornerRadii;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -43,6 +60,7 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import javafx.util.Callback;
 
 /**
  * Welcome to the Robinson Cruizer Adventure Game.
@@ -76,16 +94,20 @@ public class GameApplication extends Application {
 	private Position mousePosition;
 	private Game game;
 	private Canvas canvas;
-	private Text dialogText;
-	private Button okButton, cancelButton;
-	private GridPane dialogContainer;
+	private Label dialogText;
+	private Button okButton, cancelButton, eatButton, dropButton;
+	private VBox dialogContainer;
+	private HBox buttonContainer;
 	private StackPane sPane;
-	private Group dialogGroup, goRoomGroup;
+	private Group dialogGroup, goRoomGroup, inventoryGroup;
+	private TableView<Item> inventoryTable;
 	private Rectangle yesNoBackground, goEastRectangle, goWestRectangle, goSouthRectangle, goNorthRectangle, goUpRectangle, goDownRectangle;
 	/** Holds messages as strings which are meant to be helpful for the player of the game */
 	private HashMap<String, String> messages;
 	/** Holds important events that can occure in form of ActionEvents. */
 	private HashMap<String, EventHandler<ActionEvent>> dialogHandlers;
+	private HashMap<String, Image> itemImages;
+	
 	private Predator2 predator;
 	private Image sword, food, wArrow, eArrow, sArrow, nArrow, uArrow, dArrow, uStairs, dStairs;
 	private Difficulty difficulty;
@@ -231,19 +253,22 @@ public class GameApplication extends Application {
 		root.getChildren().add(canvas);
 		
 		//Yes/No Answer
-		yesNoBackground = new Rectangle(220, 110, Color.BEIGE);
+		
 		dialogGroup = new Group();
-		dialogText = new Text("YesNoQuestion.");
+		dialogText = new Label("YesNoQuestion.");
+		dialogText.setWrapText(true);
 		okButton = new Button("Ok");
 		cancelButton = new Button("Cancel");
-		dialogText.setWrappingWidth(200);
-		dialogContainer = new GridPane();
-		dialogContainer.add(dialogText, 0, 0, 2, 1);
-		dialogContainer.add(okButton,  0, 1);
-		dialogContainer.add(cancelButton, 1, 1);
-
-		dialogGroup.setAutoSizeChildren(true);
-		dialogGroup.getChildren().add(yesNoBackground);
+		dialogText.setMaxWidth(400);
+		dialogContainer = new VBox();
+		dialogContainer.setBackground(new Background(new BackgroundFill(Color.ANTIQUEWHITE, CornerRadii.EMPTY, Insets.EMPTY)));
+		
+		dialogContainer.setAlignment(Pos.BOTTOM_CENTER);
+		
+		buttonContainer = new HBox();
+		
+		buttonContainer.getChildren().addAll(okButton, cancelButton);
+		dialogContainer.getChildren().addAll(dialogText, buttonContainer);		
 		dialogGroup.getChildren().add(dialogContainer);
 		
 		cancelButton.setOnAction(dialogHandlers.get("acknowledgeEvent"));
@@ -252,7 +277,8 @@ public class GameApplication extends Application {
 //		sPane.getChildren().add(yesNoBackground);
 		dialogGroup.setVisible(false);
 		sPane.getChildren().add(dialogGroup);
-		root. getChildren().add(dialogGroup);
+		root.getChildren().add(dialogGroup);
+		
 		
 		
 		scene.setOnKeyPressed(
@@ -282,12 +308,22 @@ public class GameApplication extends Application {
 	    
 	    scene.setOnKeyTyped(new EventHandler<KeyEvent>() {
 	    	public void handle(KeyEvent e) {
+	    		//Attacking
 	    		if(e.getCharacter().equals("a") || e.getCharacter().equals("A")) {
                 	game.playerAttack();
                 }
 	    		
-	    		if(e.getCharacter().equals("e") || e.getCharacter().equals("E")) {
-	    			if(!game.eat()) System.out.println("Collect some food to eat.");
+//	    		if(e.getCharacter().equals("e") || e.getCharacter().equals("E")) {
+//	    			if(!game.eat()) System.out.println("Collect some food to eat.");
+//	    		}
+	    		
+	    		//open / close the Inventory
+	    		if(e.getCharacter().equals("i") || e.getCharacter().equals("I")) {
+	    			if(inventoryGroup.isVisible()) {
+	    				inventoryGroup.setVisible(false);
+	    			} else {
+	    				inventoryGroup.setVisible(true);
+	    			}
 	    		}
 	    	}
 	    });
@@ -299,7 +335,7 @@ public class GameApplication extends Application {
 				mousePosition.y = e.getSceneY();
 			}
 	    });
-		
+	    
 		gc = canvas.getGraphicsContext2D();
 		
 		final AnimationTimer at = new AnimationTimer() {
@@ -383,9 +419,9 @@ public class GameApplication extends Application {
 		        gc.setFill(Color.BLACK);
 		        gc.fillText("\"A\" to attack", w*0.1, h*0.96);
 		        
-		        //Meat (Eat Icon)
-		        gc.drawImage(food, w*0.27, h*0.87);
-		        gc.fillText("\"E\" to eat", w*0.3, h*0.96);
+//		        //Meat (Eat Icon)
+//		        gc.drawImage(food, w*0.27, h*0.87);
+//		        gc.fillText("\"E\" to eat", w*0.3, h*0.96);
 		        
 		        
 		        if(game.getCurrentRoom().getCreature() != null) {
@@ -423,6 +459,7 @@ public class GameApplication extends Application {
 		
 		goGame.addEventHandler(ActionEvent.ACTION, new EventHandler<ActionEvent>(){
 
+			@SuppressWarnings("unchecked")
 			@Override
 			public void handle(ActionEvent actionEvent) {
 				
@@ -466,13 +503,45 @@ public class GameApplication extends Application {
 				dArrow = new Image("Images/Misc/upDownArrow.png", w*0.1, h*0.2, false, false);
 				
 				root.getChildren().add(goRoomGroup);
+				
+				initializeImageViews();
+				
+				initializeInventoryGroup(root);
+				
+				
+				
 				at.start();
 				welcome.setTitle("Robinson Cruizer");
 				welcome.getIcons().add(new Image("Images/Item/Icon.png"));
 				welcome.setScene(scene);
+				welcome.centerOnScreen();
 				welcome.show();
 			}
+
+			
 		});
+	}
+	
+	private void initializeImageViews() {
+		double s = 25;
+		
+		itemImages = new HashMap<>();
+		itemImages.put("Apple", new Image("Images/Item/Apple.PNG", s, s, true, true));
+		itemImages.put("Banana", new Image("Images/Item/Banana.PNG", s, s, true, true));
+		itemImages.put("Boat", new Image("Images/Item/Boat.PNG", s, s, true, true));
+		itemImages.put("Bread", new Image("Images/Item/Bread.PNG", s, s, true, true));
+		itemImages.put("Coconut", new Image("Images/Item/Coconut.PNG", s, s, true, true));
+		itemImages.put("Icon", new Image("Images/Item/Icon.PNG", s, s, true, true));
+		itemImages.put("Key", new Image("Images/Item/Key.PNG", s, s, true, true));
+		itemImages.put("Magic-Mushroom", new Image("Images/Item/Magic-Mushroom.PNG", s, s, true, true));
+		itemImages.put("Meat", new Image("Images/Item/Meat.PNG", s, s, true, true));
+		itemImages.put("Mushroom", new Image("Images/Item/Mushroom.PNG", s, s, true, true));
+		itemImages.put("Resin", new Image("Images/Item/Resin.PNG", s, s, true, true));
+		itemImages.put("Rope", new Image("Images/Item/Rope.PNG", s, s, true, true));
+		itemImages.put("Sail", new Image("Images/Item/Sail.PNG", s, s, true, true));
+		itemImages.put("Stick", new Image("Images/Item/Stick.PNG", s, s, true, true));
+		itemImages.put("Sword", new Image("Images/Item/Sword.PNG", s, s, true, true));
+		itemImages.put("Timber", new Image("Images/Item/Timber.PNG", s, s, true, true));
 	}
 	
 	/**
@@ -535,19 +604,19 @@ public class GameApplication extends Application {
 				
 				
 				
-//				dialogText.setText("Nice to meet you foreign. My name is Freitag and i see you are in trouble. "
-//						+ "I saw how you ship sunk and you almost died in the water but thanks to god you are alive. "
-//						+ "You are on a island and i believe you want to escape from here. "
-//						+ "Hmmm.... To escape you need a new boat. I think you can find on this island everything what you need to build a new one."
-//						+ " You can ask the Natives on the island, they will know where you can find your equipment. "
-//						+ "oh but you shouldn't make them angry because then they will try to kill you. "
-//						+ "But only when you make them angry so try to be polite to them, also you can try to find the Mage somewhere."
-//						+ " I don't know where he is but i am sure he can help you. "
-//						+ "Oh but you must be careful. "
-//						+ "On this island are many hunters who want to kill you because they think you are against their god. "
-//						+ "So try to avoid them. "
-//						+ "It was nice to meet you, i hope you will survive. Good bye. " );
-				dialogText.setText("Hello foreign. you have to find items to build a boat. ");
+				dialogText.setText("Nice to meet you foreign. My name is Freitag and i see you are in trouble. "
+						+ "I saw how you ship sunk and you almost died in the water but thanks to god you are alive. "
+						+ "You are on a island and i believe you want to escape from here. "
+						+ "Hmmm.... To escape you need a new boat. I think you can find on this island everything what you need to build a new one."
+						+ " You can ask the Natives on the island, they will know where you can find your equipment. "
+						+ "oh but you shouldn't make them angry because then they will try to kill you. "
+						+ "But only when you make them angry so try to be polite to them, also you can try to find the Mage somewhere."
+						+ " I don't know where he is but i am sure he can help you. "
+						+ "Oh but you must be careful. "
+						+ "On this island are many hunters who want to kill you because they think you are against their god. "
+						+ "So try to avoid them. "
+						+ "It was nice to meet you, i hope you will survive. Good bye. " );
+//				dialogText.setText("Hello foreign. you have to find items to build a boat. ");
 				okButton.setOnAction(dialogHandlers.get("acknowledgeEvent"));
 				// funktioniert noch nicht so wirklich
 				
@@ -647,10 +716,13 @@ public class GameApplication extends Application {
 		dialogHandlers.put("buildBoatEvent", new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent e) {
-				game.getBoatBuilder().buildBoat(game.getPlayer().getInventory());
-				game.getMap().activateFinish();
+				if(game.getBoatBuilder().buildBoat(game.getPlayer().getInventory())) {
+					game.getMap().activateFinish();
+					dialogText.setText(messages.get("boatBuilt"));					
+				} else {					
+					dialogText.setText(messages.get("couldntBuildBoat"));
+				}
 				
-				dialogText.setText(messages.get("boatBuilt"));
 				okButton.setOnAction(dialogHandlers.get("acknowledgeEvent"));
 			}
 		});
@@ -669,6 +741,7 @@ public class GameApplication extends Application {
 		messages.put("talkAction", "Would you like to talk?");
 		messages.put("buildBoat", "You are ready to build a boat now. Proceed?");
 		messages.put("boatBuilt", "A boat has been added to your inventory. Go to any beach to leave the island.");
+		messages.put("couldntBuildBoat", "It seems like you dropped a required item.");
 		}
 	
 	
@@ -984,6 +1057,107 @@ public class GameApplication extends Application {
 		if(game != null) {
 			game.endGame();
 		}
+	}
+
+	@SuppressWarnings("unchecked")
+	private void initializeInventoryGroup(final Group root) {
+		inventoryGroup = new Group();
+		inventoryTable = new TableView<Item>();
+		final Label invSize = new Label();
+		invSize.setFont(new Font("Arial", 16));
+		
+		inventoryTable.setItems(game.getPlayer().getInventory().getFullInventory());
+		
+		TableColumn<Item, String> itemNameCol = new TableColumn<Item, String>("Name");
+		itemNameCol.setCellValueFactory(new Callback<CellDataFeatures<Item, String>, ObservableValue<String>>() {
+			@Override
+			public ObservableValue<String> call(CellDataFeatures<Item, String> i) {
+				return new SimpleStringProperty(i.getValue().getName());
+			}			
+		});
+		TableColumn<Item, ImageView> itemImageCol = new TableColumn<Item, ImageView>("Image");
+		itemImageCol.setCellValueFactory(new Callback<CellDataFeatures<Item, ImageView>, ObservableValue<ImageView>>() {
+			@Override
+			public ObservableValue<ImageView> call(CellDataFeatures<Item, ImageView> i) {
+				if(i.getValue() instanceof RoomKey) {
+					return new SimpleObjectProperty<ImageView>(new ImageView(itemImages.get("Key")));
+				} else {
+					return new SimpleObjectProperty<ImageView>(new ImageView(itemImages.get(i.getValue().getName())));
+				}
+			}			
+		});
+		
+		inventoryTable.getColumns().setAll(itemImageCol, itemNameCol);
+		dropButton = new Button("Drop");
+		dropButton.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent arg0) {
+				Item i = inventoryTable.getSelectionModel().getSelectedItem();
+				if(i != null) {
+					game.getCurrentRoom().addItem(i, game.getPlayer().getPlayerSprite().getCenterX(), game.getPlayer().getPlayerSprite().getCenterY());
+					game.getPlayer().getInventory().removeItem(i);	
+				}				
+			}		
+		});
+		
+		eatButton = new Button("Eat");
+		eatButton.setVisible(false);
+		eatButton.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent e) {
+				Item i = inventoryTable.getSelectionModel().getSelectedItem();
+				if(i != null) {
+					if(i instanceof MagicMushroom) {
+						game.getPlayer().getInventory().setUnlimited();
+						
+					}
+					game.getPlayer().eat(((Food) i).getNutrition());
+					game.getPlayer().getInventory().removeItem(i);	
+				}
+			}
+		});
+		
+		inventoryTable.getSelectionModel().selectedItemProperty().addListener(new ChangeListener() {
+			@Override
+			public void changed(ObservableValue arg0, Object arg1, Object arg2) {
+				Item i = inventoryTable.getSelectionModel().getSelectedItem();
+				if(i != null) {
+					if(i instanceof Food) {
+						eatButton.setVisible(true);
+					}
+					else { 
+						eatButton.setVisible(false);
+					}	
+				} 
+			}	
+		});
+		
+		game.getPlayer().getInventory().getFullInventory().addListener(new ListChangeListener() {
+
+			@Override
+			public void onChanged(@SuppressWarnings("rawtypes") Change arg0) {
+				invSize.setText(game.getPlayer().getInventory().getCurrentInventoryWeight() + "Kg / " + difficulty.getInventoryCapacity() + "Kg ");
+			}
+			
+		});
+		
+		inventoryTable.setMaxHeight(h*0.8);
+		inventoryTable.setMinWidth(w*0.1);
+		inventoryTable.setMaxWidth(w*0.2);
+		
+		
+		invSize.setText(game.getPlayer().getInventory().getCurrentInventoryWeight() + "Kg / " + difficulty.getInventoryCapacity() + "Kg ");
+		
+		VBox fp = new VBox();
+		HBox hb = new HBox();
+		fp.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
+		hb.getChildren().addAll(dropButton, eatButton);
+		fp.getChildren().addAll(invSize, inventoryTable, hb);
+		
+		inventoryGroup.getChildren().add(fp);
+		inventoryGroup.setVisible(false);
+		root.getChildren().add(inventoryGroup);
 	}
 		
 }
