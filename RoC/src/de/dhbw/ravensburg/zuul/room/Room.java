@@ -457,6 +457,11 @@ public class Room
 		return exits.containsValue(room);
 	}
 	
+	/**
+	 * Adds background images.
+	 * Background-images always are named by the room-type.
+	 * @return background The backround-image.
+	 */
 	public Image getBGImage() {
 		if(background == null) {
 			background = new Image("Images/Room/" + type + ".PNG", 1000, 1000, false, false);

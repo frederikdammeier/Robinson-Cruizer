@@ -114,6 +114,9 @@ public class Game{
 	}
 
 	/*
+	 * --------------------------------
+	 * only for playing in console mode
+	 * --------------------------------
 	 * Print the Seconds that have passed since starting the game to the console.
 	 */
 	private void printTimePassed() {
@@ -132,6 +135,9 @@ public class Game{
 	}
 
 	/**
+	 * --------------------------------
+	 * only for playing in console mode
+	 * --------------------------------
 	 * Given a command, process (that is: execute) the command.
 	 * 
 	 * @param command The command to be processed.
@@ -178,6 +184,9 @@ public class Game{
 	}
 
 	/**
+	 * --------------------------------
+	 * only for playing in console mode
+	 * --------------------------------
 	 * Player tries to eat something.
 	 * @param command Information about what the player tries to eat.
 	 */
@@ -250,6 +259,9 @@ public class Game{
 	}
 
 	/**
+	 * --------------------------------
+	 * only for playing in console mode
+	 * --------------------------------
 	 * Print out some help information. Here we print some stupid, cryptic message
 	 * and a list of the command words.
 	 */
@@ -262,6 +274,9 @@ public class Game{
 	}
 
 	/**
+	 * --------------------------------
+	 * only for playing in console mode
+	 * --------------------------------
 	 * Can be used to ask the player a yes/no question.
 	 * 
 	 * @param command
@@ -278,6 +293,10 @@ public class Game{
 	}
 
 	/**
+	 * --------------------------------
+	 * only for playing in console mode
+	 * --------------------------------
+	 * 
 	 * Try to go in to one direction. If there is an exit, enter the new room,
 	 * otherwise print an error message.
 	 * 
@@ -354,6 +373,10 @@ public class Game{
 	}
 	
 	/**
+	 * --------------------------------
+	 * only for playing in console mode
+	 * --------------------------------
+	 * 
 	 * Try to go in to one direction. If there is an exit, enter the new room,
 	 * otherwise print an error message.
 	 * 
@@ -429,6 +452,10 @@ public class Game{
 	}
 
 	/**
+	 * --------------------------------
+	 * only for playing in console mode
+	 * --------------------------------
+	 * 
 	 * Takes an item from the rooms inventory and places it into the players
 	 * inventory.
 	 * 
@@ -465,6 +492,10 @@ public class Game{
 	}
 
 	/**
+	 * --------------------------------
+	 * only for playing in console mode
+	 * --------------------------------
+	 * 
 	 * Takes an item from the players inventory and places it into the rooms
 	 * inventory.
 	 * 
@@ -499,6 +530,10 @@ public class Game{
 	}
 
 	/**
+	 * --------------------------------
+	 * only for playing in console mode
+	 * --------------------------------
+	 * 
 	 * Checks if the item has a special effect. If thats the case, the effect is implemented.  
 	 * @param command The command that contains the item.
 	 * @param action	Determines the impact of an effect
@@ -553,6 +588,10 @@ public class Game{
 	}
 
 	/**
+	 * --------------------------------
+	 * only for playing in console mode
+	 * --------------------------------
+	 * 
 	 * "Quit" was entered. Check the rest of the command to see whether we really
 	 * quit the game.
 	 * 
@@ -576,6 +615,10 @@ public class Game{
 	}
 
 	/**
+	 * --------------------------------
+	 * only for playing in console mode
+	 * --------------------------------
+	 * 
 	 * Prints all available exits to the console.
 	 */
 	private void lookAround() {
