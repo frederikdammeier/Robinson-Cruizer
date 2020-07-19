@@ -5,7 +5,8 @@ import de.dhbw.ravensburg.zuul.Parser;
 
 /**
  * Class Freitag
- *
+ * 
+ * <p>
  * Freitag is a Human and appears at the beginning of the game. He gives the player the first informations.
  * He tells the player where he is and what he should do. 
  * "Fretiag" is a subclass from "Human".

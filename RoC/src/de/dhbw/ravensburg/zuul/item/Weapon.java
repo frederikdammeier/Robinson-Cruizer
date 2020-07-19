@@ -3,6 +3,7 @@ package de.dhbw.ravensburg.zuul.item;
 /**
  * Class Weapon - Items that can be used for fighting.
  * 
+ * <p>
  * The power of a weapon is described by "damage".
  * During a fight, the preditor "Creature" is harmed 
  * exactly by the damage-value of a weapon. 

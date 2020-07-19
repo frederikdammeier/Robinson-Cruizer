@@ -61,9 +61,9 @@ public class Player {
 	}
 	
 	/**
-	 * Give the player the damage of a specified Item.
+	 * Updates the players damage.
 	 * 
-	 * @param item
+	 * @param item To be checked.
 	 */
 	public void updatePlayerDamage(Item item) {
 		if(item instanceof Weapon) {

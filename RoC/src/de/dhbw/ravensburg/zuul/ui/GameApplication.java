@@ -76,7 +76,6 @@ import javafx.util.Callback;
  * 
  * As you go into the nearby rainforest seeking for building materials, strange things
  * start to happen...
- * ---------------------------------------------------------------------------------------
  * 
  * 
  * This class starts the game and holds the most important methods 
@@ -613,7 +612,6 @@ public class GameApplication extends Application {
 				dialogGroup.setVisible(false);
 			}
 		});
-		
 		dialogHandlers.put("roomChangeEvent", new EventHandler<ActionEvent>(){
 			@Override
 			public void handle(ActionEvent e) {
@@ -649,8 +647,7 @@ public class GameApplication extends Application {
 					dialogGroup.setVisible(false);
 				}			
 			}
-		});
-		
+		});	
 		dialogHandlers.put("finishEvent", new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent e) {
@@ -658,9 +655,7 @@ public class GameApplication extends Application {
 				stage.close();
 				stop();
 			}
-		});
-		
-		
+		});	
 		dialogHandlers.put("unlockRoomEvent", new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent e) {
@@ -678,8 +673,7 @@ public class GameApplication extends Application {
 				setExitVisibility();
 				dialogGroup.setVisible(false);
 			}
-		});
-		
+		});	
 		dialogHandlers.put("freitagTalkEvent", new EventHandler<ActionEvent>(){
 			@Override
 			public void handle(ActionEvent e) {

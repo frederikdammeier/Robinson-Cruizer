@@ -8,9 +8,13 @@ package de.dhbw.ravensburg.zuul;
  *
  */
 public class HungerHandler implements Runnable {
+	/**The player of the game*/
 	private Player player;
-	private int timeUntilFirstHunger = 40; //Time in seconds before the hunger counter begins to decrease.
-	private float hungerRate = 0.4f; //the rate at which the player looses his hunger points in hp/s
+	/**Time in seconds before the hunger counter begines to decrease.*/
+	private int timeUntilFirstHunger = 40;
+	/**The rate at which the player looses his hunger points in hp/s*/
+	private float hungerRate = 0.4f;
+	/**Boolean to stop this thread*/
 	private boolean finished;
 
 	/**

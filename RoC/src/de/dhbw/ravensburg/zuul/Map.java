@@ -17,18 +17,30 @@ import de.dhbw.ravensburg.zuul.ui.GameApplication;
  *@version 17.05.2020
  */
 public class Map {
+	/**Current room the player is in*/
 	private Room currentRoom;
-	private ArrayList<Room> map; //List that only holds references to the rooms in which the player can be teleported randomly.
-
-	Room westBeach, eastBeach, northBeach, southBeach;
-	Room westForest, eastForest, northForest, southForest, northWestForest, southWestForest, centralForest;
-	Room redWoodTree, deepForest;
-	Room ruinWestEntrance, ruinEastEntrance, ruinNorthEntrance, ruinSouthEntrance;
-	Room ruinStairCase0, ruinStairCase1;
-	Room ruinWatchTower, ruinLibrary, ruinPraying, ruinMage, ruinDungeon, ruinLaboratory;
+	/**List that only holds references to the rooms in which the player can be teleported randomly.*/
+	private ArrayList<Room> map; 
 	
+	/** a beach*/
+	Room westBeach, eastBeach, northBeach, southBeach;
+	/** a forest*/
+	Room westForest, eastForest, northForest, southForest, northWestForest, southWestForest, centralForest;
+	/** a special forest*/
+	Room redWoodTree;
+	/** outside the ruin*/
+	Room ruinWestEntrance, ruinEastEntrance, ruinNorthEntrance, ruinSouthEntrance;
+	/** inside the ruin*/
+	Room ruinStairCase0, ruinStairCase1;
+	/** inside the ruin*/
+	Room ruinWatchTower, ruinLibrary, ruinPraying, ruinMage, ruinDungeon, ruinLaboratory, ruinEastWing, ruinWestWing, ruinNorthWing;
+	/**special room*/
 	Room finalRoom;
 	
+	/**
+	 * Adds all rooms of the game to an ArrayList.
+	 * Sets each rooms links to other rooms.
+	 */
 	public Map() {
 		map = new ArrayList<>();
 		
@@ -81,6 +93,12 @@ public class Map {
 		
 		ruinWatchTower = new Ruin("on the top of the Watchtower", null, RoomType.RUIN_TOP, new RoomKey("Key to the Library"));
 		map.add(ruinWatchTower);
+		ruinWestWing = new Ruin("in the ruins west wing", null, RoomType.RUIN);
+		map.add(ruinWestWing);
+		ruinEastWing = new Ruin("in the ruins west wing", null, RoomType.RUIN);
+		map.add(ruinEastWing);
+		ruinNorthWing = new Ruin("in the ruins north wing", null, RoomType.RUIN);
+		map.add(ruinNorthWing);
 		ruinLibrary = new Ruin("in the ruins: Aincient Library", null, RoomType.RUIN_LIBRARY);
 		ruinLibrary.lockRoom(new RoomKey("Key to the Library"));
 		map.add(ruinLibrary);
@@ -98,14 +116,8 @@ public class Map {
 		//Set connections: Axis West-East
 		westBeach.setExit("east", westForest);
 		westForest.setExit("west", westBeach);
-		westForest.setExit("north", northWestForest);
-		westForest.setExit("south", southWestForest);
-		northWestForest.setExit("south", westForest);
-		northWestForest.setExit("east", centralForest);
-		southWestForest.setExit("north", westForest);
-		centralForest.setExit("west", northWestForest);
-		centralForest.setExit("east", ruinWestEntrance);
-		ruinWestEntrance.setExit("west", centralForest);
+		westForest.setExit("east", ruinWestEntrance);
+		ruinWestEntrance.setExit("west", westForest);
 		ruinWestEntrance.setExit("east", ruinStairCase0);
 		ruinStairCase0.setExit("west", ruinWestEntrance);
 		ruinStairCase0.setExit("east",  ruinEastEntrance);
@@ -157,9 +169,6 @@ public class Map {
 		//Set connections Outside
 		northForest.setExit("east", redWoodTree);
 		redWoodTree.setExit("west", northForest);
-		northForest.setExit("west", deepForest);
-//		deepForest.setExit("east", northForest);
-		
 		
 		currentRoom = westBeach; // start game outside
     }
@@ -175,6 +184,7 @@ public class Map {
      * "Teleports" the player to a random room that isn't the current room.
      * 
      * To be called when interacting with the mage.
+     * @return currentRoom
      */
     public Room teleport() {
     	int l = map.size();

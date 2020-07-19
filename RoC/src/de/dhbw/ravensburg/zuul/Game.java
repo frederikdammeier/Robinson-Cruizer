@@ -86,11 +86,13 @@ public class Game{
 		
 	}
 
-	/*
+	/**
 	 * --------------------------------
 	 * only for playing in console mode
 	 * --------------------------------
 	 * Print the Seconds that have passed since starting the game to the console.
+	 * 
+	 * @deprecated
 	 */
 	private void printTimePassed() {
 		System.out.println(timer.getTimePassedSeconds() + " seconds have passed since starting the game.");
@@ -161,6 +163,8 @@ public class Game{
 	 * only for playing in console mode
 	 * --------------------------------
 	 * Player tries to eat something.
+	 * 
+	 * @deprecated
 	 * @param command Information about what the player tries to eat.
 	 */
 	private void eatFood(Command command) {
@@ -237,6 +241,8 @@ public class Game{
 	 * --------------------------------
 	 * Print out some help information. Here we print some stupid, cryptic message
 	 * and a list of the command words.
+	 * 
+	 * @deprecated
 	 */
 	private void printHelp() {
 		System.out.println("You are lost. You are alone. You wander");
@@ -252,6 +258,7 @@ public class Game{
 	 * --------------------------------
 	 * Can be used to ask the player a yes/no question.
 	 * 
+	 * @deprecated
 	 * @param command
 	 * @return true if yes, false if otherwise
 	 */
@@ -279,6 +286,8 @@ public class Game{
 	 * 
 	 * If a room can only be entered through a trap door, the player gets a warning.
 	 * He gets asked whether he would like to proceed anyways.
+	 * 
+	 * @deprecated
 	 */
 	private void goRoom(Command command) {
 		if (!command.hasSecondWord()) {
@@ -359,6 +368,8 @@ public class Game{
 	 * 
 	 * If a room can only be entered through a trap door, the player gets a warning.
 	 * He gets asked whether he would like to proceed anyways.
+	 * 
+	 * @deprecated
 	 */
 	public String goRoom(String direction) {
 
@@ -432,6 +443,7 @@ public class Game{
 	 * Takes an item from the rooms inventory and places it into the players
 	 * inventory.
 	 * 
+	 * @deprecated
 	 * @param command The command that contains the item to transfer.
 	 */
 	private void takeItem(Command command) {
@@ -452,6 +464,7 @@ public class Game{
 	 * Takes an item from the rooms inventory and places it into the players
 	 * inventory.
 	 * 
+	 *
 	 * @param item
 	 */
 	public void takeItemSprite(ItemSprite item) {
@@ -472,6 +485,7 @@ public class Game{
 	 * Takes an item from the players inventory and places it into the rooms
 	 * inventory.
 	 * 
+	 * @deprecated
 	 * @param command The command that contains the item to transfer.
 	 */
 	private void dropItem(Command command) {
@@ -508,6 +522,8 @@ public class Game{
 	 * --------------------------------
 	 * 
 	 * Checks if the item has a special effect. If thats the case, the effect is implemented.  
+	 * 
+	 * @deprecated
 	 * @param command The command that contains the item.
 	 * @param action	Determines the impact of an effect
 	 */
@@ -568,6 +584,7 @@ public class Game{
 	 * "Quit" was entered. Check the rest of the command to see whether we really
 	 * quit the game.
 	 * 
+	 * @deprecated
 	 * @return true, if this command quits the game, false otherwise.
 	 */
 	public boolean quit(Command command) {
@@ -593,6 +610,8 @@ public class Game{
 	 * --------------------------------
 	 * 
 	 * Prints all available exits to the console.
+	 * 
+	 * @deprecated
 	 */
 	private void lookAround() {
 		System.out.println(currentRoom.getLongDescription());

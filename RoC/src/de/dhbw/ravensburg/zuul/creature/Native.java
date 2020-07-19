@@ -9,7 +9,8 @@ import java.util.Random;
 
 /**
  * Class Native - a native in an adventure game.
- *
+ * 
+ * <p>
  * A native is a human with the ability to attack the player and reduce his lifepoints. 
  * Also a native can give the player informations about the island but he wants something for the information. 
  * "Native" is a subclass from "Human".

@@ -15,6 +15,7 @@ package de.dhbw.ravensburg.zuul;
  *
  * If the command had only one word, then the second word is <null>.
  * 
+ * @deprecated
  * @author  Michael Kölling and David J. Barnes
  * @version 08.05.2020
  */

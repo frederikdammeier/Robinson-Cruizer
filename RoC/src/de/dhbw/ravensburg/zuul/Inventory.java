@@ -14,7 +14,7 @@ import javafx.collections.ObservableList;
  * To be used in Player, Room and Creature.
  * 
  * @author Frederik Dammeier
- * @version 17.05.2020
+ * @version 19.07.2020
  *
  */
 public class Inventory {
@@ -33,7 +33,7 @@ public class Inventory {
 	/**
 	 * A new inventory with limited capacity.
 	 * 
-	 * @param size
+	 * @param size Maximum capacity of the inventory.
 	 */
 	public Inventory(float size) {
 		inventory = FXCollections.observableArrayList();
@@ -44,8 +44,8 @@ public class Inventory {
 	/**
 	 * Checks whether the inventory contains the given item.
 	 * 
-	 * @param item
-	 * @return
+	 * @param item as Item
+	 * @return True if the inventory contains the given item.
 	 */
 	public boolean containsItem(Item item) {
 		return inventory.contains(item);
@@ -54,8 +54,8 @@ public class Inventory {
 	/**
 	 * Checks whether the inventory contains the given item.
 	 * 
-	 * @param item 
-	 * @return
+	 * @param item as Item
+	 * @return True if the inventory contains the given String.
 	 */
 	public boolean containsItem(String item) {
 		boolean foundItem = false;
@@ -173,7 +173,7 @@ public class Inventory {
 	/**
 	 * Return the number of items in the inventory.
 	 * 
-	 * @return
+	 * @return integer Number of items.
 	 */
 	public int getNumberOfItemsInInventory() {
 		return inventory.size();

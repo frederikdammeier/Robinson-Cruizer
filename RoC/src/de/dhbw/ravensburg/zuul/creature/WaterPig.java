@@ -5,6 +5,7 @@ package de.dhbw.ravensburg.zuul.creature;
 /**
  * Class WaterPig - a water-pig in an adventure game.
  * 
+ * <p>
  * A "WaterPig" is an animal in the game. It does not attack the player but when it dies it drops an Item. 
  * A dead water-pig will drop "Meat" as an Item.  
  * "WaterPig" is a subclass from "Animal"

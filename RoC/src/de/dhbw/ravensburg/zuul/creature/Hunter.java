@@ -3,6 +3,7 @@ import de.dhbw.ravensburg.zuul.item.*;
 /**
  * Class Hunter - a hunter in an adventure game.
  *
+ * <p>
  * A hunter is the enemy from the player.He tries to attack the player when he has the chance. 
  * A "Hunter" is a subclass from "Human".
  * 

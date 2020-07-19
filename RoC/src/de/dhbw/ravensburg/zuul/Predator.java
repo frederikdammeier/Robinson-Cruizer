@@ -13,6 +13,7 @@ import de.dhbw.ravensburg.zuul.creature.*;
  * If a creature is peaceful, the thread is still running, to check if this is going to change.
  * If there is no creature in a room (anymore), the thread is ended.
  * 
+ * @deprecated
  * @author Philipp Schneider
  * @version 18.05.2020
  */

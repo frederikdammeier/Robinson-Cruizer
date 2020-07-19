@@ -256,7 +256,7 @@ public class Room
 	}
 	
 	/**
-	 * @return A reference to the room's ItemSprites.
+	 * @return spriteInventory Inventory as a sprite.
 	 */
 	public ArrayList<ItemSprite> getItemSprites() {
 		return spriteInventory;

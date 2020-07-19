@@ -8,6 +8,7 @@ import de.dhbw.ravensburg.zuul.item.*;
 /**
  * Class Prisoner - a prisoner in an adventure game.
  *
+ * <p>
  * A prisoner is a human with the ability help the player when he gets the key for his prison. 
  * Then he tells the player where he can find the mage.  
  * "Prisoner" is a subclass from "Human".

@@ -3,7 +3,8 @@ package de.dhbw.ravensburg.zuul.item;
 /**
  * Class Food - an Item with a nutritional value.
  * 
- *  Therefore it can be eaten by the "Player".
+ * <p>
+ * Therefore it can be eaten by the "Player".
  *  
  * @author Philipp Schneider
  * @version 02.05.2020
