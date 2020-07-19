@@ -74,7 +74,7 @@ public class Map {
 		
 		ruinStairCase0 = new Ruin("in the ruins: Staircase", null, RoomType.RUIN);
 		map.add(ruinStairCase0);
-		ruinStairCase1 = new Ruin("in the ruins: Staircase", null, RoomType.RUIN);
+		ruinStairCase1 = new Ruin("in the ruins: Staircase", null, RoomType.RUIN_STAIRCASE_1);
 		map.add(ruinStairCase1);
 		
 		ruinWatchTower = new Ruin("on the top of the Watchtower", null, RoomType.RUIN_TOP, new RoomKey("Key to the Library"));

@@ -548,10 +548,10 @@ public class GameApplication extends Application {
 				robin = game.getPlayer().getPlayerSprite();
 				
 				initializeRoomGoup();
-				west = new Sprite(w*0.05, h*0.4, 0.0, 0.0, w*0.1, h*0.8);	
-				east = new Sprite(w*0.95, h*0.4, 0.0, 0.0, w*0.1, h*0.8);
-				north = new Sprite(w*0.4, h*0.05, 0.0, 0.0, w*0.8, h*0.1);
-				south = new Sprite(w*0.4, h*0.95, 0.0, 0.0, w*0.8, h*0.1);
+				west = new Sprite(0.0, h*0.1, 0.0, 0.0, w*0.1, h*0.8);	
+				east = new Sprite(w*0.9, h*0.1, 0.0, 0.0, w*0.1, h*0.8);
+				north = new Sprite(w*0.1, 0.0, 0.0, 0.0, w*0.8, h*0.1);
+				south = new Sprite(w*0.1, h*0.9, 0.0, 0.0, w*0.8, h*0.1);
 				up = new Sprite(goUpRectangle.getX(), goUpRectangle.getY(), 0.0, 0.0, goUpRectangle.getWidth(), goUpRectangle.getHeight());
 				down = new Sprite(goDownRectangle.getX(), goDownRectangle.getY(), 0.0, 0.0, goDownRectangle.getWidth(), goDownRectangle.getHeight());
 				
@@ -559,13 +559,13 @@ public class GameApplication extends Application {
 				food = new Image("Images/Item/Meat.PNG", w/15, w/15, false, false);
 				uStairs = new Image("Images/Misc/stairs_UP2.PNG", goUpRectangle.getWidth(), goUpRectangle.getHeight(), false, false);
 				dStairs = new Image("Images/Misc/stairs_down.PNG", goDownRectangle.getWidth(), goDownRectangle.getHeight(), false, false);
-				eArrow = new Image("Images/Misc/Arrow_EAST.png", w*0.025, h*0.2, false, false);
-				wArrow = new Image("Images/Misc/Arrow_WEST.png", w*0.025, h*0.2, false, false);
-				nArrow = new Image("Images/Misc/Arrow_NORTH.png", w*0.2, h*0.025, false, false);
-				sArrow = new Image("Images/Misc/Arrow_SOUTH.png", w*0.2, h*0.025, false, false);
+				eArrow = new Image("Images/Misc/Arrow_EAST.png", w*0.1, h*0.8, false, false);
+				wArrow = new Image("Images/Misc/Arrow_WEST.png", w*0.1, h*0.8, false, false);
+				nArrow = new Image("Images/Misc/Arrow_NORTH.png", w*0.8, h*0.1, false, false);
+				sArrow = new Image("Images/Misc/Arrow_SOUTH.png", w*0.8, h*0.1, false, false);
 				uArrow = new Image("Images/Misc/Arrow_UP_DOWN.png", w*0.1, h*0.2, false, false);
 				dArrow = new Image("Images/Misc/Arrow_UP_DOWN.png", w*0.1, h*0.2, false, false);
-				
+
 				root.getChildren().add(goRoomGroup);
 				
 				initializeImageViews();
@@ -691,7 +691,7 @@ public class GameApplication extends Application {
 				
 				
 //				dialogText.setText("Nice to meet you foreign. My name is Freitag and i see you are in trouble. "
-//						+ "I saw how you ship sunk and you almost died in the water but thanks to god you are alive. "
+//						+ "I saw how your ship sunk and you almost died in the water but thanks to god you are alive. "
 //						+ "You are on a island and i believe you want to escape from here. "
 //						+ "Hmmm.... To escape you need a new boat. I think you can find on this island everything what you need to build a new one."
 //						+ " You can ask the Natives on the island, they will know where you can find your equipment. "
