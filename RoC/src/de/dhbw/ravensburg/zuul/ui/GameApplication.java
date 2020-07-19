@@ -1192,7 +1192,8 @@ public class GameApplication extends Application {
 		invSize.setFont(new Font("Arial", 16));
 
 		inventoryTable.setItems(game.getPlayer().getInventory().getFullInventory());
-
+		
+		//Lable Column
 		TableColumn<Item, String> itemNameCol = new TableColumn<Item, String>("Name");
 		itemNameCol.setCellValueFactory(new Callback<CellDataFeatures<Item, String>, ObservableValue<String>>() {
 			@Override
@@ -1200,6 +1201,8 @@ public class GameApplication extends Application {
 				return new SimpleStringProperty(i.getValue().getName());
 			}			
 		});
+		
+		//Image Column
 		TableColumn<Item, ImageView> itemImageCol = new TableColumn<Item, ImageView>("Image");
 		itemImageCol.setCellValueFactory(new Callback<CellDataFeatures<Item, ImageView>, ObservableValue<ImageView>>() {
 			@Override
@@ -1211,8 +1214,11 @@ public class GameApplication extends Application {
 				}
 			}			
 		});
-
+		
+		//Add Columns to table
 		inventoryTable.getColumns().setAll(itemImageCol, itemNameCol);
+		
+		//Drop Button
 		dropButton = new Button("Drop");
 		dropButton.setOnAction(new EventHandler<ActionEvent>() {
 
@@ -1226,7 +1232,8 @@ public class GameApplication extends Application {
 				}				
 			}		
 		});
-
+		
+		//Eat Button
 		eatButton = new Button("Eat");
 		eatButton.setVisible(false);
 		eatButton.setOnAction(new EventHandler<ActionEvent>() {
@@ -1243,7 +1250,8 @@ public class GameApplication extends Application {
 				}
 			}
 		});
-
+		
+		//Change listener to table, so the eat button only gets displayed when the player selects a food item.
 		inventoryTable.getSelectionModel().selectedItemProperty().addListener(new ChangeListener() {
 			@Override
 			public void changed(ObservableValue arg0, Object arg1, Object arg2) {
@@ -1259,8 +1267,8 @@ public class GameApplication extends Application {
 			}	
 		});
 
+		//Change listener to inventory so the displayed weight gets updated as the player adds and removes items from his inventory.
 		game.getPlayer().getInventory().getFullInventory().addListener(new ListChangeListener() {
-
 			@Override
 			public void onChanged(@SuppressWarnings("rawtypes") Change arg0) {
 				if(game.getPlayer().getInventory().getUnlimited()){
@@ -1274,9 +1282,9 @@ public class GameApplication extends Application {
 
 		inventoryTable.setMaxHeight(h*0.8);
 		inventoryTable.setMinWidth(w*0.1);
-		inventoryTable.setMaxWidth(w*0.2);
+		inventoryTable.setMaxWidth(w*0.25);
 
-
+		//First time weight lable
 		invSize.setText(Math.round(game.getPlayer().getInventory().getCurrentInventoryWeight()) + "kg / " + Math.round(difficulty.getInventoryCapacity()) + "kg ");
 
 		VBox fp = new VBox();
