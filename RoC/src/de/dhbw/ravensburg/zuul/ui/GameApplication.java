@@ -951,7 +951,14 @@ public class GameApplication extends Application {
         					okButton.setOnAction(dialogHandlers.get("buildBoatEvent"));
         					dialogGroup.setVisible(true);
         				}
-        			} 	else	{
+        			} 	
+        			else if (item.getItem().getName().equals("Artifact")) {
+        				dialogText.setText("Can't take this item");
+        				okButton.setOnAction(dialogHandlers.get("acknowledgeEvent"));
+            			dialogGroup.setVisible(true);
+        			}
+        			
+        			else	{
         				dialogText.setText("Inventory Full");
         				okButton.setOnAction(dialogHandlers.get("acknowledgeEvent"));
             			dialogGroup.setVisible(true);
