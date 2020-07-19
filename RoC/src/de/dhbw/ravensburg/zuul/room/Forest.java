@@ -21,7 +21,7 @@ public class Forest extends Room {
 	 * @param specialItems Items to spawn in this specific instance.
 	 */
 	public Forest(String description, Creature creature, Item... specialItems) {
-		super(description, creature, RoomType.FOREST, specialItems);
+		super(description, creature, RoomType.FOREST_HORIZONTAL, specialItems);
 		
 		if(creature == null) {
 			setCreatureProbabilities();
@@ -29,6 +29,7 @@ public class Forest extends Room {
 		}
 		setItemProbabilites();
 		populateInventory();
+		generateItemSprites();
 	}
 	
 	/**
@@ -48,6 +49,7 @@ public class Forest extends Room {
 		}
 		setItemProbabilites();
 		populateInventory();
+		generateItemSprites();
 	}
 	
 	/**
@@ -57,6 +59,9 @@ public class Forest extends Room {
 		creatureSpawnProbability = new HashMap<>();
 		creatureSpawnProbability.put("Ape", 30);			//Sets the probability to spawn an Ape in a new object Forest to 30%.
 		creatureSpawnProbability.put("Snake", 20);
+		creatureSpawnProbability.put("Snake", 40);
+		creatureSpawnProbability.put("Native", 20);
+		creatureSpawnProbability.put("Hunter", 25);
 	}
 	
 	/**
@@ -64,8 +69,12 @@ public class Forest extends Room {
 	 */
 	private void setItemProbabilites() {
 		itemSpawnProbability = new HashMap<>();
-		itemSpawnProbability.put("Banana", 20);				//A Banana will spawn in 20% of all objects Forests.
-		itemSpawnProbability.put("Stick", 15);
-		itemSpawnProbability.put("Timber", 15);
+		itemSpawnProbability.put("Banana", 25);				//A Banana will spawn in 20% of all objects Forests.
+		itemSpawnProbability.put("Stick", 40);
+		itemSpawnProbability.put("Timber", 60);
+		itemSpawnProbability.put("Apple", 30);
+		itemSpawnProbability.put("Coconut", 40);
+		itemSpawnProbability.put("Meat", 15);
+		itemSpawnProbability.put("Resin", 55);
 	}	
 }

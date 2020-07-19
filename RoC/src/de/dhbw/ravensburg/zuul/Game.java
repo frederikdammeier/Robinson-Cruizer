@@ -1,6 +1,7 @@
 package de.dhbw.ravensburg.zuul;
 
 import de.dhbw.ravensburg.zuul.room.*;
+import de.dhbw.ravensburg.zuul.ui.ItemSprite;
 import de.dhbw.ravensburg.zuul.creature.*;
 import de.dhbw.ravensburg.zuul.item.*;
 import java.util.ArrayList;
@@ -20,7 +21,7 @@ import java.util.ArrayList;
  * @version 27.05.2020
  */
 
-public class Game {
+public class Game{
 	private Parser parser;
 	private Room currentRoom;
 	private Timer timer;
@@ -45,7 +46,7 @@ public class Game {
 		parser = new Parser();
 		predator = new Predator(this);
 		player = new Player("Players Name", difficulty.getInventoryCapacity(), 100);
-		player.getInventory().addMultipleItems(new Resin(), new Sail(), new Resin(), new Rope(), new Rope(), new Timber(), new Timber(), new Timber(), new Timber());  //Activate this line to test the boatBuilding
+		player.getInventory().addMultipleItems(new RoomKey("Key to the Library"), new Resin(), new Sail(), new Resin(), new Rope(), new Rope(), new Timber(), new Timber(), new Timber());  //Activate this line to test the boatBuilding
 		boatBuilder = new BoatBuilding();
 		currentRoom = map.getCurrentRoom();
 		timeLimit = difficulty.getTimeLimit();
@@ -62,17 +63,19 @@ public class Game {
 	/**
 	 * Main play routine. Loops until end of play.
 	 */
-	public void play() {
+	public void start() {
 
 		printWelcome();
 
 		// Add a new Timer to measure passed game Time.
 		Thread timeThread = new Thread(timer, "timer");
 		timeThread.start();
-
+		
+		/**
 		// Starts the predator class for the first time.
 		predatorThread = new Thread(predator, "predator");
 		predatorThread.start();
+		*/
 		
 		//Regeneration Thread
 		Thread regenThread = new Thread(regenHandler, "regenerate");
@@ -85,22 +88,35 @@ public class Game {
 		// Enter the main command loop. Here we repeatedly read commands and
 		// execute them until the game is over.
 
-		dead = false;
-		finished = false;
-		while (!finished && timer.getTimePassedSeconds() < timeLimit && !dead) {
-
-			Command command = parser.getCommand();
-			finished = processCommand(command);
-			printTimePassed();
-		}
+//		dead = false;
+//		finished = false;
+//		while (!finished && timer.getTimePassedSeconds() < timeLimit && !dead) {
+//
+//			Command command = parser.getCommand();
+//			finished = processCommand(command);
+//			printTimePassed();
+//		}
+//		System.out.println("Thank you for playing.  Good bye!");
+//		timer.stopTimer();
+//		predatorThread.interrupt();
+//		regenHandler.finish();
+//		hungerHandler.finish();
+	}
+	
+	public void endGame() {
 		System.out.println("Thank you for playing.  Good bye!");
 		timer.stopTimer();
-		predatorThread.interrupt();
+		//predatorThread.interrupt();
 		regenHandler.finish();
 		hungerHandler.finish();
+		finished = true;
+		
 	}
 
 	/*
+	 * --------------------------------
+	 * only for playing in console mode
+	 * --------------------------------
 	 * Print the Seconds that have passed since starting the game to the console.
 	 */
 	private void printTimePassed() {
@@ -119,6 +135,9 @@ public class Game {
 	}
 
 	/**
+	 * --------------------------------
+	 * only for playing in console mode
+	 * --------------------------------
 	 * Given a command, process (that is: execute) the command.
 	 * 
 	 * @param command The command to be processed.
@@ -165,6 +184,9 @@ public class Game {
 	}
 
 	/**
+	 * --------------------------------
+	 * only for playing in console mode
+	 * --------------------------------
 	 * Player tries to eat something.
 	 * @param command Information about what the player tries to eat.
 	 */
@@ -197,7 +219,7 @@ public class Game {
 	 * transfered to a creature, therefore reducing its health. Dead creatures are
 	 * removed from a rooms inventory. Dead creatures might drop an item.
 	 */
-	private void playerAttack() {
+	public void playerAttack() {
 
 		if (player.getDamage() == 0) {
 			System.out.println("You don't have a weapon to attack.");
@@ -214,31 +236,32 @@ public class Game {
 
 				// get the creature of this room.
 				Creature creatureInRoom = currentRoom.getCreature();
+				
+				if(player.getPlayerSprite().distanceTo(currentRoom.getCreatureSprite().getCenterX(), currentRoom.getCreatureSprite().getCenterY()) < 100){
+					// decrease the creatures health by the amount of damage the player can
+					// tranfered.
+					creatureInRoom.takeDamage(player.getDamage());
 
-				// decrease the creatures health by the amount of damage the player can
-				// tranfered.
-				creatureInRoom.takeDamage(player.getDamage());
+					if (creatureInRoom.isDead()) {
+						// Try to add the drop item of the creature into the rooms inventory.
+						try {
+							currentRoom.addItem(creatureInRoom.getDropItem(), currentRoom.getCreatureSprite().getCenterX(), currentRoom.getCreatureSprite().getCenterY());
+						} catch (Exception e) {
+							System.out.println("The " + creatureInRoom.getName() + " dropped nothing.");
+						}
 
-				if (creatureInRoom.isDead()) {
-					// Try to add the drop item of the creature into the players inventory.
-					try {
-						player.getInventory().addItem(creatureInRoom.dropItem());
-					} catch (Exception e) {
-						System.out.println("The " + creatureInRoom.getName() + " dropped nothing.");
+						// "deletes" the creature in the current room.
+						currentRoom.setCreature(null);
 					}
-
-					// "deletes" the creature in the current room.
-					currentRoom.setCreature(null);
-
-					// else put the updated creature in the room.
-				} else {
-					currentRoom.setCreature(creatureInRoom);
-				}
+				}	
 			}
 		}
 	}
 
 	/**
+	 * --------------------------------
+	 * only for playing in console mode
+	 * --------------------------------
 	 * Print out some help information. Here we print some stupid, cryptic message
 	 * and a list of the command words.
 	 */
@@ -251,6 +274,9 @@ public class Game {
 	}
 
 	/**
+	 * --------------------------------
+	 * only for playing in console mode
+	 * --------------------------------
 	 * Can be used to ask the player a yes/no question.
 	 * 
 	 * @param command
@@ -267,6 +293,10 @@ public class Game {
 	}
 
 	/**
+	 * --------------------------------
+	 * only for playing in console mode
+	 * --------------------------------
+	 * 
 	 * Try to go in to one direction. If there is an exit, enter the new room,
 	 * otherwise print an error message.
 	 * 
@@ -341,8 +371,91 @@ public class Game {
 	    	map.activateFinish();
 	    }
 	}
+	
+	/**
+	 * --------------------------------
+	 * only for playing in console mode
+	 * --------------------------------
+	 * 
+	 * Try to go in to one direction. If there is an exit, enter the new room,
+	 * otherwise print an error message.
+	 * 
+	 * If a room is locked, the method checks whether the player has the correct key
+	 * to open it. Then the player gets asks whether he would like to open the door
+	 * to the next room.
+	 * 
+	 * If a room can only be entered through a trap door, the player gets a warning.
+	 * He gets asked whether he would like to proceed anyways.
+	 */
+	public String goRoom(String direction) {
+
+		// Try to leave current room.
+		Room nextRoom = currentRoom.getExit(direction);
+
+		// check if a exit to the desired direction even exists.
+		if (nextRoom == null) {
+			System.out.println("There is no way to go!");
+
+			// Check whether the room is locked.
+		} else if (nextRoom.isLocked()) {
+			if (player.getInventory().containsItem(nextRoom.getKey())) {
+
+				// Ask the player if he wants to unlock the room.
+				System.out.println("The room is locked. Do you want to unlock it now? (yes/no)");
+				if (getYesNoAnswer(parser.getCommand())) {
+					nextRoom.unLock();
+					currentRoom = nextRoom;
+					System.out.println("Room unlocked.");
+					System.out.println(currentRoom.getLongDescription());
+					
+					return "Success";
+				} else {
+					System.out.println("Allright, have a nice day.");
+				}
+			} else {
+				System.out.println("The room is locked. Try to find a key.");
+			}
+
+			// Check whether the exit is through a trapdoor.
+		} else if (!nextRoom.hasExitToRoom(currentRoom) && !nextRoom.getType().equals(RoomType.FINISH)) {
+
+			// Asks the player if he would like to enter anyways.
+			System.out.println("You are trying to enter a trapdoor. Proceed? (yes/no)");
+			if (getYesNoAnswer(parser.getCommand())) {
+				currentRoom = nextRoom;
+				System.out.println("Good Luck!");
+				System.out.println(currentRoom.getLongDescription());
+				return "Success";
+			} else {
+				System.out.println("Allright, have a nice day.");
+			}
+			// Default
+		} else {
+			// interrupt preditorThread when leaving a room
+			predatorThread.interrupt();
+			currentRoom = nextRoom;
+			System.out.println(currentRoom.getLongDescription());
+
+			// restarting the preditorThread
+			predatorThread = new Thread(predator, "predator");
+			predatorThread.start();
+			return "Success";
+		}
+		
+	    //Message the player if he is ready to leave the island()
+	    if(currentRoom instanceof Beach && player.getInventory().containsItem(new Boat())) {
+	    	System.out.println("You are now ready to leave the island.");
+	    	map.activateFinish();
+	    }
+	    
+	    return "fail";
+	}
 
 	/**
+	 * --------------------------------
+	 * only for playing in console mode
+	 * --------------------------------
+	 * 
 	 * Takes an item from the rooms inventory and places it into the players
 	 * inventory.
 	 * 
@@ -361,8 +474,28 @@ public class Game {
     		System.out.println("You are now ready to build a Boat!\nUse command buildBoat to build it now.");
     	}
 	}
+	
+	/**
+	 * Takes an item from the rooms inventory and places it into the players
+	 * inventory.
+	 * 
+	 * @param item
+	 */
+	public void takeItemSprite(ItemSprite item) {
+		currentRoom.removeItem(item);
+		player.getInventory().addItem(item.getItem());
+		
+    	//Check if the player is now able to build the boat
+    	if(boatBuilder.checkIfBoatCanBeBuilt(player.getInventory())){
+    		System.out.println("You are now ready to build a Boat!\nUse command buildBoat to build it now.");
+    	}
+	}
 
 	/**
+	 * --------------------------------
+	 * only for playing in console mode
+	 * --------------------------------
+	 * 
 	 * Takes an item from the players inventory and places it into the rooms
 	 * inventory.
 	 * 
@@ -397,6 +530,10 @@ public class Game {
 	}
 
 	/**
+	 * --------------------------------
+	 * only for playing in console mode
+	 * --------------------------------
+	 * 
 	 * Checks if the item has a special effect. If thats the case, the effect is implemented.  
 	 * @param command The command that contains the item.
 	 * @param action	Determines the impact of an effect
@@ -451,6 +588,10 @@ public class Game {
 	}
 
 	/**
+	 * --------------------------------
+	 * only for playing in console mode
+	 * --------------------------------
+	 * 
 	 * "Quit" was entered. Check the rest of the command to see whether we really
 	 * quit the game.
 	 * 
@@ -468,12 +609,16 @@ public class Game {
 	/**
 	 * Teleports the player into a randomly chosen room on the map.
 	 */
-	private void teleport() {
+	public void teleport() {
 		currentRoom = map.teleport();
 		lookAround();
 	}
 
 	/**
+	 * --------------------------------
+	 * only for playing in console mode
+	 * --------------------------------
+	 * 
 	 * Prints all available exits to the console.
 	 */
 	private void lookAround() {
@@ -504,6 +649,13 @@ public class Game {
 	public Room getCurrentRoom() {
 		return currentRoom;
 	}
+	
+	/**
+	 * @param The next room.
+	 */
+	public void setCurrentRoom(Room nextRoom) {
+		this.currentRoom = nextRoom;
+	}
 
 	/**
 	 * @return Seconds since the game started.
@@ -511,11 +663,59 @@ public class Game {
 	public long getGameTime() {
 		return timer.getTimePassedSeconds();
 	}
+	
+	/**
+	 * 
+	 * @return Seconds left until the time runs out.
+	 */
+	public long getTimeLeft() {
+		return timeLimit-timer.getTimePassedSeconds();
+	}
 
 	public float getEnemyDamageRate() {
 		return enemyDamageRate;
 	}
 	public void setDead() {
 		dead = true;
+	}
+
+	public long getTimeLimit() {
+		return timeLimit;
+	}
+	
+	/**
+	 * Let's the player eat the first occurance of food in his inventory.
+	 * 
+	 * @return True if successful, false if inventory doesn't contain food.
+	 */
+	public boolean eat() {
+		for(Item i : player.getInventory().getFullInventory()) {
+			if(i instanceof Food) {
+				player.eat(((Food) i).getNutrition());
+				player.getInventory().removeItem(i);
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public BoatBuilding getBoatBuilder() {
+		return boatBuilder;
+	}
+	
+	public Map getMap() {
+		return map;
+	}
+	
+	public boolean getFinished() {
+		return finished;
+	}
+	
+	public void setDead(boolean d) {
+		dead = d;
+	}
+	
+	public boolean getDead() {
+		return dead;
 	}
 }

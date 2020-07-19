@@ -20,7 +20,7 @@ public class Map {
 	private ArrayList<Room> map; //List that only holds references to the rooms in which the player can be teleported randomly.
 
 	Room westBeach, eastBeach, northBeach, southBeach;
-	Room westForest, eastForest, northForest, southForest;
+	Room westForest, eastForest, northForest, southForest, northWestForest, southWestForest, centralForest;
 	Room redWoodTree, deepForest;
 	Room ruinWestEntrance, ruinEastEntrance, ruinNorthEntrance, ruinSouthEntrance;
 	Room ruinStairCase0, ruinStairCase1;
@@ -32,7 +32,7 @@ public class Map {
 		map = new ArrayList<>();
 		
 		//Initialize: Beaches
-		westBeach = new Beach("on the Beach", new WaterPig(), RoomType.BEACH_WEST, new Stick(), new Sword(), new Apple(), new Apple(), new Banana());
+		westBeach = new Beach("on the Beach", new Freitag(), RoomType.BEACH_WEST, new Apple());
 		map.add(westBeach);
 		eastBeach = new Beach("on the Beach", null, RoomType.BEACH_EAST);
 		map.add(eastBeach);
@@ -42,53 +42,67 @@ public class Map {
 		map.add(southBeach);
 		
 		//Initialize: Forest
-		westForest = new Forest("in the Forest", new Native(), RoomType.FOREST);
+		westForest = new Forest("in the Forest", null, RoomType.FOREST_NORTHWESTSOUTH);
 		map.add(westForest);
-		eastForest = new Forest("in the Forest", null, RoomType.FOREST);
+		eastForest = new Forest("in the Forest", null, RoomType.FOREST_HORIZONTAL);
 		map.add(eastForest);
-		northForest = new Forest("in the Forest", null, RoomType.FOREST);
+		northForest = new Forest("in the Forest", null, RoomType.FOREST_NORTH);
 		map.add(northForest);
-		southForest = new Forest("in the Forest", null, RoomType.FOREST);
+		southForest = new Forest("in the Forest", null, RoomType.FOREST_VERTICAL);
 		map.add(southForest);
+		northWestForest = new Forest("in the Forest", new Ape(), RoomType.FOREST_SOUTHWEST2);
+		map.add(northWestForest);
+		southWestForest = new Forest("in the Forest", null, RoomType.FOREST_SOUTHWEST);
+		map.add(southWestForest);
+		centralForest = new Forest("in the Forest", new Snake(), RoomType.FOREST_HORIZONTAL);
+		map.add(centralForest);
 		
 		redWoodTree = new Forest("at the large tree", null, RoomType.REDWOOD, new MagicMushroom());
 		map.add(redWoodTree);
-		deepForest = new Forest("in the dark forest", null, RoomType.DEEP_FOREST);
-		map.add(deepForest);
+//		deepForest = new Forest("in the dark forest", null, RoomType.DEEP_FOREST);
+//		map.add(deepForest);
 		
 		//Initialize: Ruin
-		ruinWestEntrance = new Ruin("in the ruins: West Entrance", null);
+		ruinWestEntrance = new Ruin("in the ruins: West Entrance", null, RoomType.RUIN_ENTRANCE_WEST);
 		map.add(ruinWestEntrance);
-		ruinEastEntrance = new Ruin("in the ruins: East Entrance", null);
+		ruinEastEntrance = new Ruin("in the ruins: East Entrance", null, RoomType.RUIN_ENTRANCE_EAST);
 		map.add(ruinEastEntrance);
-		ruinNorthEntrance = new Ruin("in the ruins: North Entrance", null);
+		ruinNorthEntrance = new Ruin("in the ruins: North Entrance", new Hunter(), RoomType.RUIN_ENTRANCE_NORTH);
 		map.add(ruinNorthEntrance);
-		ruinSouthEntrance = new Ruin("in the ruins: South Entrance", null);
+		ruinSouthEntrance = new Ruin("in the ruins: South Entrance", null, RoomType.RUIN_ENTRANCE_SOUTH);
 		map.add(ruinSouthEntrance);
 		
-		ruinStairCase0 = new Ruin("in the ruins: Staircase", null);
+		ruinStairCase0 = new Ruin("in the ruins: Staircase", null, RoomType.RUIN);
 		map.add(ruinStairCase0);
-		ruinStairCase1 = new Ruin("in the ruins: Staircase", null);
+		ruinStairCase1 = new Ruin("in the ruins: Staircase", null, RoomType.RUIN_STAIRCASE_1);
 		map.add(ruinStairCase1);
 		
 		ruinWatchTower = new Ruin("on the top of the Watchtower", null, RoomType.RUIN_TOP, new RoomKey("Key to the Library"));
 		map.add(ruinWatchTower);
-		ruinLibrary = new Ruin("in the ruins: Aincient Library", null);
+		ruinLibrary = new Ruin("in the ruins: Aincient Library", null, RoomType.RUIN_LIBRARY);
 		ruinLibrary.lockRoom(new RoomKey("Key to the Library"));
 		map.add(ruinLibrary);
-		ruinPraying = new Ruin("in the ruins: Holy Artefact", null);
+		ruinPraying = new Ruin("in the ruins: Holy Artefact", null, RoomType.RUIN);
 		map.add(ruinPraying);
-		ruinMage = new Ruin("in the ruins: Mage", new Mage());
+		ruinMage = new Ruin("in the ruins: Mage", new Mage(), RoomType.RUIN_MAGE);
 		map.add(ruinMage);
-		ruinDungeon = new Ruin("in the ruins: Dungeon", null);
-		ruinLaboratory = new Ruin("in the ruins: Abandoned Laboratory", null);
+		ruinDungeon = new Ruin("in the ruins: Dungeon", new Prisoner(), RoomType.RUIN_DUNGEON);
+		ruinLaboratory = new Ruin("in the ruins: Abandoned Laboratory", null, RoomType.RUIN_LABORATORY, new Meat(), new Bread());
 		map.add(ruinLaboratory);
+		
+		finalRoom = new Room("Finish", null, RoomType.FINISH);
 		
 		//Set connections: Axis West-East
 		westBeach.setExit("east", westForest);
 		westForest.setExit("west", westBeach);
-		westForest.setExit("east", ruinWestEntrance);
-		ruinWestEntrance.setExit("west", westForest);
+		westForest.setExit("north", northWestForest);
+		westForest.setExit("south", southWestForest);
+		northWestForest.setExit("south", westForest);
+		northWestForest.setExit("east", centralForest);
+		southWestForest.setExit("north", westForest);
+		centralForest.setExit("west", northWestForest);
+		centralForest.setExit("east", ruinWestEntrance);
+		ruinWestEntrance.setExit("west", centralForest);
 		ruinWestEntrance.setExit("east", ruinStairCase0);
 		ruinStairCase0.setExit("west", ruinWestEntrance);
 		ruinStairCase0.setExit("east",  ruinEastEntrance);
@@ -141,7 +155,8 @@ public class Map {
 		northForest.setExit("east", redWoodTree);
 		redWoodTree.setExit("west", northForest);
 		northForest.setExit("west", deepForest);
-		deepForest.setExit("east", northForest);
+//		deepForest.setExit("east", northForest);
+		
 		
 		currentRoom = westBeach; // start game outside
     }
@@ -177,7 +192,7 @@ public class Map {
     public void activateFinish() {
     	westBeach.setExit("west", finalRoom);
     	eastBeach.setExit("east", finalRoom);
-    	northBeach.setExit("east", finalRoom);
+    	northBeach.setExit("north", finalRoom);
     	southBeach.setExit("south", finalRoom);
     }
 }

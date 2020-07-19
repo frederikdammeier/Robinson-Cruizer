@@ -1,5 +1,9 @@
 package de.dhbw.ravensburg.zuul;
 
+import de.dhbw.ravensburg.zuul.item.Item;
+import de.dhbw.ravensburg.zuul.item.Weapon;
+import de.dhbw.ravensburg.zuul.ui.Sprite;
+import javafx.scene.image.Image;
 
 /**
  * It holds variables and methods for the main protagonist of the game.
@@ -16,6 +20,7 @@ public class Player {
 	private int maxLife;
 	private int damage;
 	private long timeOfLastAttack;
+	private Sprite playerSprite;
 	
 	/**
 	 * Creates a new object of type Player
@@ -29,6 +34,8 @@ public class Player {
 		health = this.maxLife = maxLife;
 		inventory = new Inventory(inventorySize);
 		damage = 0;
+		Image robinImage = new Image("Images/Misc/Robinson.PNG", 125, 125, true, true);
+		playerSprite = new Sprite(400.0, 400.0, 50.0, 50.0, robinImage);
 	}
 	
 	
@@ -49,6 +56,13 @@ public class Player {
 	 */
 	public void setDamage(int amount) {
 		damage =  amount;
+	}
+	
+	
+	public void updatePlayerDamage(Item item) {
+		if(item instanceof Weapon) {
+			damage = ((Weapon) item).getDamage();
+		}
 	}
 	
 	/**
@@ -123,6 +137,13 @@ public class Player {
 	 */
 	public long getTimeOfLastAttack() {
 		return timeOfLastAttack;
+	}
+	
+	/**
+	 * @return playerSprite
+	 */
+	public Sprite getPlayerSprite() {
+		return playerSprite;
 	}
 	
 }

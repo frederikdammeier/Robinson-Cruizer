@@ -4,13 +4,13 @@ package de.dhbw.ravensburg.zuul;
  * This class provides a method to automatically decrease the players hunger counter as the game progresses.
  * 
  * @author Frederik Dammeier
- * @version 27.05.2020
+ * @version 17.07.2020
  *
  */
 public class HungerHandler implements Runnable {
 	private Player player;
-	private int timeUntilFirstHunger = 20; //Time in seconds before the hunger counter begines to decrease.
-	private float hungerRate = 1f; //the rate at which the player looses his hunger points in hp/s
+	private int timeUntilFirstHunger = 40; //Time in seconds before the hunger counter begins to decrease.
+	private float hungerRate = 0.4f; //the rate at which the player looses his hunger points in hp/s
 	private boolean finished;
 
 	/**
@@ -37,13 +37,13 @@ public class HungerHandler implements Runnable {
 				player.eat(-1);
 
 			} else {
+				player.eat(-1);
 				try {
 					Thread.sleep((int) (1000/hungerRate));
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
-				}
-				player.eat(-1);
+				}		
 			}
 		}
 	}

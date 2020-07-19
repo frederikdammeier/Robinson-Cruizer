@@ -1,10 +1,18 @@
 package de.dhbw.ravensburg.zuul.room;
-import java.util.Set;
 
+
+import java.util.Set;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.ListIterator;
 
 import de.dhbw.ravensburg.zuul.creature.*;
 import de.dhbw.ravensburg.zuul.item.*;
+import de.dhbw.ravensburg.zuul.ui.GameApplication;
+import de.dhbw.ravensburg.zuul.ui.ItemSprite;
+import de.dhbw.ravensburg.zuul.ui.Sprite;
+import de.dhbw.ravensburg.zuul.ui.CreatureSprite;
+import javafx.scene.image.Image;
 import de.dhbw.ravensburg.zuul.Inventory;
 
 /**
@@ -25,13 +33,17 @@ public class Room
 {
 	private String description;
     private HashMap<String, Room> exits;        					//Stores exits of this room.
-    private Creature creatureInRoom;			
+    private Creature creatureInRoom;								
     private Inventory inventory;									//Stores the Items that are currently present in the room.
     private RoomType type;											//To determine the graphical representation for the room.
     protected HashMap<String, Integer> creatureSpawnProbability;  	//Stores a mapping of creatures in percentages
     protected HashMap<String, Integer> itemSpawnProbability; 		//Stores a mapping of items in percentages
     private boolean locked;
     private RoomKey key;
+    private ArrayList<ItemSprite> spriteInventory;
+    private Image background;
+    
+//    private CreatureSprite creatureSprite;
     
 	/**
      * Create a room described "description". Initially, it has
@@ -49,6 +61,7 @@ public class Room
         setInventory();
         creatureInRoom = null;
         type = RoomType.EMPTY_ROOM;
+        spriteInventory = new ArrayList<>();
         
         inventory.addMultipleItems(specialItems);  
     }
@@ -69,7 +82,9 @@ public class Room
         exits = new HashMap<>();
         setInventory();
         creatureInRoom = creature;
+        if(creatureInRoom != null) creatureInRoom.setSprite(new CreatureSprite((GameApplication.w / 4) * 3, GameApplication.h / 4, 0, 0, new Image("Images/Creature/" + creature.getClass().getSimpleName() + ".PNG", 125, 125, true, true), creature));
         type = RoomType.EMPTY_ROOM;
+        spriteInventory = new ArrayList<>();
 		
         inventory.addMultipleItems(specialItems);
 	}
@@ -92,7 +107,9 @@ public class Room
         exits = new HashMap<>();
         setInventory();
         creatureInRoom = creature;
+        if(creatureInRoom != null) creatureInRoom.setSprite(new CreatureSprite((GameApplication.w / 4) * 3, GameApplication.h / 4, 0, 0, new Image("Images/Creature/" + creature.getClass().getSimpleName() + ".PNG", 125, 125, true, true), creature));
         this.type = type;
+        spriteInventory = new ArrayList<>();
 		
         inventory.addMultipleItems(specialItems);
 	}
@@ -127,18 +144,35 @@ public class Room
 			switch(helperArray[r]){
 			case "Ape": 
 				creatureInRoom = new Ape();
+				creatureInRoom.setSprite(new CreatureSprite(GameApplication.w*0.8, GameApplication.h*0.1, 0, 0, new Image("Images/Creature/Ape.PNG", 125, 125, true, true), creatureInRoom));
 				break;
 			case "Mage": 
 				creatureInRoom = new Mage();
+				creatureInRoom.setSprite(new CreatureSprite(GameApplication.w*0.8, GameApplication.h*0.1, 0, 0, new Image("Images/Creature/Mage.PNG", 125, 125, true, true), creatureInRoom));
 				break;
 			case "Native": 
 				creatureInRoom = new Native();
+				creatureInRoom.setSprite(new CreatureSprite(GameApplication.w*0.8, GameApplication.h*0.1, 0, 0, new Image("Images/Creature/Native.PNG", 125, 125, true, true), creatureInRoom));
 				break;
 			case "Snake": 
 				creatureInRoom = new Snake();
+				creatureInRoom.setSprite(new CreatureSprite(GameApplication.w*0.8, GameApplication.h*0.1, 0, 0, new Image("Images/Creature/Snake.PNG", 125, 125, true, true), creatureInRoom));
 				break;
 			case "Waterpig": 
 				creatureInRoom = new WaterPig();
+				creatureInRoom.setSprite(new CreatureSprite(GameApplication.w*0.8, GameApplication.h*0.1, 0, 0, new Image("Images/Creature/Waterpig.PNG", 125, 125, true, true), creatureInRoom));
+				break;		
+			case "Freitag": 
+				creatureInRoom = new Freitag();
+				creatureInRoom.setSprite(new CreatureSprite(GameApplication.w*0.8, GameApplication.h*0.1, 0, 0, new Image("Images/Creature/Freitag.PNG", 125, 125, true, true), creatureInRoom));
+				break;	
+			case "Hunter": 
+				creatureInRoom = new Hunter();
+				creatureInRoom.setSprite(new CreatureSprite(GameApplication.w*0.8, GameApplication.h*0.1, 0, 0, new Image("Images/Creature/Hunter.PNG", 125, 125, true, true), creatureInRoom));
+				break;
+			case "Prisoner": 
+				creatureInRoom = new Prisoner();
+				creatureInRoom.setSprite(new CreatureSprite(GameApplication.w*0.8, GameApplication.h*0.1, 0, 0, new Image("Images/Creature/Prisoner.PNG", 125, 125, true, true), creatureInRoom));
 				break;
 			}
 		}
@@ -199,6 +233,55 @@ public class Room
 				}
 			}
 		}
+	}
+	
+	protected void generateItemSprites() {
+		ListIterator<Item> it = inventory.getFullInventory().listIterator();
+		double x, y;
+		
+		while(it.hasNext()) {
+			x = Math.random()*(GameApplication.w*0.8) + GameApplication.w*0.1;
+			y = Math.random()*(GameApplication.h*0.8) + GameApplication.h*0.1;
+			
+			Item item = it.next();
+			
+			if(item instanceof RoomKey) {
+				spriteInventory.add(new ItemSprite(x, y, 0.0, 0.0, new Image("Images/Item/Key.PNG", 50.0, 50.0, true, true), item));
+			} else {
+				spriteInventory.add(new ItemSprite(x, y, 0.0, 0.0, new Image("Images/Item/" + item.getName() + ".PNG", 50.0, 50.0, true, true), item));
+			}		}
+	}
+	
+	public ArrayList<ItemSprite> getItemSprites() {
+		return spriteInventory;
+	}
+	
+	public void addItem(Item item) {
+		inventory.addItem(item);
+		
+		double x, y;
+		x = Math.random()*(GameApplication.w*0.8) + GameApplication.w*0.1;
+		y = Math.random()*(GameApplication.h*0.8) + GameApplication.h*0.1;
+		
+		if(item instanceof RoomKey) {
+			spriteInventory.add(new ItemSprite(x, y, 0.0, 0.0, new Image("Images/Item/Key.PNG", 50.0, 50.0, true, true), item));
+		} else {
+			spriteInventory.add(new ItemSprite(x, y, 0.0, 0.0, new Image("Images/Item/" + item.getName() + ".PNG", 50.0, 50.0, true, true), item));
+		}
+	}
+	
+	public void addItem(Item item, double xPos, double yPos) {
+		inventory.addItem(item);
+		if(item instanceof RoomKey) {
+			spriteInventory.add(new ItemSprite(xPos, yPos, 0.0, 0.0, new Image("Images/Item/Key.PNG", 50.0, 50.0, true, true), item));
+		} else {
+			spriteInventory.add(new ItemSprite(xPos, yPos, 0.0, 0.0, new Image("Images/Item/" + item.getName() + ".PNG", 50.0, 50.0, true, true), item));
+		}
+	}
+	
+	public synchronized void removeItem(ItemSprite item) {
+		inventory.removeItem(item.getItem());	
+		spriteInventory.remove(item);
 	}
 
     /**
@@ -278,7 +361,12 @@ public class Room
     	return creatureInRoom;
     }
     
-    /**
+    public CreatureSprite getCreatureSprite() {
+    	if(creatureInRoom != null) return creatureInRoom.getSprite();
+    	return null;
+	}
+
+	/**
      * Replaces creature in room with the given Creature. 
      * 
      * @param creature null to remove the rooms creature.
@@ -379,6 +467,18 @@ public class Room
 	 */
 	public boolean hasExitToRoom(Room room) {
 		return exits.containsValue(room);
+	}
+	
+	/**
+	 * Adds background images.
+	 * Background-images always are named by the room-type.
+	 * @return background The backround-image.
+	 */
+	public Image getBGImage() {
+		if(background == null) {
+			background = new Image("Images/Room/" + type + ".PNG", 1000, 1000, false, false);
+		}
+		return background;
 	}
 }
 

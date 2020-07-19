@@ -1,6 +1,9 @@
 package de.dhbw.ravensburg.zuul;
 
 /**
+ * -----------------
+ * deprecated
+ *------------------
  * Welcome to the Robinson Cruizer Adventure Game.
  * 
  * In this game, you're waking up on a beach on a lonely island somewhere in the
@@ -20,7 +23,7 @@ package de.dhbw.ravensburg.zuul;
 public class RobinsonCruizer {
 
 	public static void main(String[] args) {
-		Game game = new Game(Difficulty.EASY);
-		game.play();
+//		Game game = new Game(Difficulty.EASY);
+//		game.play();
 	}
 }
