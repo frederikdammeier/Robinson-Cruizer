@@ -725,7 +725,8 @@ public class GameApplication extends Application {
 			@Override
 			public void handle(ActionEvent e) {
 					dialogText.setText(messages.get("mageTeleportTalk"));
-					game.teleport(); 
+					game.teleport();
+					setExitVisibility();
 					okButton.setOnAction(dialogHandlers.get("acknowledgeEvent"));
 			}
 		});

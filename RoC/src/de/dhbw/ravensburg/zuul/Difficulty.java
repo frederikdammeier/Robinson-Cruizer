@@ -12,7 +12,7 @@ package de.dhbw.ravensburg.zuul;
  * @version 17.05.2020
  */
 public enum Difficulty {
-	EASY(100f, 0.75f, 1800), MEDIUM(75f, 1f, 1200), HARD(50f, 1.25f, 600);
+	EASY(100f, 0.75f, 1800), MEDIUM(75f, 1f, 1200), HARD(50f, 1.25f, 60);
 	
 	private final float inventoryCapacity;
 	private final float enemyDamageRate;
