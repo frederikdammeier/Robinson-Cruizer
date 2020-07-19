@@ -1,1 +1,0 @@
-packageSearchIndex = [{"l":"All Packages","url":"allpackages-index.html"},{"l":"de.dhbw.ravensburg.zuul"},{"l":"de.dhbw.ravensburg.zuul.creature"},{"l":"de.dhbw.ravensburg.zuul.item"},{"l":"de.dhbw.ravensburg.zuul.room"},{"l":"de.dhbw.ravensburg.zuul.ui"}]
