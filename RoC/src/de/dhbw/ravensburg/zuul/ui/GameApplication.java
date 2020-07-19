@@ -188,7 +188,7 @@ public class GameApplication extends Application {
 				beasy.setSelected(true);
 			
 				box.getChildren().addAll(beasy, bmedium, bhard ); // description, goBack, goGame
-				box.setPadding(new Insets(400,50,300,300));
+				box.setPadding(new Insets(900, 100, 500, 500));
 				level.getChildren().addAll(imgView2,box, description, goBack, goGame);
 				level.setAlignment(description, Pos.TOP_CENTER);
 				level.setAlignment(goBack, Pos.BOTTOM_LEFT);
@@ -606,12 +606,21 @@ public class GameApplication extends Application {
 	 * This method adds important Events to the dialogHandlers HashMap.
 	 */
 	private void createDialogHandlers() {
+		/**
+		 * Handler for an informative message to the player.
+		 * 
+		 * It just closes the dialog box.
+		 */
 		dialogHandlers.put("acknowledgeEvent", new EventHandler<ActionEvent>() {
 			@Override 
 			public void handle(ActionEvent e) {
 				dialogGroup.setVisible(false);
 			}
 		});
+		
+		/**
+		 * Handler for changing rooms.
+		 */
 		dialogHandlers.put("roomChangeEvent", new EventHandler<ActionEvent>(){
 			@Override
 			public void handle(ActionEvent e) {
@@ -648,6 +657,10 @@ public class GameApplication extends Application {
 				}			
 			}
 		});	
+		
+		/**
+		 * Handler for ending the game. It closes the window.
+		 */
 		dialogHandlers.put("finishEvent", new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent e) {
@@ -656,6 +669,10 @@ public class GameApplication extends Application {
 				stop();
 			}
 		});	
+		
+		/**
+		 * Handler for unlocking a locked room.
+		 */
 		dialogHandlers.put("unlockRoomEvent", new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent e) {
@@ -666,6 +683,9 @@ public class GameApplication extends Application {
 			}
 		});
 		
+		/*
+		 * Handler for handling a one way connection between rooms (trap door).
+		 */
 		dialogHandlers.put("trapDoorEvent", new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent e) {
@@ -674,6 +694,10 @@ public class GameApplication extends Application {
 				dialogGroup.setVisible(false);
 			}
 		});	
+		
+		/**
+		 * Handler for talking with Freitag.
+		 */
 		dialogHandlers.put("freitagTalkEvent", new EventHandler<ActionEvent>(){
 			@Override
 			public void handle(ActionEvent e) {
@@ -683,16 +707,24 @@ public class GameApplication extends Application {
 				
 			}
 		});
+		
+		/**
+		 * Handler for getting a stick from Freitag.
+		 */
 		dialogHandlers.put("freitagSwordEvent", new EventHandler<ActionEvent>(){
 			@Override
 			public void handle(ActionEvent e) {
 				dialogText.setText(messages.get("freitagSwordTalk"));
 				CreatureSprite currentCreatureSprite = game.getCurrentRoom().getCreatureSprite();
 				Item stick = new Stick();
-				game.getCurrentRoom().addItem(stick, currentCreatureSprite.getCenterX() + 50, currentCreatureSprite.getCenterY() +50);
+				game.getCurrentRoom().addItem(stick, currentCreatureSprite.getPositionX()-30, currentCreatureSprite.getPositionY() + 70);
 				okButton.setOnAction(dialogHandlers.get("acknowledgeEvent"));
 			}
 		});	
+		
+		/**
+		 * Handler for talking to the mage.
+		 */
 		dialogHandlers.put("mageTalkEvent", new EventHandler<ActionEvent>(){
 			@Override
 			public void handle(ActionEvent e) {
@@ -700,6 +732,10 @@ public class GameApplication extends Application {
 					okButton.setOnAction(dialogHandlers.get("mageTeleportEvent"));
 			}
 		});
+		
+		/**
+		 * Handler for teleporting the player to a random room.
+		 */
 		dialogHandlers.put("mageTeleportEvent", new EventHandler<ActionEvent>(){
 			@Override
 			public void handle(ActionEvent e) {
@@ -709,6 +745,10 @@ public class GameApplication extends Application {
 					okButton.setOnAction(dialogHandlers.get("acknowledgeEvent"));
 			}
 		});
+		
+		/**
+		 * Handler for talking to the prisoner.
+		 */
 		dialogHandlers.put("prisonerTalkEvent", new EventHandler<ActionEvent>(){
 			@Override
 			public void handle(ActionEvent e) {
@@ -716,6 +756,10 @@ public class GameApplication extends Application {
 				okButton.setOnAction(dialogHandlers.get("prisonerTradeEvent"));		
 			}
 		});
+		
+		/**
+		 * Handler for trading a sword for information.
+		 */
 		dialogHandlers.put("prisonerTradeEvent", new EventHandler<ActionEvent>(){
 			@Override
 			public void handle(ActionEvent e) {
@@ -736,6 +780,10 @@ public class GameApplication extends Application {
 				}				
 			}
 		});
+		
+		/**
+		 * Handler for talking to a native.
+		 */
 		dialogHandlers.put("nativeTalkEvent", new EventHandler<ActionEvent>(){
 			@Override
 			public void handle(ActionEvent e) {
@@ -743,6 +791,10 @@ public class GameApplication extends Application {
 				okButton.setOnAction(dialogHandlers.get("nativeTradeEvent"));
 			}
 		});
+		
+		/**
+		 * Handler for trading with a native.
+		 */
 		dialogHandlers.put("nativeTradeEvent", new EventHandler<ActionEvent>(){
 			@Override
 			public void handle(ActionEvent e) {
@@ -761,7 +813,7 @@ public class GameApplication extends Application {
 						dialogText.setText(messages.get("nativeSailEvent"));
 						CreatureSprite currentCreatureSprite = game.getCurrentRoom().getCreatureSprite();
 						Item sail = new Sail();
-						game.getCurrentRoom().addItem(sail, currentCreatureSprite.getCenterX() + 50, currentCreatureSprite.getCenterY() +50);
+						game.getCurrentRoom().addItem(sail, currentCreatureSprite.getPositionX()-20, currentCreatureSprite.getPositionY() +50);
 					}
 						
 					game.getPlayer().getInventory().removeItem(meat);
@@ -776,6 +828,9 @@ public class GameApplication extends Application {
 			}
 		});
 		
+		/**
+		 * Handler for building a boat.
+		 */
 		dialogHandlers.put("buildBoatEvent", new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent e) {
@@ -821,13 +876,13 @@ public class GameApplication extends Application {
 		messages.put("death", "You have been killed! Better luck next time. \nPress a button to close the window");
 		messages.put("magicMushroomCollected", "You picked up a Magic Mushroom. Eat it to get strong as a giant and carry as much stuff as you want.");
 		messages.put("lostBoat", "It seem like you lost your boat somewhere. Pick it up again or craft a new one. Then you can come back and leave the island.");
-		messages.put("freitagTalk", "Nice to meet you. My name is Freitag. "
+		messages.put("freitagTalk", "Nice to meet you.\n My name is Freitag. "
 				+ "I saw how your ship sunk and you almost died in the water but thanks to god you are alive. "
 				+ "You are on a island and i believe you want to escape from here. "
 				+ "Hmmm.... To escape you need a new boat. I think you can find on this island everything for a boat.  "
 				+ "On this island are many hunters who want to kill you but there are also a few natives who can help you. "
-				+ "It was nice to meet you, i hope you will survive. Good bye. "
-				+ "For a boat you need: ");
+				+ "It was nice to meet you, i hope you will survive. \nGood bye. "
+				+ "\n\nFor a boat you need:");
 		messages.put("prisonerTalk", "It seems like you are trapped in here with me. If you give me a Sword, I might show you a way outside.");
 		messages.put("nativeTradeTalk", "Hello do you have any meat for me? "
 				+ "I can give you some information about the island or something else in exchange. "
@@ -857,6 +912,7 @@ public class GameApplication extends Application {
 		goUpRectangle.setFill(Color.TRANSPARENT);
 		goDownRectangle.setFill(Color.TRANSPARENT);
 		
+		//Handles go-east-requests.
 		goEastRectangle.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent e) {
@@ -868,6 +924,8 @@ public class GameApplication extends Application {
 				}
 			}
 		});
+		
+		//Handles go-west-requests.
 		goWestRectangle.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent e) {
@@ -879,6 +937,8 @@ public class GameApplication extends Application {
 				}
 			}
 		});
+		
+		//Handles go-north-requests.
 		goNorthRectangle.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent e) {
@@ -890,6 +950,8 @@ public class GameApplication extends Application {
 				}
 			}
 		});
+		
+		//Handles go-south-requests.
 		goSouthRectangle.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent e) {
@@ -901,6 +963,8 @@ public class GameApplication extends Application {
 				}
 			}
 		});
+		
+		//Handles go-up-requests.
 		goUpRectangle.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent e) {
@@ -912,6 +976,8 @@ public class GameApplication extends Application {
 				}
 			}
 		});
+		
+		//Handles go-down-requests.
 		goDownRectangle.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent e) {
@@ -985,26 +1051,40 @@ public class GameApplication extends Application {
         		gc.setFill(Color.ANTIQUEWHITE);
         		gc.setFont(Font.font("Algerian", 15));
         		gc.fillText("\"T\"", item.getPositionX(), item.getPositionY());	
+        		
+        		//If the player presses T.
         		if(input.contains("T")) {
+        			
+        			//If the item got successfully added to the players inventory.
         			if(game.getPlayer().getInventory().addItem(item.getItem())) {
+        				
+        				//Update the players damage value.
         				game.getPlayer().updatePlayerDamage(item.getItem());
+        				
+        				//Remove the item from the room.
         				itemIterator.remove();	
         				
+        				//If the item is a MagicMushrom, alert the player.
         				if(item.getItem() instanceof MagicMushroom) {
         					dialogText.setText(messages.get("magicMushroomCollected"));
         					okButton.setOnAction(dialogHandlers.get("acknowledgeEvent"));
         					dialogGroup.setVisible(true);
         				}
         				
+        				//If the player has all items to build the boat, alert him.
         				if(game.getBoatBuilder().checkIfBoatCanBeBuilt(game.getPlayer().getInventory())) {
         					dialogText.setText(messages.get("buildBoat"));
         					okButton.setOnAction(dialogHandlers.get("buildBoatEvent"));
         					dialogGroup.setVisible(true);
         				}
+        			
+        			//If the item was an Artifact (not portable) notify the player.	
         			} else if (item.getItem().getName().equals("Artifact")) {
         				dialogText.setText("Golden Waterpig: Can't take this item");
         				okButton.setOnAction(dialogHandlers.get("acknowledgeEvent"));
             			dialogGroup.setVisible(true);
+            		
+            		//Notify the player that his inventory is full.
         			} 	else	{
         				dialogText.setText("Inventory Full");
         				okButton.setOnAction(dialogHandlers.get("acknowledgeEvent"));

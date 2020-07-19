@@ -15,7 +15,7 @@ public class Mushroom extends Food {
 	 * @param nutrition	The nutritional-value of this food.
 	 */
 	public Mushroom() {
-		super("Mushroom", 0.4f, 10);
+		super("Mushroom", 0.3f, 10);
 	}
 
 }

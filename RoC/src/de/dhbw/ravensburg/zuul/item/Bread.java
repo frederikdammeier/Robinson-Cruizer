@@ -15,7 +15,7 @@ public class Bread extends Food {
 	 * @param nutrition	The nutritional-value of this food.
 	 */
 	public Bread() {
-		super("Bread", 0.2f, 50);
+		super("Bread", 1f, 50);
 	}
 
 }

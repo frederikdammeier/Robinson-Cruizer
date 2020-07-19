@@ -15,7 +15,7 @@ public class Coconut extends Food {
 	 * @param nutrition	The nutritional-value of this food.
 	 */
 	public Coconut() {
-		super("Coconut", 0.3f, 30);
+		super("Coconut", 0.4f, 30);
 		
 	}
 

@@ -12,6 +12,6 @@ public class Key extends Item{
 	 * @param weight The weight of this item. 
 	 */
 	public Key() {
-		super("Key", 0.3f);
+		super("Key", 0.1f);
 	}
 }

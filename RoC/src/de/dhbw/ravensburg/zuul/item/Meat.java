@@ -15,7 +15,7 @@ public class Meat extends Food {
 	 * @param nutrition	The nutritional-value of this food.
 	 */
 	public Meat() {
-		super("Meat", 0.2f, 50);
+		super("Meat", 0.5f, 50);
 	}
 
 }
