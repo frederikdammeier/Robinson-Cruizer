@@ -83,6 +83,7 @@ public class BoatBuilding {
 				sb.append("\n" + i.getName() + ": " + recipe.get(i) + "x");
 			}
 		}
+		
 		return sb.toString();
 	}
 }

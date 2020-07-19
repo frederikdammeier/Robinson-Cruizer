@@ -130,6 +130,7 @@ public class GameApplication extends Application {
 		final Stage welcome = stage;
 		StackPane rootb= new StackPane(); 
 		
+		
 		//image
 		Image image1 = new Image("Images/Room/START.PNG", 400, 400, false, false);
 		ImageView imgView = new ImageView();
@@ -206,7 +207,7 @@ public class GameApplication extends Application {
 		ap.setAlignment(returnB, Pos.BOTTOM_LEFT);
 		ap.setAlignment(titel, Pos.TOP_CENTER);
 		
-		Image imgS = new Image("Images/Room/START.PNG", 400, 400, false, false);
+		Image imgS = new Image("Images/Room/Controls.PNG", 400, 400, false, false);
 		ImageView imgViewS = new ImageView();
 		imgViewS.setImage(imgS);
 	    imgViewS.setFitWidth(ap.getWidth());
@@ -575,6 +576,7 @@ public class GameApplication extends Application {
 		itemImages.put("Stick", new Image("Images/Item/Stick.PNG", s, s, true, true));
 		itemImages.put("Sword", new Image("Images/Item/Sword.PNG", s, s, true, true));
 		itemImages.put("Timber", new Image("Images/Item/Timber.PNG", s, s, true, true));
+		itemImages.put("Artifact", new Image("Images/Item/Artifact.PNG", s, s, true, true));
 	}
 	
 	/**
@@ -634,7 +636,8 @@ public class GameApplication extends Application {
 		dialogHandlers.put("freitagTalkEvent", new EventHandler<ActionEvent>(){
 			@Override
 			public void handle(ActionEvent e) {
-				dialogText.setText(messages.get("freitagTalk"));
+				String boatItems = game.getBoatBuilder().getRecipeAsString();
+				dialogText.setText(messages.get("freitagTalk") + boatItems );
 				okButton.setOnAction(dialogHandlers.get("freitagSwordEvent"));
 				
 			}
@@ -762,9 +765,10 @@ public class GameApplication extends Application {
 		messages.put("freitagTalk", "Nice to meet you. My name is Freitag. "
 				+ "I saw how your ship sunk and you almost died in the water but thanks to god you are alive. "
 				+ "You are on a island and i believe you want to escape from here. "
-				+ "Hmmm.... To escape you need a new boat. I think you can find on this island everything for a boat. "
+				+ "Hmmm.... To escape you need a new boat. I think you can find on this island everything for a boat.  "
 				+ "On this island are many hunters who want to kill you but there are also a few natives who can help you. "
-				+ "It was nice to meet you, i hope you will survive. Good bye. ");
+				+ "It was nice to meet you, i hope you will survive. Good bye. "
+				+ "For a boat you need: ");
 		messages.put("prisonerTalk", "Ah please help me. I am in this Dungeon since two weeks. "
 				+ "Can you open it? When you free me i can give you information about the island. "
 				+ "Do you have the key for me? ");
@@ -779,7 +783,7 @@ public class GameApplication extends Application {
 				+ "I am a powerful mage and can teleport you to different places on this island. "
 				+ "Do you want to?");
 		messages.put("mageTeleportTalk", "OK i hope you will escape from this island. Good bye");
-		messages.put("nativeSailEvent", "I will give you a Sail for a boat");
+		messages.put("nativeSailEvent", "I will give you a sail for a boat");
 		messages.put("nativeBetrayalTalk","Oh i see you tried to betray me! ");
 		messages.put("nativeTradeTalk", "Hello do you have any meat for me? "
 				+ "I can give you some information about the island or something else in exchange. "

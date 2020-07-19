@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import de.dhbw.ravensburg.zuul.creature.*;
 import de.dhbw.ravensburg.zuul.item.*;
 import de.dhbw.ravensburg.zuul.room.*;
+import de.dhbw.ravensburg.zuul.ui.GameApplication;
 
 
 /**
@@ -33,6 +34,7 @@ public class Map {
 		
 		//Initialize: Beaches
 		westBeach = new Beach("on the Beach", new Freitag(), RoomType.BEACH_WEST, new Apple());
+		westBeach.addItem(new Artifact(), GameApplication.h*0.5 , GameApplication.w*0.5);
 		map.add(westBeach);
 		eastBeach = new Beach("on the Beach", null, RoomType.BEACH_EAST);
 		map.add(eastBeach);
@@ -70,6 +72,7 @@ public class Map {
 		ruinNorthEntrance = new Ruin("in the ruins: North Entrance", new Hunter(), RoomType.RUIN_ENTRANCE_NORTH);
 		map.add(ruinNorthEntrance);
 		ruinSouthEntrance = new Ruin("in the ruins: South Entrance", null, RoomType.RUIN_ENTRANCE_SOUTH);
+		ruinSouthEntrance.addItem(new Artifact(), GameApplication.h*0.5 , GameApplication.w*0.5);
 		map.add(ruinSouthEntrance);
 		
 		ruinStairCase0 = new Ruin("in the ruins: Staircase", null, RoomType.RUIN);
@@ -83,6 +86,7 @@ public class Map {
 		ruinLibrary.lockRoom(new RoomKey("Key to the Library"));
 		map.add(ruinLibrary);
 		ruinPraying = new Ruin("in the ruins: Holy Artefact", null, RoomType.RUIN);
+		ruinPraying.addItem(new Artifact(), GameApplication.h*0.5 , GameApplication.w*0.5);
 		map.add(ruinPraying);
 		ruinMage = new Ruin("in the ruins: Mage", new Mage(), RoomType.RUIN_MAGE);
 		map.add(ruinMage);

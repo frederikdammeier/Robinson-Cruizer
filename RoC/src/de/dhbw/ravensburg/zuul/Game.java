@@ -48,6 +48,7 @@ public class Game{
 		player = new Player("Players Name", difficulty.getInventoryCapacity(), 100);
 		player.getInventory().addMultipleItems(new RoomKey("Key to the Library"), new Resin(), new Sail(), new Resin(), new Rope(), new Rope(), new Timber(), new Timber(), new Timber());  //Activate this line to test the boatBuilding
 		boatBuilder = new BoatBuilding();
+		
 		currentRoom = map.getCurrentRoom();
 		timeLimit = difficulty.getTimeLimit();
 		enemyDamageRate = difficulty.getEnemyDamageRate();
@@ -66,7 +67,7 @@ public class Game{
 	public void start() {
 
 		printWelcome();
-
+		
 		// Add a new Timer to measure passed game Time.
 		Thread timeThread = new Thread(timer, "timer");
 		timeThread.start();
