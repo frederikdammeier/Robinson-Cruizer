@@ -1,8 +1,8 @@
 package de.dhbw.ravensburg.zuul.creature;
-import de.dhbw.ravensburg.zuul.*;
-import java.util.Scanner;
+
 /**
  * Class Mage - a mage in an adventure game.
+ * <p>
  * A mage is a human with the ability to teleport the player to a random room. 
  * "Mage" is a subclass from "Human".
  * 
@@ -10,7 +10,6 @@ import java.util.Scanner;
  * @version 04.05.2020
  */
 public class Mage extends Human{
-//	private Map map;
 	
 	/**
 	 * Creates a mage.

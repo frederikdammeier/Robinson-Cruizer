@@ -58,7 +58,10 @@ public class Player {
 		damage =  amount;
 	}
 	
-	
+	/**
+	 * Updates the players damage.
+	 * @param item To be checked.
+	 */
 	public void updatePlayerDamage(Item item) {
 		if(item instanceof Weapon) {
 			damage = ((Weapon) item).getDamage();

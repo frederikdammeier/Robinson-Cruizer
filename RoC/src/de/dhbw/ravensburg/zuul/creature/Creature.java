@@ -21,22 +21,25 @@ import de.dhbw.ravensburg.zuul.ui.CreatureSprite;
  */
 public class Creature {
 
-
+	/**Creatures are peaceful or not.*/
 	private boolean peaceful;
+	/**Damage transfered by this creature*/
 	private int damage;
+	/**This creatures lifepoints*/
 	private int lifepoints;
+	/**Item dropped by this creature*/
 	private Item drop;
-
+	/**This creatures name*/
 	private String name;
+	/**Creatures can be invincible*/
 	private boolean invincible;
+	/**Current health status of the creature*/
 	private boolean isDead;
-	
+	/**This creatures sprite*/
 	private CreatureSprite sprite;
 	
-
-
 	/**
-     * Create a "Creature".
+     * Creates a "Creature".
      * Creature can be a human or an animal. 
      * This constructor is used for "Human" and "Animal".   
      */
@@ -68,8 +71,7 @@ public class Creature {
 	}
 	
 	/** 
-	 * Returns if the creature is innocent.
-	 * @return innocent If the creature is innocent.
+	 * @return peaceful True if the creature is peaceful.
 	 */
 	public boolean getPeaceful() {
 		return peaceful;
@@ -77,7 +79,7 @@ public class Creature {
 
 	/** 
 	 * Defines if the creature is innocent
-	 * @param innocent If the creature is innocent.
+	 * @param peaceful True to set the creature peaceful.
 	 */
 	public void setPeaceful(boolean peaceful) {
 		this.peaceful = peaceful;
@@ -85,8 +87,8 @@ public class Creature {
 	
 	
 	/**
-	 * Defines which item the creature will drop when the creature dies. 
-	 * @param drop  The item the creature drop when it dies.
+	 * Defines which item this creature will drop when it dies. 
+	 * @param drop  The item this creature drops when it dies.
 	 */
 	public void setDropItem(Item drop ) {
 
@@ -94,8 +96,8 @@ public class Creature {
 	}
 	
 	/** 
-	 * Returns the item the creature drops.
-	 * @return drop The item the creature can drop when it dies. 
+	 * Returns the item this creature drops.
+	 * @return drop The item this creature drops when it dies. 
 	 */
 	public Item getDropItem() {
 		return drop;
@@ -103,7 +105,7 @@ public class Creature {
 	}
 	
 	/** 
-	 * Returns the damage the creature can cause.
+	 * Returns the damage this creature can cause.
 	 * @return damage The damage the creature causes the player. 
 	 */
 	public int getDamage() {
@@ -111,7 +113,7 @@ public class Creature {
 	}
 
 	/** 
-	 * Defines the damage the creature can cause.
+	 * Defines the damage this creature can cause.
 	 * @param damage The damage the creature causes the player.
 	 */
 	public void setDamage(int damage) {
@@ -121,15 +123,15 @@ public class Creature {
 
 	
 	/** 
-	 * Defines how much lifepoints the creature has.
-	 * @param lifepoints How much lifepoints the creature has.
+	 * Defines how much lifepoints this creature has.
+	 * @param lifepoints How much lifepoints this creature has.
 	 */
 	public void setLifepoints(int lifepoints) {
 		this.lifepoints = lifepoints; 	
 	}
 	
 	/** 
-	 * Returns the number of lifepoints from the creature.
+	 * Returns the number of lifepoints from this creature.
 	 * @return lifepoints the number of lifepoints from the creature.
 	 */
 	public int getLifepoints() {
@@ -138,8 +140,8 @@ public class Creature {
 
 	
 	/** 
-	 * Returns the name of the creature.
-	 * @return name the name of the creature.
+	 * Returns the name of this creature.
+	 * @return name the name of this creature.
 	 */
 	public String getName() {
 		return name;
@@ -147,30 +149,13 @@ public class Creature {
 
 
 	/** 
-	 * Defines the name of the creature.
-	 * @param name The name of the creature.
+	 * Defines the name of this creature.
+	 * @param name The name of this creature.
 	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
-
-
-	/** 
-	 *Return if the Creature is alive or not. 
-	 *When their are no lifepoints anymore. The Creature is dead.
-	 * @return isDead Boolean if Creature is dead or not. 
- 	 */
-
-	// Diese Methode soll �berpr�fen, ob die Creatur noch lebt und Anwort als Boolean zur�ckgeben
-//	public boolean isDead() {
-//		boolean alive = false;
-//		if (livepoints == 0) {
-//			alive = true;
-//			return alive;
-//		}
-//		return alive;
-//	}
 	/**
 	 * Returns if the creature is dead.
 	 * @return isDead the status if the creature is dead or alive.

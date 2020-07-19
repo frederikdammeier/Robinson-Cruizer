@@ -4,7 +4,7 @@ import de.dhbw.ravensburg.zuul.Parser;
 
 /**
  * Class Human - an human in an adventure game.
-
+*<p>
  * A "Human" can be a mage, an native, a prisoner, Freitag or a hunter. They have different abilities
  * and can help or attack you. 
  * "Human" is a subclass from "Creature" and uses one constructor of "Creature". 

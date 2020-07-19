@@ -3,7 +3,7 @@ package de.dhbw.ravensburg.zuul.creature;
 
 /**
  * Class Ape - an ape in an adventure game.
- * 
+ * <p>
  * A "Ape" is an animal in the game and has the ability to attack the player and drop an Item.  
  * A dead ape will drop "Meat" as an Item.  
  * "Ape" is a subclass from "Animal"

@@ -4,7 +4,7 @@ import java.util.Objects;
 
 /**
  * Class Item - an item in the game.
- * 
+ * <p>
  * An "Item" represents a individual unit that the player can use
  * for a specific purpose.
  * Items can be found in "Rooms" of the game.

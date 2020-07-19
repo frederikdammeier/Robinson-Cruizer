@@ -25,9 +25,9 @@ public class BoatBuilding {
 	}
 	
 	/**
-	 * Returns true if the g
+	 * Returns true if all items necessary to built a boat are in the inventory.
 	 * @param inventory
-	 * @return
+	 * @return true/false Boat can/can't be built.
 	 */
 	public boolean checkIfBoatCanBeBuilt(Inventory inventory) {
 		return inventory.containsItemList(recipe);
@@ -38,7 +38,7 @@ public class BoatBuilding {
 	 * and a Boat is added.
 	 * 
 	 * @param inventory
-	 * @return
+	 * @return true/false.
 	 */
 	public boolean buildBoat(Inventory inventory) {
 		if(checkIfBoatCanBeBuilt(inventory)) {
@@ -62,7 +62,7 @@ public class BoatBuilding {
 	}
 	
 	/**
-	 * Returns the recipe for the boat as a HashMap<Item, Integer>
+	 * Returns the recipe for the boat as a HashMap<Item, Integer>.
 	 * 
 	 * @return the recipe as a HashMap
 	 */

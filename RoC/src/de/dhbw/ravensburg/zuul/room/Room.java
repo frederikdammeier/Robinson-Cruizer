@@ -252,10 +252,16 @@ public class Room
 			}		}
 	}
 	
+	/**
+	 * @return spriteInventory Inventory as a sprite.
+	 */
 	public ArrayList<ItemSprite> getItemSprites() {
 		return spriteInventory;
 	}
 	
+	/**
+	 * @param item
+	 */
 	public void addItem(Item item) {
 		inventory.addItem(item);
 		

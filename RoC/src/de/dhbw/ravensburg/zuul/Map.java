@@ -16,18 +16,30 @@ import de.dhbw.ravensburg.zuul.room.*;
  *@version 17.05.2020
  */
 public class Map {
+	/**Current room the player is in*/
 	private Room currentRoom;
-	private ArrayList<Room> map; //List that only holds references to the rooms in which the player can be teleported randomly.
+	/**List that only holds references to the rooms in which the player can be teleported randomly.*/
+	private ArrayList<Room> map; 
 
+	/** a beach*/
 	Room westBeach, eastBeach, northBeach, southBeach;
+	/** a forest*/
 	Room westForest, eastForest, northForest, southForest, northWestForest, southWestForest, centralForest;
+	/** a special forest*/
 	Room redWoodTree, deepForest;
+	/** outside the ruin*/
 	Room ruinWestEntrance, ruinEastEntrance, ruinNorthEntrance, ruinSouthEntrance;
+	/** inside the ruin*/
 	Room ruinStairCase0, ruinStairCase1;
+	/** inside the ruin*/
 	Room ruinWatchTower, ruinLibrary, ruinPraying, ruinMage, ruinDungeon, ruinLaboratory;
-	
+	/**special room*/
 	Room finalRoom;
 	
+	/**
+	 * Adds all rooms of the game to an ArrayList.
+	 * Sets each rooms links to other rooms.
+	 */
 	public Map() {
 		map = new ArrayList<>();
 		
@@ -170,8 +182,8 @@ public class Map {
 	
 	/**
      * "Teleports" the player to a random room that isn't the current room.
-     * 
      * To be called when interacting with the mage.
+     * @return currentRoom
      */
     public Room teleport() {
     	int l = map.size();
