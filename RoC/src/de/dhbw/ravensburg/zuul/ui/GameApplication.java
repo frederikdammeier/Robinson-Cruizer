@@ -10,6 +10,7 @@ import de.dhbw.ravensburg.zuul.Command;
 import de.dhbw.ravensburg.zuul.Difficulty;
 import de.dhbw.ravensburg.zuul.Game;
 import de.dhbw.ravensburg.zuul.Predator2;
+import de.dhbw.ravensburg.zuul.item.Boat;
 import de.dhbw.ravensburg.zuul.item.Food;
 import de.dhbw.ravensburg.zuul.item.Item;
 import de.dhbw.ravensburg.zuul.item.MagicMushroom;
@@ -51,6 +52,7 @@ import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.CornerRadii;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
@@ -633,12 +635,18 @@ public class GameApplication extends Application {
 					dialogText.setText(messages.get("trapDoor"));
 					okButton.setOnAction(dialogHandlers.get("trapDoorEvent"));
 				} else if(nextRoom.getType().equals(RoomType.FINISH)){
-					game.setCurrentRoom(nextRoom);
-					setExitVisibility();
-					dialogText.setText(messages.get("gameFinished"));
-					okButton.setOnAction(dialogHandlers.get("finishEvent"));
-					cancelButton.setOnAction(dialogHandlers.get("finishEvent"));
-					game.setFinished(true);
+					if(game.getPlayer().getInventory().containsItem(new Boat())) {
+						game.setCurrentRoom(nextRoom);
+						setExitVisibility();
+						dialogText.setText(messages.get("gameFinished"));
+						okButton.setOnAction(dialogHandlers.get("finishEvent"));
+						cancelButton.setOnAction(dialogHandlers.get("finishEvent"));
+						game.setFinished(true);
+					} else {
+						dialogText.setText(messages.get("lostBoat"));
+						okButton.setOnAction(dialogHandlers.get("acknowledgeEvent"));
+						dialogGroup.setVisible(true);
+					}	
 				} else {
 					game.setCurrentRoom(nextRoom);
 					setExitVisibility();
@@ -858,6 +866,7 @@ public class GameApplication extends Application {
 		messages.put("timeout", "You ran out of time! Better luck next time. \nPress a button to close the window.");
 		messages.put("death", "You have been killed! Better luck next time. \nPress a button to close the window");
 		messages.put("magicMushroomCollected", "You picked up a Magic Mushroom. Eat it to get strong as a giant and carry as much stuff as you want.");
+		messages.put("lostBoat", "It seem like you lost your boat somewhere. Pick it up again or craft a new one. Then you can come back and leave the island.");
 		}
 	
 	
@@ -1289,12 +1298,16 @@ public class GameApplication extends Application {
 
 		VBox fp = new VBox();
 		HBox hb = new HBox();
+		
 		fp.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
 		hb.getChildren().addAll(dropButton, eatButton);
 		fp.getChildren().addAll(invSize, inventoryTable, hb);
 
+		
 		inventoryGroup.getChildren().add(fp);
 		inventoryGroup.setVisible(false);
+		
+		fp.setAlignment(Pos.CENTER);
 		root.getChildren().add(inventoryGroup);
 	}
 		
