@@ -22,7 +22,7 @@ public class WaterPig extends Animal{
 	 */
 	public WaterPig() {
 		super();
-		setLifepoints(30);
+		setLifepoints(80);
 		setName("Waterpig");
 		setPeaceful(true);
 		setDamage(0);

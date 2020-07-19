@@ -71,9 +71,8 @@ public class Forest extends Room {
 		itemSpawnProbability = new HashMap<>();
 		itemSpawnProbability.put("Banana", 25);				//A Banana will spawn in 20% of all objects Forests.
 		itemSpawnProbability.put("Stick", 40);
-		itemSpawnProbability.put("Timber", 60);
+		itemSpawnProbability.put("Timber", 70);
 		itemSpawnProbability.put("Apple", 30);
-		itemSpawnProbability.put("Coconut", 40);
 		itemSpawnProbability.put("Meat", 15);
 		itemSpawnProbability.put("Resin", 55);
 	}	

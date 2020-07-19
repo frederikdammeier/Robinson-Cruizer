@@ -10,7 +10,7 @@ package de.dhbw.ravensburg.zuul;
 public class RegenerationHandler implements Runnable {
 	private Player player;
 	private boolean finished;
-	private int regenSpeed = 10; //regeneration speed in hp/s
+	private int regenSpeed = 2; //regeneration speed in hp/s
 	private int starvationSpeed = 5; //how fast the player starves to his death in hp/s
 
 	/**

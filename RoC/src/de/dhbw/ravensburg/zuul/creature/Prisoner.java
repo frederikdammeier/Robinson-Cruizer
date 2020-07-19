@@ -25,7 +25,7 @@ public class Prisoner extends Human{
 	 */	
 	public Prisoner() {
 		super();
-		setLifepoints(50);
+		setLifepoints(100);
 		setPeaceful(true);
 		setName("Guy Fawkes");
 		tradeItem = new Key();

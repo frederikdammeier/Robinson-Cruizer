@@ -41,7 +41,7 @@ public class Beach extends Room {
 	 */
 	private void setCreatureProbabilities() {
 		creatureSpawnProbability = new HashMap<>();
-		creatureSpawnProbability.put("Waterpig", 50);			//Sets the probability to spawn a WaterPig in a new object Beach to 50%.
+		creatureSpawnProbability.put("Waterpig", 60);			//Sets the probability to spawn a WaterPig in a new object Beach to 50%.
 
 	}
 	
@@ -50,6 +50,6 @@ public class Beach extends Room {
 	 */
 	private void setItemProbabilites() {
 		itemSpawnProbability = new HashMap<>();
-		itemSpawnProbability.put("Coconut", 50);				//A Coconut will spawn in 50% of all objects Forests.
+		itemSpawnProbability.put("Coconut", 90);				//A Coconut will spawn in 50% of all objects Forests.
 	}	
 }

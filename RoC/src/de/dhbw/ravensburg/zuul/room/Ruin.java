@@ -69,8 +69,8 @@ public class Ruin extends Room {
 	 */
 	private void setItemProbabilites() {
 		itemSpawnProbability = new HashMap<>();
-		itemSpawnProbability.put("Mushroom", 40);				//A Mushroom will spawn in 40% of all objects Ruin.
-		itemSpawnProbability.put("Rope", 30);
+		itemSpawnProbability.put("Mushroom", 50);				//A Mushroom will spawn in 40% of all objects Ruin.
+		itemSpawnProbability.put("Rope", 40);
 		itemSpawnProbability.put("Key", 30);
 	}	
 }

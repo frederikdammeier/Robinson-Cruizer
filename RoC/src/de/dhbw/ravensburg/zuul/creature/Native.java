@@ -28,7 +28,7 @@ public class Native extends Human{
 	 */	
 	public Native() {
 		super();
-		setLifepoints(50);
+		setLifepoints(100);
 		setPeaceful(true);
 		setDropItem(new Stick());
 		setDamage(new Stick().getDamage());

@@ -76,13 +76,13 @@ public class Map {
 //		map.add(deepForest);
 		
 		//Initialize: Ruin
-		ruinWestEntrance = new Ruin("in the ruins: West Entrance", null, RoomType.RUIN_ENTRANCE_WEST);
+		ruinWestEntrance = new Forest("Ruins West Entrance", null, RoomType.RUIN_ENTRANCE_WEST);
 		map.add(ruinWestEntrance);
-		ruinEastEntrance = new Ruin("in the ruins: East Entrance", null, RoomType.RUIN_ENTRANCE_EAST);
+		ruinEastEntrance = new Forest("Ruins East Entrance", null, RoomType.RUIN_ENTRANCE_EAST);
 		map.add(ruinEastEntrance);
-		ruinNorthEntrance = new Ruin("in the ruins: North Entrance", new Hunter(), RoomType.RUIN_ENTRANCE_NORTH);
+		ruinNorthEntrance = new Forest("Ruin North Entrance", new Hunter(), RoomType.RUIN_ENTRANCE_NORTH);
 		map.add(ruinNorthEntrance);
-		ruinSouthEntrance = new Ruin("in the ruins: South Entrance", null, RoomType.RUIN_ENTRANCE_SOUTH);
+		ruinSouthEntrance = new Forest("Ruins South Entrance", null, RoomType.RUIN_ENTRANCE_SOUTH);
 		map.add(ruinSouthEntrance);
 		
 		ruinStairCase0 = new Ruin("in the ruins: Staircase", null, RoomType.RUIN);
@@ -157,7 +157,7 @@ public class Map {
 				ruinNorthWing.setExit("south", ruinStairCase0);
 				ruinEastWing.setExit("west", ruinStairCase0);
 				ruinEastWing.setExit("east", ruinEastEntrance);
-				ruinEastEntrance.setExit("down", ruinDungeon); //dungeon has currently no way to get out.
+				ruinEastWing.setExit("down", ruinDungeon); //dungeon has currently no way to get out.
 				
 				ruinStairCase0.setExit("down", ruinLaboratory);
 				ruinStairCase0.setExit("up", ruinStairCase1);

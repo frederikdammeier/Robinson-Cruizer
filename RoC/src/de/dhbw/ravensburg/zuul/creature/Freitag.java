@@ -23,7 +23,7 @@ public class Freitag extends Human{
 	public Freitag() {
 		super();
 //		setInvincible(true);
-		setLifepoints(50);
+		setLifepoints(100);
 		setPeaceful(true);		
 		setDropItem(null);
 		setDamage(0);

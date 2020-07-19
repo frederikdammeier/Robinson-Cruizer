@@ -24,7 +24,7 @@ public class Snake extends Animal {
 		setLifepoints(30);
 		setName("Snake");
 		setPeaceful(false);
-		setDamage(15);
+		setDamage(30);
 		
 	}
 	
