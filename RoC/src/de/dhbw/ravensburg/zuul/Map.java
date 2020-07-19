@@ -114,61 +114,75 @@ public class Map {
 		finalRoom = new Room("Finish", null, RoomType.FINISH);
 		
 		//Set connections: Axis West-East
-		westBeach.setExit("east", westForest);
-		westForest.setExit("west", westBeach);
-		westForest.setExit("east", ruinWestEntrance);
-		ruinWestEntrance.setExit("west", westForest);
-		ruinWestEntrance.setExit("east", ruinStairCase0);
-		ruinStairCase0.setExit("west", ruinWestEntrance);
-		ruinStairCase0.setExit("east",  ruinEastEntrance);
-		ruinEastEntrance.setExit("west",  ruinStairCase0);
-		ruinEastEntrance.setExit("east", eastForest);
-		eastForest.setExit("west", ruinEastEntrance);
-		eastForest.setExit("east", eastBeach);
-		eastBeach.setExit("west", eastForest);
-		
-		//Set connections: Axis North-South
-		northBeach.setExit("south", northForest);
-		northForest.setExit("north", northBeach);
-		northForest.setExit("south", ruinNorthEntrance);
-		ruinNorthEntrance.setExit("north", northForest);
-		ruinNorthEntrance.setExit("south", ruinStairCase0);
-		ruinStairCase0.setExit("north", ruinNorthEntrance);
-		ruinStairCase0.setExit("south",  ruinSouthEntrance);
-		ruinSouthEntrance.setExit("north",  ruinStairCase0);
-		ruinSouthEntrance.setExit("south", southForest);
-		southForest.setExit("north", ruinSouthEntrance);
-		southForest.setExit("south", southBeach);
-		southBeach.setExit("north", southForest);
-		
-		//Set connections Ruins level 0
-		ruinLibrary.setExit("south",  ruinWestEntrance);
-		ruinWestEntrance.setExit("north", ruinLibrary);
-		ruinLibrary.setExit("east",  ruinNorthEntrance);
-		ruinNorthEntrance.setExit("west",  ruinLibrary);
-		
-		ruinEastEntrance.setExit("down", ruinDungeon); //dungeon has currently no way to get out.
-		
-		ruinStairCase0.setExit("down", ruinLaboratory);
-		ruinStairCase0.setExit("up", ruinStairCase1);
-		
-		//Set connections Ruins level -1
-		ruinLaboratory.setExit("up",  ruinStairCase0);
-		
-		//Set connections Ruins level 1
-		ruinStairCase1.setExit("down", ruinStairCase0);
-		ruinStairCase1.setExit("up", ruinWatchTower);
-		ruinStairCase1.setExit("west", ruinMage);
-		ruinMage.setExit("east", ruinStairCase1);
-		ruinStairCase1.setExit("south", ruinPraying);
-		ruinPraying.setExit("north", ruinStairCase1);
-		
-		//Set connections Ruins level 2
-		ruinWatchTower.setExit("down",  ruinStairCase1);
-		
-		//Set connections Outside
-		northForest.setExit("east", redWoodTree);
-		redWoodTree.setExit("west", northForest);
+				westBeach.setExit("east", westForest);
+				westForest.setExit("west", westBeach);
+				westForest.setExit("north", northWestForest);
+				westForest.setExit("south", southWestForest);
+				northWestForest.setExit("south", westForest);
+				northWestForest.setExit("east", centralForest);
+				southWestForest.setExit("north", westForest);
+				centralForest.setExit("west", northWestForest);
+				centralForest.setExit("east", ruinWestEntrance);
+				ruinWestEntrance.setExit("west", centralForest);
+				ruinWestEntrance.setExit("east", ruinWestWing);
+				ruinStairCase0.setExit("west", ruinWestWing);
+				ruinStairCase0.setExit("east",  ruinEastWing);
+				ruinEastEntrance.setExit("west",  ruinEastWing);
+				ruinEastEntrance.setExit("east", eastForest);
+				eastForest.setExit("west", ruinEastEntrance);
+				eastForest.setExit("east", eastBeach);
+				eastBeach.setExit("west", eastForest);
+				
+				//Set connections: Axis North-South
+				northBeach.setExit("south", northForest);
+				northForest.setExit("north", northBeach);
+				northForest.setExit("south", ruinNorthEntrance);
+				ruinNorthEntrance.setExit("north", northForest);
+				ruinNorthEntrance.setExit("south", ruinNorthWing);
+				ruinStairCase0.setExit("north", ruinNorthWing);
+				ruinStairCase0.setExit("south",  ruinSouthEntrance);
+				ruinSouthEntrance.setExit("north",  ruinStairCase0);
+				ruinSouthEntrance.setExit("south", southForest);
+				southForest.setExit("north", ruinSouthEntrance);
+				southForest.setExit("south", southBeach);
+				southBeach.setExit("north", southForest);
+				
+				//Set connections Ruins level 0
+				ruinLibrary.setExit("south",  ruinWestWing);
+				ruinLibrary.setExit("east",  ruinNorthWing);
+				ruinNorthEntrance.setExit("west",  ruinLibrary);
+				ruinWestWing.setExit("west", ruinWestEntrance);
+				ruinWestWing.setExit("north", ruinLibrary);
+				ruinWestWing.setExit("east", ruinStairCase0);
+				ruinNorthWing.setExit("north", ruinNorthEntrance);
+				ruinNorthWing.setExit("west", ruinLibrary);
+				ruinNorthWing.setExit("south", ruinStairCase0);
+				ruinEastWing.setExit("west", ruinStairCase0);
+				ruinEastWing.setExit("east", ruinEastEntrance);
+				ruinEastEntrance.setExit("down", ruinDungeon); //dungeon has currently no way to get out.
+				
+				ruinStairCase0.setExit("down", ruinLaboratory);
+				ruinStairCase0.setExit("up", ruinStairCase1);
+				
+				//Set connections Ruins level -1
+				ruinLaboratory.setExit("up",  ruinStairCase0);
+				
+				//Set connections Ruins level 1
+				ruinStairCase1.setExit("down", ruinStairCase0);
+				ruinStairCase1.setExit("up", ruinWatchTower);
+				ruinStairCase1.setExit("west", ruinMage);
+				ruinMage.setExit("east", ruinStairCase1);
+				ruinStairCase1.setExit("south", ruinPraying);
+				ruinPraying.setExit("north", ruinStairCase1);
+				
+				//Set connections Ruins level 2
+				ruinWatchTower.setExit("down",  ruinStairCase1);
+				
+				//Set connections Outside
+				northForest.setExit("east", redWoodTree);
+				redWoodTree.setExit("west", northForest);
+				//northForest.setExit("west", deepForest);
+//				deepForest.setExit("east", northForest);
 		
 		currentRoom = westBeach; // start game outside
     }
