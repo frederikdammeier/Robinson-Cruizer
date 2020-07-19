@@ -126,16 +126,19 @@ public class Inventory {
 	 * @return true if successful, false if the new item exceeds the inventories capacity.
 	 */
 	public boolean addItem(Item item) {
-		if(unlimited) {
-			inventory.add(item);
-			return true;
-		}else if(getCurrentInventoryWeight() + item.getWeight() <= size) {
-			inventory.add(item);
-			return true;
-		} else {
-			System.out.println("The item you're trying to add is too heavy.");
-			return false;
+		if(item.isPortable()) {
+			if(unlimited) {
+				inventory.add(item);
+				return true;
+			}else if(getCurrentInventoryWeight() + item.getWeight() <= size) {
+				inventory.add(item);
+				return true;
+			} else {
+				System.out.println("The item you're trying to add is too heavy.");
+				return false;
+			}
 		}
+		return false;
 	}
 	
 	/**
