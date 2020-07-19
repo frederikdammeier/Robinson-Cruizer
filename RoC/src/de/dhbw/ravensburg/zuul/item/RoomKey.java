@@ -1,7 +1,7 @@
 package de.dhbw.ravensburg.zuul.item;
 
 /**
- * Class RoomKey. An Item required to access a locked room.
+ * Class RoomKey - An Item required to access a locked room.
  * 
  * @author Frederik Dammeier
  * @version 17.05.2020

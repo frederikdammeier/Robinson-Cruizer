@@ -4,7 +4,7 @@ import de.dhbw.ravensburg.zuul.Inventory;
 import de.dhbw.ravensburg.zuul.Parser;
 
 /**
- * Class Freitag
+ * Class Freitag - a human in an adventure game.
  * 
  * <p>
  * Freitag is a Human and appears at the beginning of the game. He gives the player the first informations.

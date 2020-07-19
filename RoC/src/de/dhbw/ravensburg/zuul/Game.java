@@ -115,6 +115,7 @@ public class Game{
 	 * --------------------------------
 	 * Given a command, process (that is: execute) the command.
 	 * 
+	 * @deprecated
 	 * @param command The command to be processed.
 	 * @return true If the command ends the game, false otherwise.
 	 */

@@ -1,13 +1,20 @@
 package de.dhbw.ravensburg.zuul.ui;
 
 /**
+ * Handling of Sprites that are Creatures.
  * 
- * @author Frederick Dammeier
+ * @author Frederik Dammeier
  *
  */
 import de.dhbw.ravensburg.zuul.creature.Creature;
 import javafx.scene.image.Image;
 
+/**
+ * Handling of Sprites that are creatures.
+ * 
+ * @author Frederik Dammeier
+ *
+ */
 public class CreatureSprite extends Sprite {
 	/**Any creature*/
 	private Creature creature;
