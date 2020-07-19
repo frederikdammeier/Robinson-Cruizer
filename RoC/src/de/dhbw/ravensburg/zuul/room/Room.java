@@ -228,7 +228,11 @@ public class Room
 						break;
 					case "Timber":
 						inventory.addItem(new Timber());
-						break;					
+						break;	
+//					case "Stone":
+//						inventory.addItem(new Stone());
+//						break;
+						
 					}
 				}
 			}

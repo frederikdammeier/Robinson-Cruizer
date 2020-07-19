@@ -137,24 +137,15 @@ public class GameApplication extends Application {
         imgView.setFitWidth(rootb.getWidth());
         imgView.setFitHeight(rootb.getHeight());
         
-        //labels 
-//		Label welcomeLabel = new Label();
+
 		Label infoLabel = new Label();
 		Label label = new Label("by Frederik Dammeier, Philipp Schneider and Moritz Link");
 		//button
 		Button goStory  = new Button("next");
 
-//		welcomeLabel.setText("Welcome to the game:  Robinson Cruizer");
-//		welcomeLabel.setFont(new Font("Arial",  20));
-//		welcomeLabel.setTextFill(Color.BLACK);
-//		welcomeLabel.setPadding(new Insets(20,0,0,0));
-		//infoLabel.setText("Robinson Cruizer is an adventure game, developed /br by Frederik Dammaier,/n Philipp Schneider /n and Moritz Link");
-//		label.setPadding(new Insets(50,0,0,0));
-		rootb.getChildren().addAll(imgView,  goStory, label); // , label
-		 /**
-		 * Defines the position from roots children
-		 */	
-//		rootb.setAlignment(welcomeLabel, Pos.TOP_CENTER);
+		rootb.getChildren().addAll(imgView,  goStory, label);
+		
+
 		rootb.setAlignment(label, Pos.TOP_CENTER);		
 		rootb.setAlignment(goStory, Pos.BOTTOM_RIGHT);
 		
@@ -204,22 +195,26 @@ public class GameApplication extends Application {
 		
 		
 		//Buttons and Textfield for the storyScene
-		Button goSetting  = new Button("go to Setting");
+		Button goSetting  = new Button("go to Settings");
 		Button returnB = new Button("back");
-		TextField tf = new TextField();	
 		Label titel = new Label("Story");
 		titel.setFont(new Font("Serif",  28));
 
 		StackPane ap = new StackPane();
 		
-		ap.setAlignment(tf, Pos.CENTER);		
 		ap.setAlignment(goSetting, Pos.BOTTOM_RIGHT);
 		ap.setAlignment(returnB, Pos.BOTTOM_LEFT);
 		ap.setAlignment(titel, Pos.TOP_CENTER);
 		
-		ap.getChildren().addAll(goSetting, tf, returnB, titel);
+		Image imgS = new Image("Images/Room/START.PNG", 400, 400, false, false);
+		ImageView imgViewS = new ImageView();
+		imgViewS.setImage(imgS);
+	    imgViewS.setFitWidth(ap.getWidth());
+	    imgViewS.setFitHeight(ap.getHeight());
 		
+		ap.getChildren().addAll(imgViewS, goSetting,returnB, titel);
 		
+
 		final Scene storyScene = new Scene(ap, w*0.4, h*0.4);
 		
 		final Scene levelScene = new Scene(level, w*0.4, h*0.4);
@@ -639,21 +634,6 @@ public class GameApplication extends Application {
 		dialogHandlers.put("freitagTalkEvent", new EventHandler<ActionEvent>(){
 			@Override
 			public void handle(ActionEvent e) {
-				
-				
-				
-//				dialogText.setText("Nice to meet you foreign. My name is Freitag and i see you are in trouble. "
-//						+ "I saw how you ship sunk and you almost died in the water but thanks to god you are alive. "
-//						+ "You are on a island and i believe you want to escape from here. "
-//						+ "Hmmm.... To escape you need a new boat. I think you can find on this island everything what you need to build a new one."
-//						+ " You can ask the Natives on the island, they will know where you can find your equipment. "
-//						+ "oh but you shouldn't make them angry because then they will try to kill you. "
-//						+ "But only when you make them angry so try to be polite to them, also you can try to find the Mage somewhere."
-//						+ " I don't know where he is but i am sure he can help you. "
-//						+ "Oh but you must be careful. "
-//						+ "On this island are many hunters who want to kill you because they think you are against their god. "
-//						+ "So try to avoid them. "
-//						+ "It was nice to meet you, i hope you will survive. Good bye. " );
 				dialogText.setText(messages.get("freitagTalk"));
 				okButton.setOnAction(dialogHandlers.get("freitagSwordEvent"));
 				
@@ -672,11 +652,6 @@ public class GameApplication extends Application {
 		dialogHandlers.put("mageTalkEvent", new EventHandler<ActionEvent>(){
 			@Override
 			public void handle(ActionEvent e) {
-//					dialogText.setText("Hello foreign, "
-//							+ "Nice to meet you. If you want I can help you. "
-//							+ "I am a powerful mage and can teleport you to different places on this island. "
-//							+ "Do you want to?
-//							);
 					dialogText.setText(messages.get("mageTalk"));
 					okButton.setOnAction(dialogHandlers.get("mageTeleportEvent"));
 			}
@@ -691,10 +666,7 @@ public class GameApplication extends Application {
 		});
 		dialogHandlers.put("prisonerTalkEvent", new EventHandler<ActionEvent>(){
 			@Override
-			public void handle(ActionEvent e) {
-//				dialogText.setText("Ah please help me. I am in this Dungeon since two weeks. "
-//						+ "Can you open it? When you will free me i can give you information about the island. "
-//						+ "Do you have the key for me? ");	
+			public void handle(ActionEvent e) {	
 				dialogText.setText(messages.get("prisonerTalk"));
 				okButton.setOnAction(dialogHandlers.get("prisonerTradeEvent"));
 				
@@ -704,14 +676,9 @@ public class GameApplication extends Application {
 		dialogHandlers.put("prisonerTradeEvent", new EventHandler<ActionEvent>(){
 			@Override
 			public void handle(ActionEvent e) {
-				//neue metode für handeln?
+			
 				Item key = game.getPlayer().getInventory().getItemByName("Key");
 				if(game.getPlayer().getInventory().containsItem("Key") == true) {
-//					dialogText.setText("Thank you now i am free."  + 
-//										"So i will tell you my secret information about the Mage. " + 
-//										"On this island is a mage and he can help you. " + 
-//										"He waits on the second floor in the Room named ruinMage. " + 
-//										"I hope you can find him.");
 					dialogText.setText(messages.get("prisonerThankTalk"));
 					game.getPlayer().getInventory().removeItem(key);
 					okButton.setOnAction(dialogHandlers.get("acknowledgeEvent"));
@@ -725,11 +692,7 @@ public class GameApplication extends Application {
 		dialogHandlers.put("nativeTalkEvent", new EventHandler<ActionEvent>(){
 			@Override
 			public void handle(ActionEvent e) {
-//				dialogText.setText("Hello do you have any meat for me? "
-//									+ "i can give you some inforamtion about the island in exchange for the meat. "
-//									+ "Do you want to change? ");
-				dialogText.setText("Give me meat and i tell you or give you something. ");
-				
+				dialogText.setText(messages.get("nativeTradeTalk"));	
 				okButton.setOnAction(dialogHandlers.get("nativeTradeEvent"));
 			}
 		});
@@ -796,15 +759,32 @@ public class GameApplication extends Application {
 		messages.put("buildBoat", "You are ready to build a boat now. Proceed?");
 		messages.put("boatBuilt", "A boat has been added to your inventory. Go to any beach to leave the island.");
 		messages.put("couldntBuildBoat", "It seems like you dropped a required item.");
-		messages.put("freitagTalk", "Hello foreign. you have to find items to build a boat. ");
-		messages.put("prisonerTalk", "Help me than i tell you something about this place.");
-		messages.put("prisonerThankTalk", "Thank you. The mage is on the second floor.");
+		messages.put("freitagTalk", "Nice to meet you. My name is Freitag. "
+				+ "I saw how your ship sunk and you almost died in the water but thanks to god you are alive. "
+				+ "You are on a island and i believe you want to escape from here. "
+				+ "Hmmm.... To escape you need a new boat. I think you can find on this island everything for a boat. "
+				+ "On this island are many hunters who want to kill you but there are also a few natives who can help you. "
+				+ "It was nice to meet you, i hope you will survive. Good bye. ");
+		messages.put("prisonerTalk", "Ah please help me. I am in this Dungeon since two weeks. "
+				+ "Can you open it? When you free me i can give you information about the island. "
+				+ "Do you have the key for me? ");
+		messages.put("prisonerThankTalk","Thank you now i am free." 
+				+ "So i will tell you my secret information. " 
+				+ "On this island is a mage and he can help you. " 
+				+ "He waits in the ruin. " 
+				+ "I hope you can find him.");
 		messages.put("prisonerKeyTalk","You don't have the key. Then go and find him! ");
-		messages.put("mageTalk", "Hello, should i teleport you? ");
+		messages.put("mageTalk", "Hello foreign, "
+				+ "Nice to meet you. If you want I can help you. "
+				+ "I am a powerful mage and can teleport you to different places on this island. "
+				+ "Do you want to?");
 		messages.put("mageTeleportTalk", "OK i hope you will escape from this island. Good bye");
 		messages.put("nativeSailEvent", "I will give you a Sail for a boat");
 		messages.put("nativeBetrayalTalk","Oh i see you tried to betray me! ");
-		messages.put("freitagSwordTalk", "Oh and i have something for you");
+		messages.put("nativeTradeTalk", "Hello do you have any meat for me? "
+				+ "I can give you some information about the island or something else in exchange. "
+				+ "Do you want to change? ");
+		messages.put("freitagSwordTalk", "Oh and i have something for you. Here is a stick to defend youself. ");
 		}
 	
 	
