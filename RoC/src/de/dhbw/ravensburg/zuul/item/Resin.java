@@ -1,7 +1,7 @@
 package de.dhbw.ravensburg.zuul.item;
 
 /**
- * Class Timber - Item with predefined values.
+ * Class Resin - Item with predefined values.
  * 
  * @author Philipp Schneider
  * @version 03.05.2020
