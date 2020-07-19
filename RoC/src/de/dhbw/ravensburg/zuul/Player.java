@@ -1,5 +1,7 @@
 package de.dhbw.ravensburg.zuul;
 
+import java.util.Iterator;
+
 import de.dhbw.ravensburg.zuul.item.Item;
 import de.dhbw.ravensburg.zuul.item.Weapon;
 import de.dhbw.ravensburg.zuul.ui.Sprite;
@@ -58,11 +60,34 @@ public class Player {
 		damage =  amount;
 	}
 	
-	
+	/**
+	 * Give the player the damage of a specified Item.
+	 * 
+	 * @param item
+	 */
 	public void updatePlayerDamage(Item item) {
 		if(item instanceof Weapon) {
 			damage = ((Weapon) item).getDamage();
 		}
+	}
+	
+	/**
+	 * Give the player the damage value of his best weapon.
+	 */
+	public void updatePlayerDamage() {
+		int damage = 0;
+		Item item;
+		
+		Iterator<Item> it = inventory.getFullInventory().iterator();
+		while(it.hasNext()) {
+			item = it.next();
+			if(item instanceof Weapon) {
+				if(damage < ((Weapon)item).getDamage()) {
+					damage = ((Weapon)item).getDamage();
+				}
+			}
+		}
+		this.damage = damage;
 	}
 	
 	/**

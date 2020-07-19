@@ -247,8 +247,18 @@ public class Inventory {
 		return tmp.isEmpty();
 	}
 	
+	/**
+	 * @return A reference to the inventory's ObservableList
+	 */
 	public ObservableList<Item> getFullInventory(){
 		return inventory;
+	}
+	
+	/**
+	 * @return Whether the inventory is limited in its size.
+	 */
+	public boolean getUnlimited() {
+		return unlimited;
 	}
 } 
 

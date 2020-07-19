@@ -18,7 +18,7 @@ import java.util.ArrayList;
  * 
  * @author Michael Kölling and David J. Barnes - further developed by Frederik
  *         Dammeier - Philipp Schneider
- * @version 27.05.2020
+ * @version 19.07.2020
  */
 
 public class Game{
@@ -46,36 +46,23 @@ public class Game{
 		parser = new Parser();
 		predator = new Predator(this);
 		player = new Player("Players Name", difficulty.getInventoryCapacity(), 100);
-		player.getInventory().addMultipleItems(new RoomKey("Key to the Library"), new Resin(), new Sail(), new Resin(), new Rope(), new Rope(), new Timber(), new Timber(), new Timber());  //Activate this line to test the boatBuilding
 		boatBuilder = new BoatBuilding();
 		currentRoom = map.getCurrentRoom();
 		timeLimit = difficulty.getTimeLimit();
 		enemyDamageRate = difficulty.getEnemyDamageRate();
 		regenHandler = new RegenerationHandler(player);
 		hungerHandler = new HungerHandler(player);
-		
-		
-		player.getInventory().addItem(new Key());
-		player.getInventory().addItem(new Meat());
-
 	}
 
 	/**
-	 * Main play routine. Loops until end of play.
+	 * Starts all background treads and therefore starts the game.
 	 */
 	public void start() {
-
 		printWelcome();
 
 		// Add a new Timer to measure passed game Time.
 		Thread timeThread = new Thread(timer, "timer");
 		timeThread.start();
-		
-		/**
-		// Starts the predator class for the first time.
-		predatorThread = new Thread(predator, "predator");
-		predatorThread.start();
-		*/
 		
 		//Regeneration Thread
 		Thread regenThread = new Thread(regenHandler, "regenerate");
@@ -84,25 +71,11 @@ public class Game{
 		//Hunger Thread
 		Thread hungerThread = new Thread(hungerHandler, "hunger");
 		hungerThread.start();
-
-		// Enter the main command loop. Here we repeatedly read commands and
-		// execute them until the game is over.
-
-//		dead = false;
-//		finished = false;
-//		while (!finished && timer.getTimePassedSeconds() < timeLimit && !dead) {
-//
-//			Command command = parser.getCommand();
-//			finished = processCommand(command);
-//			printTimePassed();
-//		}
-//		System.out.println("Thank you for playing.  Good bye!");
-//		timer.stopTimer();
-//		predatorThread.interrupt();
-//		regenHandler.finish();
-//		hungerHandler.finish();
 	}
 	
+	/**
+	 * Call when the game has finished. Closes all threads.
+	 */
 	public void endGame() {
 		System.out.println("Thank you for playing.  Good bye!");
 		timer.stopTimer();
@@ -671,14 +644,24 @@ public class Game{
 	public long getTimeLeft() {
 		return timeLimit-timer.getTimePassedSeconds();
 	}
-
+	
+	/**
+	 * @return The games EnemyDamageRate.
+	 */
 	public float getEnemyDamageRate() {
 		return enemyDamageRate;
 	}
+	
+	/**
+	 * Call after the player died.
+	 */
 	public void setDead() {
 		dead = true;
 	}
-
+	
+	/**
+	 * @return The games time limit.
+	 */
 	public long getTimeLimit() {
 		return timeLimit;
 	}
@@ -699,22 +682,37 @@ public class Game{
 		return false;
 	}
 	
+	/**
+	 * @return A reference to the games boatBuilder.
+	 */
 	public BoatBuilding getBoatBuilder() {
 		return boatBuilder;
 	}
 	
+	/**
+	 * @return A reference to the games map.
+	 */
 	public Map getMap() {
 		return map;
 	}
 	
+	/**
+	 * @return Whether the game is finished.
+	 */
 	public boolean getFinished() {
 		return finished;
 	}
 	
+	/**
+	 * @param d True if the player died.
+	 */
 	public void setDead(boolean d) {
 		dead = d;
 	}
 	
+	/**
+	 * @return If the player is dead.
+	 */
 	public boolean getDead() {
 		return dead;
 	}

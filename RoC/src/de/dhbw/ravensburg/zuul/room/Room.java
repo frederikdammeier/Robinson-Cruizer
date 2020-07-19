@@ -18,15 +18,14 @@ import de.dhbw.ravensburg.zuul.Inventory;
 /**
  * Class Room - a room in an adventure game.
  *
- * This class is part of the "World of Zuul" application. 
- * "World of Zuul" is a very simple, text based adventure game.  
+ * This class is part of the "Robinson Cruizer" application.   
  *
  * A "Room" represents one location in the scenery of the game.  It is 
  * connected to other rooms via exits.  For each existing exit, the room 
  * stores a reference to the neighboring room.
  * 
- * @author  Michael Kölling, David J. Barnes and Frederik Dammeier
- * @version 09.05.2020
+ * @author  Frederik Dammeier
+ * @version 19.07.2020
  */
 
 public class Room 
@@ -42,8 +41,6 @@ public class Room
     private RoomKey key;
     private ArrayList<ItemSprite> spriteInventory;
     private Image background;
-    
-//    private CreatureSprite creatureSprite;
     
 	/**
      * Create a room described "description". Initially, it has
@@ -235,6 +232,9 @@ public class Room
 		}
 	}
 	
+	/**
+	 * Called on initiation. Generates the ItemSprites for the randomly generated items.
+	 */
 	protected void generateItemSprites() {
 		ListIterator<Item> it = inventory.getFullInventory().listIterator();
 		double x, y;
@@ -252,10 +252,18 @@ public class Room
 			}		}
 	}
 	
+	/**
+	 * @return A reference to the room's ItemSprites.
+	 */
 	public ArrayList<ItemSprite> getItemSprites() {
 		return spriteInventory;
 	}
 	
+	/**
+	 * Add an item to the room, random coordinates.
+	 * 
+	 * @param item The item.
+	 */
 	public void addItem(Item item) {
 		inventory.addItem(item);
 		
@@ -270,6 +278,13 @@ public class Room
 		}
 	}
 	
+	/**
+	 * Add an item to the room including coordinates.
+	 * 
+	 * @param item The item.
+	 * @param xPos The desired x position.
+	 * @param yPos The desired y position.
+	 */
 	public void addItem(Item item, double xPos, double yPos) {
 		inventory.addItem(item);
 		if(item instanceof RoomKey) {
@@ -279,6 +294,10 @@ public class Room
 		}
 	}
 	
+	/**
+	 * Removes an item and its sprite from the room.
+	 * @param item The ItemSprite to remove
+	 */
 	public synchronized void removeItem(ItemSprite item) {
 		inventory.removeItem(item.getItem());	
 		spriteInventory.remove(item);
@@ -361,6 +380,9 @@ public class Room
     	return creatureInRoom;
     }
     
+    /**
+     * @return A reference to the rooms CreatureSprite
+     */
     public CreatureSprite getCreatureSprite() {
     	if(creatureInRoom != null) return creatureInRoom.getSprite();
     	return null;

@@ -746,19 +746,25 @@ public class GameApplication extends Application {
 			@Override
 			public void handle(ActionEvent e) {
 				//neue metode für handeln?
-				Item key = game.getPlayer().getInventory().getItemByName("Key");
-				if(game.getPlayer().getInventory().containsItem("Key") == true) {
+				Item key = game.getPlayer().getInventory().getItemByName("Sword");
+				if(key != null) {
 //					dialogText.setText("Thank you now i am free."  + 
 //										"So i will tell you my secret information about the Mage. " + 
 //										"On this island is a mage and he can help you. " + 
 //										"He waits on the second floor in the Room named ruinMage. " + 
 //										"I hope you can find him.");
-					dialogText.setText(messages.get("prisonerThankTalk"));
+					
 					game.getPlayer().getInventory().removeItem(key);
+					
+					game.getMap().activateWayOutOfDungeon();
+					
+					setExitVisibility();
+					
+					dialogText.setText(messages.get("prisonerTradeSuccesful"));
 					okButton.setOnAction(dialogHandlers.get("acknowledgeEvent"));
 				}
 				else {
-					dialogText.setText(messages.get("prisonerKeyTalk"));
+					dialogText.setText(messages.get("prisonerTradeFailed"));
 					okButton.setOnAction(dialogHandlers.get("acknowledgeEvent"));
 				}				
 			}
@@ -838,7 +844,9 @@ public class GameApplication extends Application {
 		messages.put("boatBuilt", "A boat has been added to your inventory. Go to any beach to leave the island.");
 		messages.put("couldntBuildBoat", "It seems like you dropped a required item.");
 		messages.put("freitagTalk", "Hello foreign. you have to find items to build a boat. ");
-		messages.put("prisonerTalk", "Help me than i tell you something about this place.");
+		messages.put("prisonerTalk", "Oh no. It seems like you are trapped in here with me. If you give me a Sword, I might show you a way outside.");
+		messages.put("prisonerTradeSuccesful", "Thank you. You shall head north to flee this place.");
+		messages.put("prisonerTradeFailed", "You unlucky fool! Now you have to starve to death in this unholy place!");
 		messages.put("prisonerThankTalk", "Thank you. The mage is on the second floor.");
 		messages.put("prisonerKeyTalk","You don't have the key. Then go and find him! ");
 		messages.put("mageTalk", "Hello, should i teleport you? ");
@@ -849,6 +857,7 @@ public class GameApplication extends Application {
 		messages.put("gameFinished", "You win! Thank you for playing. \nPress a button to close the window.");
 		messages.put("timeout", "You ran out of time! Better luck next time. \nPress a button to close the window.");
 		messages.put("death", "You have been killed! Better luck next time. \nPress a button to close the window");
+		messages.put("magicMushroomCollected", "You picked up a Magic Mushroom. Eat it to get strong as a giant and carry as much stuff as you want.");
 		}
 	
 	
@@ -1006,6 +1015,12 @@ public class GameApplication extends Application {
         				game.getPlayer().updatePlayerDamage(item.getItem());
         				itemIterator.remove();	
         				
+        				if(item.getItem() instanceof MagicMushroom) {
+        					dialogText.setText(messages.get("magicMushroomCollected"));
+        					okButton.setOnAction(dialogHandlers.get("acknowledgeEvent"));
+        					dialogGroup.setVisible(true);
+        				}
+        				
         				if(game.getBoatBuilder().checkIfBoatCanBeBuilt(game.getPlayer().getInventory())) {
         					dialogText.setText(messages.get("buildBoat"));
         					okButton.setOnAction(dialogHandlers.get("buildBoatEvent"));
@@ -1129,7 +1144,7 @@ public class GameApplication extends Application {
 			else if(name == "Gandalf der Graue") {
 				okButton.setOnAction(dialogHandlers.get("mageTalkEvent"));
 				
-			}
+			} 
 	}
 	
 	/**
@@ -1145,7 +1160,7 @@ public class GameApplication extends Application {
 		trade.put(2, "The prisoner is in the dungeon. "); // wissen wo das material ist
 		trade.put(3, "Don't try to betray the natives they will attack you. "); // "-"
 		trade.put(4, "Somewhere on this island is a magic-mushroom which can give you unlimited power. ");
-		trade.put(5, "i have nothing for you you fool ");
+		trade.put(5, "I have nothing for you you fool ");
 		trade.put(6, "Go to the Library there is something important for you. "); // noch etwas neues
 		int info = random.nextInt(6)+1;
 		String information = trade.get(info);
@@ -1165,7 +1180,10 @@ public class GameApplication extends Application {
 		}
 	}
 	
-
+	/**
+	 * Initializes the table and all associated Items 
+	 * @param root
+	 */
 	@SuppressWarnings("unchecked")
 	private void initializeInventoryGroup(final Group root) {
 		inventoryGroup = new Group();
@@ -1204,6 +1222,7 @@ public class GameApplication extends Application {
 				if(i != null) {
 					game.getCurrentRoom().addItem(i, game.getPlayer().getPlayerSprite().getCenterX(), game.getPlayer().getPlayerSprite().getCenterY());
 					game.getPlayer().getInventory().removeItem(i);	
+					game.getPlayer().updatePlayerDamage();
 				}				
 			}		
 		});
@@ -1244,7 +1263,11 @@ public class GameApplication extends Application {
 
 			@Override
 			public void onChanged(@SuppressWarnings("rawtypes") Change arg0) {
-				invSize.setText(game.getPlayer().getInventory().getCurrentInventoryWeight() + "kg / " + difficulty.getInventoryCapacity() + "kg ");
+				if(game.getPlayer().getInventory().getUnlimited()){
+					invSize.setText(Math.round(game.getPlayer().getInventory().getCurrentInventoryWeight()) + "kg");
+				} else {
+					invSize.setText(Math.round(game.getPlayer().getInventory().getCurrentInventoryWeight()) + "kg / " + Math.round(difficulty.getInventoryCapacity()) + "kg ");
+				}
 			}
 
 		});
@@ -1254,7 +1277,7 @@ public class GameApplication extends Application {
 		inventoryTable.setMaxWidth(w*0.2);
 
 
-		invSize.setText(game.getPlayer().getInventory().getCurrentInventoryWeight() + "kg / " + difficulty.getInventoryCapacity() + "kg ");
+		invSize.setText(Math.round(game.getPlayer().getInventory().getCurrentInventoryWeight()) + "kg / " + Math.round(difficulty.getInventoryCapacity()) + "kg ");
 
 		VBox fp = new VBox();
 		HBox hb = new HBox();

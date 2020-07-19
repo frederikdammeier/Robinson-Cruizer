@@ -195,4 +195,11 @@ public class Map {
     	northBeach.setExit("north", finalRoom);
     	southBeach.setExit("south", finalRoom);
     }
+    
+    /**
+     * Sets exit for the dungeon, so the player is able to leave it.
+     */
+	public void activateWayOutOfDungeon() {
+		ruinDungeon.setExit("west", redWoodTree);	
+	}
 }
