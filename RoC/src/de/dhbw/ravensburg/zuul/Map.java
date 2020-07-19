@@ -93,11 +93,11 @@ public class Map {
 		
 		ruinWatchTower = new Ruin("on the top of the Watchtower", null, RoomType.RUIN_TOP, new RoomKey("Key to the Library"));
 		map.add(ruinWatchTower);
-		ruinWestWing = new Ruin("in the ruins west wing", null, RoomType.RUIN);
+		ruinWestWing = new Ruin("in the ruins west wing", null, RoomType.RUIN_NORTH_EAST_WEST);
 		map.add(ruinWestWing);
-		ruinEastWing = new Ruin("in the ruins west wing", null, RoomType.RUIN);
+		ruinEastWing = new Ruin("in the ruins west wing", null, RoomType.RUIN_WEST_EAST);
 		map.add(ruinEastWing);
-		ruinNorthWing = new Ruin("in the ruins north wing", null, RoomType.RUIN);
+		ruinNorthWing = new Ruin("in the ruins north wing", null, RoomType.RUIN_NORTH_SOUTH_WEST);
 		map.add(ruinNorthWing);
 		ruinLibrary = new Ruin("in the ruins: Aincient Library", null, RoomType.RUIN_LIBRARY);
 		ruinLibrary.lockRoom(new RoomKey("Key to the Library"));
@@ -105,7 +105,7 @@ public class Map {
 		ruinPraying = new Ruin("in the ruins: Holy Artefact", null, RoomType.RUIN);
 		ruinPraying.addItem(new Artifact(), GameApplication.h*0.5 , GameApplication.w*0.5);
 		map.add(ruinPraying);
-		ruinMage = new Ruin("in the ruins: Mage", new Mage(), RoomType.RUIN_MAGE);
+		ruinMage = new Ruin("in the ruins: Mage", new Mage(), RoomType.RUIN_PRAYING);
 		map.add(ruinMage);
 		ruinDungeon = new Ruin("in the ruins: Dungeon", new Prisoner(), RoomType.RUIN_DUNGEON);
 		ruinLaboratory = new Ruin("in the ruins: Abandoned Laboratory", null, RoomType.RUIN_LABORATORY, new Meat(), new Bread());
@@ -150,7 +150,6 @@ public class Map {
 				//Set connections Ruins level 0
 				ruinLibrary.setExit("south",  ruinWestWing);
 				ruinLibrary.setExit("east",  ruinNorthWing);
-				ruinNorthEntrance.setExit("west",  ruinLibrary);
 				ruinWestWing.setExit("west", ruinWestEntrance);
 				ruinWestWing.setExit("north", ruinLibrary);
 				ruinWestWing.setExit("east", ruinStairCase0);
