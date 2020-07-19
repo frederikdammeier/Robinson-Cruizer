@@ -20,7 +20,7 @@ public class Mage extends Human{
 	 */	
 	public Mage() {
 		super();
-		setLifepoints(50);
+		setLifepoints(150);
 		setName("Gandalf der Graue"); 
 		setPeaceful(true);
 

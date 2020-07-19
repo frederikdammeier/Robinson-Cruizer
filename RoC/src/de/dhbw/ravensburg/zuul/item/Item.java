@@ -33,7 +33,8 @@ public class Item {
 	 */
 		public Item(String name, float weight) {
 		this.name = name;
-		this.weight = weight;	
+		this.weight = weight;
+		this.portable = true;
 	}
 	
 	/**
@@ -71,6 +72,9 @@ public class Item {
 		}
 	}	
 	
+	/**
+	 * To check if 2 items are internally identical.
+	 */
 	@Override
 	public int hashCode() {
 		return Objects.hash(name, weight);

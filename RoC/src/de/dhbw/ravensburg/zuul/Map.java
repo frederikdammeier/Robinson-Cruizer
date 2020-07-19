@@ -98,7 +98,7 @@ public class Map {
 		map.add(ruinEastWing);
 		ruinNorthWing = new Ruin("in the ruins north wing", null, RoomType.RUIN_NORTH_SOUTH_WEST);
 		map.add(ruinNorthWing);
-		ruinLibrary = new Ruin("in the ruins: Ancient Library", null, RoomType.RUIN_LIBRARY);
+		ruinLibrary = new Ruin("in the ruins: Ancient Library", null, RoomType.RUIN_LIBRARY, new Sail());
 		ruinLibrary.lockRoom(new RoomKey("Key to the Library"));
 		map.add(ruinLibrary);
 		ruinPraying = new Ruin("in the ruins: Holy Artefact", null, RoomType.RUIN_PRAYING);

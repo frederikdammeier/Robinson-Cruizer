@@ -21,7 +21,7 @@ public class Ape extends Animal {
 	 */	
 	public Ape() {
 		super();
-		setLifepoints(70);
+		setLifepoints(100);
 		setName("Ape");
 		setPeaceful(false);
 		setDamage(20);

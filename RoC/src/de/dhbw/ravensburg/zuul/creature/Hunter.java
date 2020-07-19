@@ -18,7 +18,7 @@ public class Hunter extends Human{
 	 */	
 	public Hunter() {
 		super();
-		setLifepoints(100);
+		setLifepoints(150);
 		setPeaceful(false);
 
 		setDropItem(new Sword());

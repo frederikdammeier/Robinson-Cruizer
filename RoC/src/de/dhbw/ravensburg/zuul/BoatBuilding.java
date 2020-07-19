@@ -18,7 +18,7 @@ public class BoatBuilding {
 	 */
 	public BoatBuilding() {
 		recipe = new HashMap<>();
-		recipe.put(new Sail(), 1);
+		recipe.put(new Sail(), 2);
 		recipe.put(new Rope(), 2);
 		recipe.put(new Timber(), 4);
 		recipe.put(new Resin(), 2);
